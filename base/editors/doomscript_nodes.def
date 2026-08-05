@@ -281,32 +281,32 @@ node	event:EV_Mover_Disable	Disable	Mover_Binary	disable	object	eventCall	void	0
 node	event:EV_Mover_Enable	Enable	Mover_Binary	enable	object	eventCall	void	0	idMover_Binary	idMover_Binary::Event_Enable	Mover.h:413		0	0		
 node	event:EV_Mover_OpenPortal	Open Portal	Mover	openPortal	object	eventCall	void	0	idDoor,idMover,idMover_Binary	idDoor::Event_OpenPortal,idMover::Event_OpenPortal,idMover_Binary::Event_OpenPortal	Mover.h:112		0	0		
 node	event:EV_NumTargets	Num Targets	Entity	numTargets	object	eventCall	float	0	idEntity	idEntity::Event_NumTargets	Entity.h:425		0	0		
-node	event:EV_Player_DisableWeapon	Disable Weapon	Player	disableWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_DisableWeapon	Player.h:752		0	0		
-node	event:EV_Player_EnableWeapon	Enable Weapon	Player	enableWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_EnableWeapon	Player.h:750		0	0		
-node	event:EV_Player_ExitTeleporter	Exit Teleporter	Player	exitTeleporter	object	eventCall	void	0	idPlayer	idPlayer::Event_ExitTeleporter	Player.h:767		0	0		
-node	event:EV_Player_GetButtons	Get Buttons	Player	getButtons	object	eventCall	float	0	idPlayer	idPlayer::Event_GetButtons	Player.h:742		0	0		
-node	event:EV_Player_GetCurrentWeapon	Get Current Weapon	Player	getCurrentWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetCurrentWeapon	Player.h:754		0	0		
-node	event:EV_Player_GetIdealWeapon	Get Ideal Weapon	Player	getIdealWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetIdealWeapon	Player.h:781		0	0		
-node	event:EV_Player_GetMove	Get Move	Player	getMove	object	eventCall	vector	0	idPlayer	idPlayer::Event_GetMove	Player.h:744		0	0		
-node	event:EV_Player_GetPreviousWeapon	Get Previous Weapon	Player	getPreviousWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetPreviousWeapon	Player.h:756		0	0		
-node	event:EV_Player_GetViewAngles	Get View Angles	Player	getViewAngles	object	eventCall	vector	0	idPlayer	idPlayer::Event_GetViewAngles	Player.h:746		0	0		
-node	event:EV_Player_GetWeaponEntity	Get Weapon Entity	Player	getWeaponEntity	object	eventCall	entity	0	idPlayer	idPlayer::Event_GetWeaponEntity	Player.h:760		0	0		
-node	event:EV_Player_GiveInventoryItem	Give Inventory Item	Player	giveInventoryItem	object	eventCall	void	0	idPlayer	idPlayer::Event_GiveInventoryItem	Player.h:776	string:name	0	0		
-node	event:EV_Player_HideTip	Hide Tip	Player	hideTip	object	eventCall	void	0	idPlayer	idPlayer::Event_HideTip	Player.h:769		0	0		
-node	event:EV_Player_InPDA	In PDA	Player	inPDA	object	eventCall	float	0	idPlayer	idPlayer::Event_InPDA	Player.h:765		0	0		
-node	event:EV_Player_IsPowerupActive	Is Powerup Active	Player	isPowerupActive	object	eventCall	float	0	idPlayer	idPlayer::Event_IsPowerupActive	Player.h:787	float:powerup	0	0		
-node	event:EV_Player_LevelTrigger	Level Trigger	Player	levelTrigger	object	eventCall	void	0	idPlayer	idPlayer::Event_LevelTrigger	Player.h:771		0	0		
-node	event:EV_Player_OpenPDA	Open PDA	Player	openPDA	object	eventCall	void	0	idPlayer	idPlayer::Event_OpenPDA	Player.h:762		0	0		
-node	event:EV_Player_RemoveInventoryItem	Remove Inventory Item	Player	removeInventoryItem	object	eventCall	void	0	idPlayer	idPlayer::Event_RemoveInventoryItem	Player.h:778	string:name	0	0		
-node	event:EV_Player_SelectWeapon	Select Weapon	Player	selectWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_SelectWeapon	Player.h:758	string:weaponName	0	0		
-node	event:EV_Player_SetBloomParms	Set Bloom Parms	Player	setBloomParms	object	eventCall	void	0	idPlayer	idPlayer::Event_SetBloomParms	Player.h:795	float:speed,float:intensity	0	0		
-node	event:EV_Player_SetPowerupTime	Set Powerup Time	Player	setPowerupTime	object	eventCall	void	0	idPlayer	idPlayer::Event_SetPowerupTime	Player.h:785	float:powerup,float:time	0	0		
-node	event:EV_Player_StartWarp	Start Warp	Player	startWarp	object	eventCall	void	0	idPlayer	idPlayer::Event_StartWarp	Player.h:789		0	0		
-node	event:EV_Player_StopAudioLog	Stop Audio Log	Player	stopAudioLog	object	eventCall	void	0	idPlayer	idPlayer::Event_StopAudioLog	Player.h:512		0	0		
-node	event:EV_Player_StopFxFov	Stop Fx Fov	Player	stopFxFov	object	eventCall	void	0	idPlayer	idPlayer::Event_StopFxFov	Player.h:748		0	0		
-node	event:EV_Player_StopHelltime	Stop Helltime	Player	stopHelltime	object	eventCall	void	0	idPlayer	idPlayer::Event_StopHelltime	Player.h:791	float:mode	0	0		
-node	event:EV_Player_ToggleBloom	Toggle Bloom	Player	toggleBloom	object	eventCall	void	0	idPlayer	idPlayer::Event_ToggleBloom	Player.h:793	float:on	0	0		
-node	event:EV_Player_WeaponAvailable	Weapon Available	Player	weaponAvailable	object	eventCall	float	0	idPlayer	idPlayer::Event_WeaponAvailable	Player.h:783	string:name	0	0		
+node	event:EV_Player_DisableWeapon	Disable Weapon	Player	disableWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_DisableWeapon	Player.h:759		0	0		
+node	event:EV_Player_EnableWeapon	Enable Weapon	Player	enableWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_EnableWeapon	Player.h:757		0	0		
+node	event:EV_Player_ExitTeleporter	Exit Teleporter	Player	exitTeleporter	object	eventCall	void	0	idPlayer	idPlayer::Event_ExitTeleporter	Player.h:774		0	0		
+node	event:EV_Player_GetButtons	Get Buttons	Player	getButtons	object	eventCall	float	0	idPlayer	idPlayer::Event_GetButtons	Player.h:749		0	0		
+node	event:EV_Player_GetCurrentWeapon	Get Current Weapon	Player	getCurrentWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetCurrentWeapon	Player.h:761		0	0		
+node	event:EV_Player_GetIdealWeapon	Get Ideal Weapon	Player	getIdealWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetIdealWeapon	Player.h:788		0	0		
+node	event:EV_Player_GetMove	Get Move	Player	getMove	object	eventCall	vector	0	idPlayer	idPlayer::Event_GetMove	Player.h:751		0	0		
+node	event:EV_Player_GetPreviousWeapon	Get Previous Weapon	Player	getPreviousWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetPreviousWeapon	Player.h:763		0	0		
+node	event:EV_Player_GetViewAngles	Get View Angles	Player	getViewAngles	object	eventCall	vector	0	idPlayer	idPlayer::Event_GetViewAngles	Player.h:753		0	0		
+node	event:EV_Player_GetWeaponEntity	Get Weapon Entity	Player	getWeaponEntity	object	eventCall	entity	0	idPlayer	idPlayer::Event_GetWeaponEntity	Player.h:767		0	0		
+node	event:EV_Player_GiveInventoryItem	Give Inventory Item	Player	giveInventoryItem	object	eventCall	void	0	idPlayer	idPlayer::Event_GiveInventoryItem	Player.h:783	string:name	0	0		
+node	event:EV_Player_HideTip	Hide Tip	Player	hideTip	object	eventCall	void	0	idPlayer	idPlayer::Event_HideTip	Player.h:776		0	0		
+node	event:EV_Player_InPDA	In PDA	Player	inPDA	object	eventCall	float	0	idPlayer	idPlayer::Event_InPDA	Player.h:772		0	0		
+node	event:EV_Player_IsPowerupActive	Is Powerup Active	Player	isPowerupActive	object	eventCall	float	0	idPlayer	idPlayer::Event_IsPowerupActive	Player.h:794	float:powerup	0	0		
+node	event:EV_Player_LevelTrigger	Level Trigger	Player	levelTrigger	object	eventCall	void	0	idPlayer	idPlayer::Event_LevelTrigger	Player.h:778		0	0		
+node	event:EV_Player_OpenPDA	Open PDA	Player	openPDA	object	eventCall	void	0	idPlayer	idPlayer::Event_OpenPDA	Player.h:769		0	0		
+node	event:EV_Player_RemoveInventoryItem	Remove Inventory Item	Player	removeInventoryItem	object	eventCall	void	0	idPlayer	idPlayer::Event_RemoveInventoryItem	Player.h:785	string:name	0	0		
+node	event:EV_Player_SelectWeapon	Select Weapon	Player	selectWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_SelectWeapon	Player.h:765	string:weaponName	0	0		
+node	event:EV_Player_SetBloomParms	Set Bloom Parms	Player	setBloomParms	object	eventCall	void	0	idPlayer	idPlayer::Event_SetBloomParms	Player.h:802	float:speed,float:intensity	0	0		
+node	event:EV_Player_SetPowerupTime	Set Powerup Time	Player	setPowerupTime	object	eventCall	void	0	idPlayer	idPlayer::Event_SetPowerupTime	Player.h:792	float:powerup,float:time	0	0		
+node	event:EV_Player_StartWarp	Start Warp	Player	startWarp	object	eventCall	void	0	idPlayer	idPlayer::Event_StartWarp	Player.h:796		0	0		
+node	event:EV_Player_StopAudioLog	Stop Audio Log	Player	stopAudioLog	object	eventCall	void	0	idPlayer	idPlayer::Event_StopAudioLog	Player.h:515		0	0		
+node	event:EV_Player_StopFxFov	Stop Fx Fov	Player	stopFxFov	object	eventCall	void	0	idPlayer	idPlayer::Event_StopFxFov	Player.h:755		0	0		
+node	event:EV_Player_StopHelltime	Stop Helltime	Player	stopHelltime	object	eventCall	void	0	idPlayer	idPlayer::Event_StopHelltime	Player.h:798	float:mode	0	0		
+node	event:EV_Player_ToggleBloom	Toggle Bloom	Player	toggleBloom	object	eventCall	void	0	idPlayer	idPlayer::Event_ToggleBloom	Player.h:800	float:on	0	0		
+node	event:EV_Player_WeaponAvailable	Weapon Available	Player	weaponAvailable	object	eventCall	float	0	idPlayer	idPlayer::Event_WeaponAvailable	Player.h:790	string:name	0	0		
 node	event:EV_PostArrival	Post Arrival	Elevator	postArrival	object	eventCall	void	0	idElevator	idElevator::Event_PostFloorArrival	Mover.h:304		0	0		
 node	event:EV_PrecacheGui	Precache Gui	Entity	precacheGui	object	eventCall	void	0	idEntity	idEntity::Event_PrecacheGui	Entity.h:545	string:guiName	0	0		
 node	event:EV_RandomTarget	Random Target	Entity	randomTarget	object	eventCall	entity	0	idEntity	idEntity::Event_RandomTarget	Entity.h:429	string:ignore	0	0		
