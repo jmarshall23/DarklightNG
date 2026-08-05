@@ -2535,7 +2535,7 @@ bool Brush_ModelIntersect(brush_t *b, idVec3 origin, idVec3 dir,float &scale) {
 				if ( !anim || !anim[ 0 ] ) {
 					anim = "idle";
 				}
-				model = gameEdit->ANIM_CreateMeshForAnim( md5, classname, anim, frame, false );
+				model = gameEdit->ANIM_CreateMeshForAnim( g_qeglobals.rw, md5, classname, anim, frame, false );
 				if ( !model ) {
 					model = renderModelManager->DefaultModel();
 				}
@@ -3985,7 +3985,7 @@ void Brush_DrawModel( brush_t *b, bool camera, bool bSelected ) {
 				if ( !anim || !anim[ 0 ] ) {
 					anim = "idle";
 				}
-				model2 = gameEdit->ANIM_CreateMeshForAnim( model, classname, anim, frame, false );
+				model2 = gameEdit->ANIM_CreateMeshForAnim( g_qeglobals.rw, model, classname, anim, frame, false );
 			} else if ( dynamic_cast<idRenderModelPrt*>( model ) || dynamic_cast<idRenderModelLiquid*>( model ) ) {
 				fixedBounds = true;
 			}

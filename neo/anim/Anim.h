@@ -52,6 +52,7 @@ ID_INLINE int FRAME2MS( int framenum ) {
 }
 
 class idRenderModel;
+class idRenderWorld;
 class idAnimator;
 class idAnimatorHandle;
 class idAnimatorLocal;
@@ -59,6 +60,7 @@ class idAnimBlend;
 class idAnimManager;
 class idAnimNotify;
 class idDeclModelDef;
+class idDeclSkin;
 
 typedef struct {
 	int		cycleCount;	// how many times the anim has wrapped to the begining (0 for clamped anims)
@@ -539,6 +541,8 @@ public:
 	virtual void				Shutdown( void ) = 0;
 	virtual idMD5Anim *			GetAnim( const char *name ) = 0;
 	virtual idAnimator *			AllocAnimator( void *owner ) = 0;
+	virtual void				CreateAnimFrame( const idRenderModel *model, const idMD5Anim *anim, int numJoints, idJointMat *joints, int time, const idVec3 &offset, bool removeOriginOffset ) = 0;
+	virtual idRenderModel *		CreateMeshForAnim( idRenderWorld *renderWorld, idRenderModel *model, const idMD5Anim *anim, int frame, const idVec3 &offset, const idDeclSkin *skin, bool removeOriginOffset ) = 0;
 	virtual void				ReloadAnims( void ) = 0;
 	virtual void				ListAnims( void ) const = 0;
 	virtual int					JointIndex( const char *name ) = 0;

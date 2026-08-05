@@ -125,6 +125,7 @@ private:
 	idBrushList				brushList;		// list with brushes for this node
 	idBrushBSPNode *		parent;			// parent of this node
 	idBrushBSPNode *		children[2];	// both are NULL if this is a leaf node
+	idBrushBSPNode *		mergeInto;		// deferred leaf merge representative
 	idBrushBSPPortal *		portals;		// portals of this node
 	int						flags;			// node flags
 	int						areaNum;		// number of the area created for this node
@@ -159,6 +160,8 @@ public:
 	void					MergePortals( int skipContents );
 							// try to merge the two leaf nodes at either side of the portal
 	bool					TryMergeLeafNodes( idBrushBSPPortal *portal, int side );
+	idBrushBSPNode *		ResolveMergedLeaf( idBrushBSPNode *node ) const;
+	void					CanonicalizeMergedLeafNodes( void );
 	void					PruneMergedTree_r( idBrushBSPNode *node );
 							// melt portal windings
 	void					MeltPortals( int skipContents );
@@ -187,6 +190,7 @@ private:
 	idVec3					leakOrigin;
 	int						brushMapContents;
 	idBrushMap *			brushMap;
+	idList<idBrushBSPNode *>	mergedLeafNodes;
 
 	bool					(*BrushChopAllowed)( idBrush *b1, idBrush *b2 );
 	bool					(*BrushMergeAllowed)( idBrush *b1, idBrush *b2 );
@@ -202,6 +206,7 @@ private:
 	idBrushBSPNode *		BuildBrushBSP_r( idBrushBSPNode *node, const idPlaneSet &planeList, bool *testedPlanes, int skipContents );
 	idBrushBSPNode *		ProcessGridCell( idBrushBSPNode *node, int skipContents );
 	void					BuildGrid_r( idList<idBrushBSPNode *> &gridCells, idBrushBSPNode *node );
+	bool					CollapseEqualLeafNodes_r( idBrushBSPNode *node );
 	void					PruneTree_r( idBrushBSPNode *node, int contents );
 	void					MakeOutsidePortals( void );
 	idWinding *				BaseWindingForNode( idBrushBSPNode *node );
@@ -216,7 +221,7 @@ private:
 	void					SetPortalPlanes( void );
 	void					MergePortals_r( idBrushBSPNode *node, int skipContents );
 	void					MergeLeafNodePortals( idBrushBSPNode *node, int skipContents );
-	void					UpdateTreeAfterMerge_r( idBrushBSPNode *node, const idBounds &bounds, idBrushBSPNode *oldNode, idBrushBSPNode *newNode );
+	void					CanonicalizeMergedLeafNodes_r( idBrushBSPNode *node );
 	void					RemoveLeafNodeColinearPoints( idBrushBSPNode *node );
 	void					RemoveColinearPoints_r( idBrushBSPNode *node, int skipContents );
 	void					MeltFlood_r( idBrushBSPNode *node, int skipContents, idBounds &bounds, idVectorSet<idVec3,3> &vertexList );

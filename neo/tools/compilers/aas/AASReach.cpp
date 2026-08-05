@@ -33,6 +33,7 @@ GNU General Public License for more details.
 #define INSIDEUNITS_SWIMEND					0.5f
 #define INSIDEUNITS_FLYEND					0.5f
 #define INSIDEUNITS_WATERJUMP				15.0f
+#define REACHABILITY_GRID_SIZE				512.0f
 
 
 /*
@@ -869,7 +870,14 @@ idAASReach::Build
 ================
 */
 bool idAASReach::Build( const idMapFile *mapFile, idAASFileLocal *file ) {
-	int i, j, lastPercent, percent;
+	int i, j, x, y, lastPercent, percent;
+	int minX, minY, maxX, maxY;
+	int gridEntry, candidateAreaNum;
+	long long candidatePairs = 0;
+	idHashIndex areaGrid( 16384, file->areas.Num() * 4 );
+	idList<int> gridAreas;
+	idList<int> areaStamps;
+	idList<int> candidates;
 
 	this->mapFile = mapFile;
 	this->file = file;
@@ -892,6 +900,29 @@ bool idAASReach::Build( const idMapFile *mapFile, idAASFileLocal *file ) {
 		Reachability_EqualFloorHeight( i );
 	}
 
+	// Index walkable areas into every 2D cell touched by their bounds. The old
+	// all-pairs loop spent almost all of its time rejecting areas whose XY bounds
+	// could never touch, which becomes prohibitive on large outdoor maps.
+	gridAreas.SetGranularity( file->areas.Num() );
+	areaStamps.SetNum( file->areas.Num() );
+	memset( areaStamps.Ptr(), 0, areaStamps.MemoryUsed() );
+	for ( i = 1; i < file->areas.Num(); i++ ) {
+		const aasArea_t &area = file->areas[i];
+		if ( !( area.flags & AREA_REACHABLE_WALK ) ) {
+			continue;
+		}
+		minX = (int) idMath::Floor( area.bounds[0][0] / REACHABILITY_GRID_SIZE );
+		minY = (int) idMath::Floor( area.bounds[0][1] / REACHABILITY_GRID_SIZE );
+		maxX = (int) idMath::Floor( area.bounds[1][0] / REACHABILITY_GRID_SIZE );
+		maxY = (int) idMath::Floor( area.bounds[1][1] / REACHABILITY_GRID_SIZE );
+		for ( y = minY; y <= maxY; y++ ) {
+			for ( x = minX; x <= maxX; x++ ) {
+				gridEntry = gridAreas.Append( i );
+				areaGrid.Add( ( x * 73856093 ) ^ ( y * 19349663 ), gridEntry );
+			}
+		}
+	}
+
 	lastPercent = -1;
 	for ( i = 1; i < file->areas.Num(); i++ ) {
 
@@ -899,19 +930,33 @@ bool idAASReach::Build( const idMapFile *mapFile, idAASFileLocal *file ) {
 			continue;
 		}
 
-		for ( j = 0; j < file->areas.Num(); j++ ) {
-			if ( i == j ) {
-				continue;
+		candidates.Clear();
+		minX = (int) idMath::Floor( ( file->areas[i].bounds[0][0] - 2.0f ) / REACHABILITY_GRID_SIZE );
+		minY = (int) idMath::Floor( ( file->areas[i].bounds[0][1] - 2.0f ) / REACHABILITY_GRID_SIZE );
+		maxX = (int) idMath::Floor( ( file->areas[i].bounds[1][0] + 2.0f ) / REACHABILITY_GRID_SIZE );
+		maxY = (int) idMath::Floor( ( file->areas[i].bounds[1][1] + 2.0f ) / REACHABILITY_GRID_SIZE );
+		for ( y = minY; y <= maxY; y++ ) {
+			for ( x = minX; x <= maxX; x++ ) {
+				for ( gridEntry = areaGrid.First( ( x * 73856093 ) ^ ( y * 19349663 ) );
+					  gridEntry != -1; gridEntry = areaGrid.Next( gridEntry ) ) {
+					candidateAreaNum = gridAreas[gridEntry];
+					if ( candidateAreaNum != i && areaStamps[candidateAreaNum] != i ) {
+						areaStamps[candidateAreaNum] = i;
+						candidates.Append( candidateAreaNum );
+					}
+				}
 			}
+		}
+		candidates.Sort();
 
-			if ( !( file->areas[j].flags & AREA_REACHABLE_WALK ) ) {
-				continue;
-			}
+		for ( j = 0; j < candidates.Num(); j++ ) {
+			candidateAreaNum = candidates[j];
+			candidatePairs++;
 
-			if ( ReachabilityExists( i, j ) ) {
+			if ( ReachabilityExists( i, candidateAreaNum ) ) {
 				continue;
 			}
-			if ( Reachability_Step_Barrier_WaterJump_WalkOffLedge( i, j ) ) {
+			if ( Reachability_Step_Barrier_WaterJump_WalkOffLedge( i, candidateAreaNum ) ) {
 				continue;
 			}
 		}
@@ -934,6 +979,7 @@ bool idAASReach::Build( const idMapFile *mapFile, idAASFileLocal *file ) {
 	file->LinkReversedReachability();
 
 	common->Printf( "\r%6d reachabilities\n", numReachabilities );
+	common->Printf( "%6lld spatial candidate pairs tested\n", candidatePairs );
 
 	return true;
 }

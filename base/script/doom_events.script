@@ -26,6 +26,8 @@
    |  |  |  |- idAFEntity_Gibbable
    |  |  |  |  |- idActor
    |  |  |  |  |  |- idAI
+   |  |  |  |  |  |  |- idAI_DNFBase
+   |  |  |  |  |  |  |  +- idAI_LizTroop
    |  |  |  |  |  |  +- idAI_Vagary
    |  |  |  |  |  +- idPlayer
    |  |  |  |  |- idAFEntity_Generic
@@ -496,6 +498,24 @@ scriptEvent void stopEmitter( string name );
 
 /*
 ================================================
+	idAI_DNFBase
+================================================
+*/
+
+scriptEvent float dnfChooseAction();
+scriptEvent float dnfGetBurstCount();
+scriptEvent float dnfGetBurstInterval();
+scriptEvent void dnfFireProjectile();
+scriptEvent void dnfMeleeAttack();
+scriptEvent void dnfBeginFlight();
+scriptEvent void dnfEndFlight();
+scriptEvent float dnfIsFlying();
+scriptEvent float dnfTeleport();
+scriptEvent void dnfSetCloaked( float enable );
+scriptEvent float dnfIsCloaked();
+
+/*
+================================================
 	idAI_Vagary
 ================================================
 */
@@ -839,6 +859,6 @@ scriptEvent float influenceActive();
 #endif // __DOOM_EVENTS_SCRIPT__
 
 //@doomscript-blueprint begin 6
-//@source 18A2B6C4
-//@catalog 35DCC8D1
+//@source AAAA3CBB
+//@catalog 31F387D7
 //@doomscript-blueprint end

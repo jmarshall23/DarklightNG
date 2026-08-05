@@ -30,6 +30,8 @@ instancing of objects.
 #pragma hdrstop
 
 #include "../Game_local.h"
+#include "../ai/AI_DNFBase.h"
+#include "../ai/AI_LizTroop.h"
 #include "../ai/AI_Vagary.h"
 
 #include "TypeInfo.h"

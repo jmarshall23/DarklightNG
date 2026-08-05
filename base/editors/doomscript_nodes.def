@@ -46,6 +46,17 @@ node	event:AI_ClearFlyOffset	Clear Fly Offset	AI	clearFlyOffset	object	eventCall
 node	event:AI_ClosestEnemyToPoint	Closest Enemy To Point	Actor	closestEnemyToPoint	object	eventCall	entity	0	idActor	idActor::Event_ClosestEnemyToPoint	Actor.h:348	vector:pos	0	0		
 node	event:AI_ClosestReachableEnemyOfEntity	Closest Reachable Enemy Of Entity	AI	closestReachableEnemyOfEntity	object	eventCall	entity	0	idAI	idAI::Event_ClosestReachableEnemyOfEntity	ai/AI.h:559	entity:team_mate	0	0		
 node	event:AI_CreateMissile	Create Missile	AI	createMissile	object	eventCall	entity	0	idAI	idAI::Event_CreateMissile	ai/AI.h:569	string:jointname	0	0		
+node	event:AI_DNFBase_BeginFlight	Dnf Begin Flight	AI_DNFBase	dnfBeginFlight	object	eventCall	void	0	idAI_DNFBase	idAI_DNFBase::Event_BeginFlight	ai/AI_DNFBase.h:107		0	0		
+node	event:AI_DNFBase_ChooseAction	Dnf Choose Action	AI_DNFBase	dnfChooseAction	object	eventCall	float	0	idAI_DNFBase	idAI_DNFBase::Event_ChooseAction	ai/AI_DNFBase.h:97		0	0		
+node	event:AI_DNFBase_EndFlight	Dnf End Flight	AI_DNFBase	dnfEndFlight	object	eventCall	void	0	idAI_DNFBase	idAI_DNFBase::Event_EndFlight	ai/AI_DNFBase.h:109		0	0		
+node	event:AI_DNFBase_FireProjectile	Dnf Fire Projectile	AI_DNFBase	dnfFireProjectile	object	eventCall	void	0	idAI_DNFBase	idAI_DNFBase::Event_FireProjectile	ai/AI_DNFBase.h:103		0	0		
+node	event:AI_DNFBase_GetBurstCount	Dnf Get Burst Count	AI_DNFBase	dnfGetBurstCount	object	eventCall	float	0	idAI_DNFBase	idAI_DNFBase::Event_GetBurstCount	ai/AI_DNFBase.h:99		0	0		
+node	event:AI_DNFBase_GetBurstInterval	Dnf Get Burst Interval	AI_DNFBase	dnfGetBurstInterval	object	eventCall	float	0	idAI_DNFBase	idAI_DNFBase::Event_GetBurstInterval	ai/AI_DNFBase.h:101		0	0		
+node	event:AI_DNFBase_IsCloaked	Dnf Is Cloaked	AI_DNFBase	dnfIsCloaked	object	eventCall	float	0	idAI_DNFBase	idAI_DNFBase::Event_IsCloaked	ai/AI_DNFBase.h:117		0	0		
+node	event:AI_DNFBase_IsFlying	Dnf Is Flying	AI_DNFBase	dnfIsFlying	object	eventCall	float	0	idAI_DNFBase	idAI_DNFBase::Event_IsFlying	ai/AI_DNFBase.h:111		0	0		
+node	event:AI_DNFBase_MeleeAttack	Dnf Melee Attack	AI_DNFBase	dnfMeleeAttack	object	eventCall	void	0	idAI_DNFBase	idAI_DNFBase::Event_MeleeAttack	ai/AI_DNFBase.h:105		0	0		
+node	event:AI_DNFBase_SetCloaked	Dnf Set Cloaked	AI_DNFBase	dnfSetCloaked	object	eventCall	void	0	idAI_DNFBase	idAI_DNFBase::Event_SetCloaked	ai/AI_DNFBase.h:115	float:enable	0	0		
+node	event:AI_DNFBase_Teleport	Dnf Teleport	AI_DNFBase	dnfTeleport	object	eventCall	float	0	idAI_DNFBase	idAI_DNFBase::Event_Teleport	ai/AI_DNFBase.h:113		0	0		
 node	event:AI_DirectDamage	Direct Damage	AI	directDamage	object	eventCall	void	0	idAI	idAI::Event_DirectDamage	ai/AI.h:581	entity:damageTarget,string:damageDefName	0	0		
 node	event:AI_DisableAFPush	Disable AFPush	AI	disableAFPush	object	eventCall	void	0	idAI	idAI::Event_DisableAFPush	ai/AI.h:739		0	0		
 node	event:AI_DisableClip	Disable Clip	AI	disableClip	object	eventCall	void	0	idAI	idAI::Event_DisableClip	ai/AI.h:731		0	0		

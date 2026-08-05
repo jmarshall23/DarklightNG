@@ -110,13 +110,109 @@ void idAASBuild::ParseProcNodes( idLexer *src ) {
 
 /*
 ================
+idAASBuild::ParseProcModel
+
+Terrain render geometry is inlined into the proc area's model surfaces. Import
+only the material belonging to an explicit megaTextureTerrain map entity and
+represent each triangle the same way AAS already represents map patches.
+================
+*/
+void idAASBuild::ParseProcModel( idLexer *src, const idStrList &terrainMaterials, idBrushList *terrainBrushes ) {
+	idToken modelName, materialName;
+	idList<idVec3> vertices;
+	idList<int> indexes;
+	float vertexData[10];
+	int numSurfaces, surfaceNum, numVerts, numIndexes;
+	int i, materialNum, importedTriangles = 0;
+
+	src->ExpectTokenString( "{" );
+	src->ReadToken( &modelName );
+	numSurfaces = src->ParseInt();
+
+	for ( surfaceNum = 0; surfaceNum < numSurfaces; surfaceNum++ ) {
+		src->ExpectTokenString( "{" );
+		src->ReadToken( &materialName );
+		src->ParseInt(); // lightmap atlas
+		numVerts = src->ParseInt();
+		numIndexes = src->ParseInt();
+
+		materialNum = -1;
+		for ( i = 0; i < terrainMaterials.Num(); i++ ) {
+			if ( !materialName.Icmp( terrainMaterials[i] ) ) {
+				materialNum = i;
+				break;
+			}
+		}
+
+		vertices.SetNum( materialNum >= 0 ? numVerts : 0, false );
+		for ( i = 0; i < numVerts; i++ ) {
+			src->Parse1DMatrix( 10, vertexData );
+			if ( materialNum >= 0 ) {
+				vertices[i].Set( vertexData[0], vertexData[1], vertexData[2] );
+			}
+		}
+
+		indexes.SetNum( materialNum >= 0 ? numIndexes : 0, false );
+		for ( i = 0; i < numIndexes; i++ ) {
+			const int index = src->ParseInt();
+			if ( materialNum >= 0 ) {
+				indexes[i] = index;
+			}
+		}
+
+		if ( materialNum >= 0 && terrainBrushes ) {
+			for ( i = 0; i + 2 < numIndexes; i += 3 ) {
+				idFixedWinding winding;
+				idPlane plane;
+				idBrush *brush;
+				const int i0 = indexes[i+0];
+				const int i1 = indexes[i+1];
+				const int i2 = indexes[i+2];
+				if ( i0 < 0 || i0 >= numVerts || i1 < 0 || i1 >= numVerts || i2 < 0 || i2 >= numVerts ) {
+					continue;
+				}
+				plane.SetNormal( ( vertices[i1] - vertices[i0] ).Cross( vertices[i2] - vertices[i0] ) );
+				if ( plane.Normalize() == 0.0f ) {
+					continue;
+				}
+				plane.FitThroughPoint( vertices[i0] );
+				winding += vertices[i0];
+				winding += vertices[i1];
+				winding += vertices[i2];
+
+				brush = new idBrush();
+				brush->SetContents( AREACONTENTS_SOLID );
+				if ( brush->FromWinding( winding, plane ) ) {
+					brush->SetEntityNum( -1 );
+					brush->SetPrimitiveNum( surfaceNum );
+					brush->SetFlag( BFL_PATCH );
+					terrainBrushes->AddToTail( brush );
+					importedTriangles++;
+				}
+				else {
+					delete brush;
+				}
+			}
+		}
+		src->ExpectTokenString( "}" );
+	}
+	src->ExpectTokenString( "}" );
+
+	if ( importedTriangles ) {
+		common->Printf( "%6d terrain triangles imported from proc model %s\n", importedTriangles, modelName.c_str() );
+	}
+}
+
+/*
+================
 idAASBuild::LoadProcBSP
 ================
 */
-bool idAASBuild::LoadProcBSP( const char *name, ID_TIME_T minFileTime ) {
+bool idAASBuild::LoadProcBSP( const char *name, ID_TIME_T minFileTime, const idStrList &terrainMaterials, idBrushList *terrainBrushes ) {
 	idStr fileName;
 	idToken token;
 	idLexer *src;
+	bool currentProcFormat;
 
 	// load it
 	fileName = name;
@@ -139,6 +235,7 @@ bool idAASBuild::LoadProcBSP( const char *name, ID_TIME_T minFileTime ) {
 		delete src;
 		return false;
 	}
+	currentProcFormat = !token.Icmp( PROC_FILE_ID );
 
 	// parse the file
 	while ( 1 ) {
@@ -147,7 +244,12 @@ bool idAASBuild::LoadProcBSP( const char *name, ID_TIME_T minFileTime ) {
 		}
 
 		if ( token == "model" ) {
-			src->SkipBracedSection();
+			if ( currentProcFormat && terrainMaterials.Num() && terrainBrushes ) {
+				ParseProcModel( src, terrainMaterials, terrainBrushes );
+			}
+			else {
+				src->SkipBracedSection();
+			}
 			continue;
 		}
 
@@ -631,7 +733,7 @@ idAASBuild::Build
 ============
 */
 bool idAASBuild::Build( const idStr &fileName, const idAASSettings *settings ) {
-	int i, bit, mask, startTime;
+	int i, bit, mask, startTime, stageTime;
 	idMapFile * mapFile;
 	idBrushList brushList;
 	idList<idBrushList*> expandedBrushes;
@@ -641,6 +743,7 @@ bool idAASBuild::Build( const idStr &fileName, const idAASSettings *settings ) {
 	idAASReach reach;
 	idAASCluster cluster;
 	idStrList entityClassNames;
+	idStrList terrainMaterials;
 
 	startTime = Sys_Milliseconds();
 
@@ -666,6 +769,7 @@ bool idAASBuild::Build( const idStr &fileName, const idAASSettings *settings ) {
 	}
 
 	// load map file brushes
+	stageTime = Sys_Milliseconds();
 	brushList = AddBrushesForMapFile( mapFile, brushList );
 
 	// if empty map
@@ -678,8 +782,23 @@ bool idAASBuild::Build( const idStr &fileName, const idAASSettings *settings ) {
 	// merge as many brushes as possible before expansion
 	brushList.Merge( MergeAllowed );
 
+	// Terrain entities are baked into the proc area's render model rather than
+	// stored as map primitives. Derive their proc material names from the model
+	// identity so only explicit terrain geometry is imported below.
+	for ( i = 1; i < mapFile->GetNumEntities(); i++ ) {
+		const idMapEntity *mapEntity = mapFile->GetEntity( i );
+		if ( mapEntity->epairs.GetBool( "megaTextureTerrain", "0" ) ) {
+			idStr terrainMaterial = mapEntity->epairs.GetString( "model", "" );
+			terrainMaterial.StripPath();
+			terrainMaterial.StripFileExtension();
+			if ( terrainMaterial.Length() ) {
+				terrainMaterials.AddUnique( "megatextures/" + terrainMaterial );
+			}
+		}
+	}
+
 	// if there is a .proc file newer than the .map file
-	if ( LoadProcBSP( fileName, mapFile->GetFileTime() ) ) {
+	if ( LoadProcBSP( fileName, mapFile->GetFileTime(), terrainMaterials, &brushList ) ) {
 		ClipBrushSidesWithProcBSP( brushList );
 		DeleteProcBSP();
 	}
@@ -706,18 +825,22 @@ bool idAASBuild::Build( const idStr &fileName, const idAASSettings *settings ) {
 		brushList.AddToTail( *expandedBrushes[i] );
 		delete expandedBrushes[i];
 	}
+	common->Printf( "[AAS Timing] geometry preparation: %d ms\n", Sys_Milliseconds() - stageTime );
 
 	if ( aasSettings->writeBrushMap ) {
 		bsp.WriteBrushMap( fileName, "_" + aasSettings->fileExtension, AREACONTENTS_SOLID );
 	}
 
 	// build BSP tree from brushes
+	stageTime = Sys_Milliseconds();
 	bsp.Build( brushList, AREACONTENTS_SOLID, ExpandedChopAllowed, ExpandedMergeAllowed );
+	common->Printf( "[AAS Timing] brush BSP: %d ms\n", Sys_Milliseconds() - stageTime );
 
 	// only solid nodes with all bits set for all bounding boxes need to stay solid
 	ChangeMultipleBoundingBoxContents_r( bsp.GetRootNode(), mask );
 
 	// portalize the bsp tree
+	stageTime = Sys_Milliseconds();
 	bsp.Portalize();
 
 	// remove subspaces not reachable by entities
@@ -743,8 +866,10 @@ bool idAASBuild::Build( const idStr &fileName, const idAASSettings *settings ) {
 
 	// ledge subdivisions
 	LedgeSubdivision( bsp );
+	common->Printf( "[AAS Timing] portal/outside/subdivision: %d ms\n", Sys_Milliseconds() - stageTime );
 
 	// merge leaf nodes
+	stageTime = Sys_Milliseconds();
 	MergeLeafNodes( bsp );
 
 	// merge portals where possible
@@ -752,18 +877,26 @@ bool idAASBuild::Build( const idStr &fileName, const idAASSettings *settings ) {
 
 	// melt portal windings
 	bsp.MeltPortals( AREACONTENTS_SOLID );
+	common->Printf( "[AAS Timing] leaf/portal merge: %d ms\n", Sys_Milliseconds() - stageTime );
 
 	// store the file from the bsp tree
+	stageTime = Sys_Milliseconds();
 	StoreFile( bsp );
 	file->settings = *aasSettings;
+	common->Printf( "[AAS Timing] store file: %d ms\n", Sys_Milliseconds() - stageTime );
 
 	// calculate reachability
+	stageTime = Sys_Milliseconds();
 	reach.Build( mapFile, file );
+	common->Printf( "[AAS Timing] reachability: %d ms\n", Sys_Milliseconds() - stageTime );
 
 	// build clusters
+	stageTime = Sys_Milliseconds();
 	cluster.Build( file );
+	common->Printf( "[AAS Timing] clustering: %d ms\n", Sys_Milliseconds() - stageTime );
 
 	// optimize the file
+	stageTime = Sys_Milliseconds();
 	if ( !aasSettings->noOptimize ) {
 		file->Optimize();
 	}
@@ -771,6 +904,7 @@ bool idAASBuild::Build( const idStr &fileName, const idAASSettings *settings ) {
 	// write the file
 	name.SetFileExtension( aasSettings->fileExtension );
 	file->Write( name, mapFile->GetGeometryCRC() );
+	common->Printf( "[AAS Timing] optimize/write: %d ms\n", Sys_Milliseconds() - stageTime );
 
 	// delete the map file
 	delete mapFile;

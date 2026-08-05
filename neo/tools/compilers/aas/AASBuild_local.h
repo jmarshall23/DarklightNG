@@ -88,7 +88,8 @@ private:
 
 private:	// map loading
 	void					ParseProcNodes( idLexer *src );
-	bool					LoadProcBSP( const char *name, ID_TIME_T minFileTime );
+	void					ParseProcModel( idLexer *src, const idStrList &terrainMaterials, idBrushList *terrainBrushes );
+	bool					LoadProcBSP( const char *name, ID_TIME_T minFileTime, const idStrList &terrainMaterials, idBrushList *terrainBrushes );
 	void					DeleteProcBSP( void );
 	bool					ChoppedAwayByProcBSP( int nodeNum, idFixedWinding *w, const idVec3 &normal, const idVec3 &origin, const float radius );
 	void					ClipBrushSidesWithProcBSP( idBrushList &brushList );

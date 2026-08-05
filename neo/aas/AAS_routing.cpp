@@ -28,9 +28,59 @@ GNU General Public License for more details.
 #define CACHETYPE_AREA				1
 #define CACHETYPE_PORTAL			2
 
-#define MAX_ROUTING_CACHE_MEMORY	(2*1024*1024)
-
 #define LEDGE_TRAVELTIME_PANALTY	250
+
+static idCVar aas_routingCacheMB(
+	"aas_routingCacheMB", "32", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE,
+	"maximum AAS routing cache memory in megabytes", 2, 512 );
+
+typedef struct routingHeapEntry_s {
+	int					areaNum;
+	int					clusterAreaNum;
+	unsigned int			travelTime;
+	idReachability *		routeReach;
+} routingHeapEntry_t;
+
+static void RoutingHeapPush( idList<routingHeapEntry_t> &heap, const routingHeapEntry_t &entry ) {
+	int child = heap.Append( entry );
+	while ( child > 0 ) {
+		const int parent = ( child - 1 ) >> 1;
+		if ( heap[parent].travelTime <= heap[child].travelTime ) {
+			break;
+		}
+		const routingHeapEntry_t swap = heap[parent];
+		heap[parent] = heap[child];
+		heap[child] = swap;
+		child = parent;
+	}
+}
+
+static routingHeapEntry_t RoutingHeapPop( idList<routingHeapEntry_t> &heap ) {
+	const routingHeapEntry_t result = heap[0];
+	const routingHeapEntry_t tail = heap[heap.Num()-1];
+	heap.SetNum( heap.Num() - 1, false );
+	if ( heap.Num() ) {
+		int parent = 0;
+		heap[0] = tail;
+		while ( true ) {
+			int child = parent * 2 + 1;
+			if ( child >= heap.Num() ) {
+				break;
+			}
+			if ( child + 1 < heap.Num() && heap[child+1].travelTime < heap[child].travelTime ) {
+				child++;
+			}
+			if ( heap[parent].travelTime <= heap[child].travelTime ) {
+				break;
+			}
+			const routingHeapEntry_t swap = heap[parent];
+			heap[parent] = heap[child];
+			heap[child] = swap;
+			parent = child;
+		}
+	}
+	return result;
+}
 
 /*
 ============
@@ -46,7 +96,7 @@ idRoutingCache::idRoutingCache( int size ) {
 	startTravelTime = 0;
 	type = 0;
 	this->size = size;
-	reachabilities = new byte[size];
+	reachabilities = new unsigned short[size];
 	memset( reachabilities, 0, size * sizeof( reachabilities[0] ) );
 	travelTimes = new unsigned short[size];
 	memset( travelTimes, 0, size * sizeof( travelTimes[0] ) );
@@ -100,32 +150,15 @@ idAASLocal::CalculateAreaTravelTimes
 ============
 */
 void idAASLocal::CalculateAreaTravelTimes(void) {
-	int n, i, j, numReach, numRevReach, t, maxt;
-	byte *bytePtr;
-	idReachability *reach, *rev_reach;
+	int n, i, maxt;
+	idReachability *reach;
 
-	// get total memory for all area travel times
+	// The original runtime precomputed every incoming/outgoing reachability
+	// combination for each area. Outdoor areas can have hundreds of boundary
+	// faces, making that setup quadratic in both time and memory. Routing now
+	// computes the one required intra-area distance while expanding an edge.
 	numAreaTravelTimes = 0;
-	for ( n = 0; n < file->GetNumAreas(); n++ ) {
-
-		if ( !(file->GetArea( n ).flags & (AREA_REACHABLE_WALK|AREA_REACHABLE_FLY)) ) {
-			continue;
-		}
-
-		numReach = 0;
-		for ( reach = file->GetArea( n ).reach; reach; reach = reach->next ) {
-			numReach++;
-		}
-
-		numRevReach = 0;
-		for ( rev_reach = file->GetArea( n ).rev_reach; rev_reach; rev_reach = rev_reach->rev_next ) {
-			numRevReach++;
-		}
-		numAreaTravelTimes += numReach * numRevReach;
-	}
-
-	areaTravelTimes = (unsigned short *) Mem_Alloc( numAreaTravelTimes * sizeof( unsigned short ) );
-	bytePtr = (byte *) areaTravelTimes;
+	areaTravelTimes = NULL;
 
 	for ( n = 0; n < file->GetNumAreas(); n++ ) {
 
@@ -133,34 +166,21 @@ void idAASLocal::CalculateAreaTravelTimes(void) {
 			continue;
 		}
 
-		// for each reachability that starts in this area calculate the travel time
-		// towards all the reachabilities that lead towards this area
-		for ( maxt = i = 0, reach = file->GetArea( n ).reach; reach; reach = reach->next, i++ ) {
-			assert( i < MAX_REACH_PER_AREA );
-			if ( i >= MAX_REACH_PER_AREA ) {
-				common->Error( "i >= MAX_REACH_PER_AREA" );
+		for ( i = 0, reach = file->GetArea( n ).reach; reach; reach = reach->next, i++ ) {
+			if ( i >= 65536 ) {
+				common->Error( "area %d has more than 65535 reachabilities", n );
 			}
-			reach->number = i;
+			reach->number = (unsigned short)i;
 			reach->disableCount = 0;
-			reach->areaTravelTimes = (unsigned short *) bytePtr;
-			for ( j = 0, rev_reach = file->GetArea( n ).rev_reach; rev_reach; rev_reach = rev_reach->rev_next, j++ ) {
-				t = AreaTravelTime( n, reach->start, rev_reach->end );
-				reach->areaTravelTimes[j] = t;
-				if ( t > maxt ) {
-					maxt = t;
-				}
-			}
-			bytePtr += j * sizeof( unsigned short );
+			reach->areaTravelTimes = NULL;
 		}
 
 		// if this area is a portal
 		if ( file->GetArea( n ).cluster < 0 ) {
-			// set the maximum travel time through this portal
+			maxt = AreaTravelTime( n, file->GetArea( n ).bounds[0], file->GetArea( n ).bounds[1] );
 			file->SetPortalMaxTravelTime( -file->GetArea( n ).cluster, maxt );
 		}
 	}
-
-	assert( ( (unsigned int) bytePtr - (unsigned int) areaTravelTimes ) <= numAreaTravelTimes * sizeof( unsigned short ) );
 }
 
 /*
@@ -169,7 +189,9 @@ idAASLocal::DeleteAreaTravelTimes
 ============
 */
 void idAASLocal::DeleteAreaTravelTimes( void ) {
-	Mem_Free( areaTravelTimes );
+	if ( areaTravelTimes ) {
+		Mem_Free( areaTravelTimes );
+	}
 	areaTravelTimes = NULL;
 	numAreaTravelTimes = 0;
 }
@@ -310,10 +332,10 @@ void idAASLocal::RoutingStats( void ) const {
 	for ( cache = cacheListStart; cache; cache = cache->time_next ) {
 		if ( cache->type == CACHETYPE_AREA ) {
 			numAreaCache++;
-			totalAreaCacheMemory += sizeof( idRoutingCache ) + cache->size * (sizeof( unsigned short ) + sizeof( byte ));
+			totalAreaCacheMemory += sizeof( idRoutingCache ) + cache->size * (sizeof( unsigned short ) + sizeof( unsigned short ));
 		} else {
 			numPortalCache++;
-			totalPortalCacheMemory += sizeof( idRoutingCache ) + cache->size * (sizeof( unsigned short ) + sizeof( byte ));
+			totalPortalCacheMemory += sizeof( idRoutingCache ) + cache->size * (sizeof( unsigned short ) + sizeof( unsigned short ));
 		}
 	}
 
@@ -450,7 +472,7 @@ void idAASLocal::GetBoundsAreas_r( int nodeNum, const idBounds &bounds, idList<i
 
 	while( nodeNum != 0 ) {
 		if ( nodeNum < 0 ) {
-			areas.Append( -nodeNum );
+			areas.AddUnique( -nodeNum );
 			break;
 		}
 		node = &file->GetNode( nodeNum );
@@ -474,20 +496,21 @@ idAASLocal::SetObstacleState
 ============
 */
 void idAASLocal::SetObstacleState( const idRoutingObstacle *obstacle, bool enable ) {
-	int i;
+	int i, clusterNum;
 	const aasArea_t *area;
 	idReachability *reach, *rev_reach;
-	bool inside;
+	bool inside, routingChanged;
+	idList<int> changedClusters;
 
 	for ( i = 0; i < obstacle->areas.Num(); i++ ) {
-
-		RemoveRoutingCacheUsingArea( obstacle->areas[i] );
-
 		area = &file->GetArea( obstacle->areas[i] );
+		routingChanged = false;
 
 		for ( rev_reach = area->rev_reach; rev_reach; rev_reach = rev_reach->rev_next ) {
 
-			if ( rev_reach->travelType & TFL_INVALID ) {
+			// An invalid reachability with no obstacle reference is statically
+			// invalid and must not be enabled when an obstacle is removed.
+			if ( ( rev_reach->travelType & TFL_INVALID ) && rev_reach->disableCount == 0 ) {
 				continue;
 			}
 
@@ -507,18 +530,45 @@ void idAASLocal::SetObstacleState( const idRoutingObstacle *obstacle, bool enabl
 
 			if ( inside ) {
 				if ( enable ) {
-					rev_reach->disableCount--;
-					if ( rev_reach->disableCount <= 0 ) {
+					if ( rev_reach->disableCount > 0 ) {
+						rev_reach->disableCount--;
+					}
+					if ( rev_reach->disableCount == 0 ) {
 						rev_reach->travelType &= ~TFL_INVALID;
-						rev_reach->disableCount = 0;
+						routingChanged = true;
 					}
 				}
 				else {
+					if ( rev_reach->disableCount == 0 ) {
+						routingChanged = true;
+					}
 					rev_reach->travelType |= TFL_INVALID;
-					rev_reach->disableCount++;
+					if ( rev_reach->disableCount < 255 ) {
+						rev_reach->disableCount++;
+					}
 				}
 			}
 		}
+
+		if ( routingChanged ) {
+			clusterNum = area->cluster;
+			if ( clusterNum > 0 ) {
+				changedClusters.AddUnique( clusterNum );
+			}
+			else {
+				changedClusters.AddUnique( file->GetPortal( -clusterNum ).clusters[0] );
+				changedClusters.AddUnique( file->GetPortal( -clusterNum ).clusters[1] );
+			}
+		}
+	}
+
+	// Invalidate each affected cluster once and the global portal cache once.
+	// The previous per-area invalidation repeatedly destroyed the same caches.
+	for ( i = 0; i < changedClusters.Num(); i++ ) {
+		DeleteClusterCache( changedClusters[i] );
+	}
+	if ( changedClusters.Num() ) {
+		DeletePortalCache();
 	}
 }
 
@@ -538,7 +588,7 @@ aasHandle_t idAASLocal::AddObstacle( const idBounds &bounds ) {
 	obstacle->bounds[0] = bounds[0] - file->GetSettings().boundingBoxes[0][1];
 	obstacle->bounds[1] = bounds[1] - file->GetSettings().boundingBoxes[0][0];
 	GetBoundsAreas_r( 1, obstacle->bounds, obstacle->areas );
-	SetObstacleState( obstacle, true );
+	SetObstacleState( obstacle, false );
 
 	obstacleList.Append( obstacle );
 	return obstacleList.Num() - 1;
@@ -554,7 +604,7 @@ void idAASLocal::RemoveObstacle( const aasHandle_t handle ) {
 		return;
 	}
 	if ( ( handle >= 0 ) && ( handle < obstacleList.Num() ) ) {
-		SetObstacleState( obstacleList[handle], false );
+		SetObstacleState( obstacleList[handle], true );
 
 		delete obstacleList[handle];
 		obstacleList.RemoveIndex( handle );
@@ -574,7 +624,7 @@ void idAASLocal::RemoveAllObstacles( void ) {
 	}
 
 	for ( i = 0; i < obstacleList.Num(); i++ ) {
-		SetObstacleState( obstacleList[i], false );
+		SetObstacleState( obstacleList[i], true );
 		delete obstacleList[i];
 	}
 	obstacleList.Clear();
@@ -702,11 +752,13 @@ idAASLocal::UpdateAreaRoutingCache
 ============
 */
 void idAASLocal::UpdateAreaRoutingCache( idRoutingCache *areaCache ) const {
-	int i, nextAreaNum, cluster, badTravelFlags, clusterAreaNum, numReachableAreas;
-	unsigned short t, startAreaTravelTimes[MAX_REACH_PER_AREA];
-	idRoutingUpdate *updateListStart, *updateListEnd, *curUpdate, *nextUpdate;
+	int nextAreaNum, cluster, badTravelFlags, clusterAreaNum, numReachableAreas;
+	unsigned int t, propagationTime;
 	idReachability *reach;
 	const aasArea_t *nextArea;
+	idList<unsigned int> bestTravelTimes;
+	idList<routingHeapEntry_t> heap;
+	routingHeapEntry_t curUpdate, nextUpdate;
 
 	// number of reachability areas within this cluster
 	numReachableAreas = file->GetCluster( areaCache->cluster ).numReachableAreas;
@@ -719,33 +771,25 @@ void idAASLocal::UpdateAreaRoutingCache( idRoutingCache *areaCache ) const {
 
 	areaCache->travelTimes[clusterAreaNum] = areaCache->startTravelTime;
 	badTravelFlags = ~areaCache->travelFlags;
-	memset( startAreaTravelTimes, 0, sizeof( startAreaTravelTimes ) );
+	bestTravelTimes.SetNum( areaCache->size );
+	memset( bestTravelTimes.Ptr(), 0, bestTravelTimes.MemoryUsed() );
+	bestTravelTimes[clusterAreaNum] = areaCache->startTravelTime;
 
-	// initialize first update
-	curUpdate = &areaUpdate[clusterAreaNum];
-	curUpdate->areaNum = areaCache->areaNum;
-	curUpdate->areaTravelTimes = startAreaTravelTimes;
-	curUpdate->tmpTravelTime = areaCache->startTravelTime;
-	curUpdate->next = NULL;
-	curUpdate->prev = NULL;
-	updateListStart = curUpdate;
-	updateListEnd = curUpdate;
+	curUpdate.areaNum = areaCache->areaNum;
+	curUpdate.clusterAreaNum = clusterAreaNum;
+	curUpdate.routeReach = NULL;
+	curUpdate.travelTime = areaCache->startTravelTime;
+	RoutingHeapPush( heap, curUpdate );
 
-	// while there are updates in the list
-	while( updateListStart ) {
-
-		curUpdate = updateListStart;
-		if ( curUpdate->next ) {
-			curUpdate->next->prev = NULL;
+	// Dijkstra's algorithm avoids the repeated FIFO reprocessing of the old
+	// SPFA-style queue on large outdoor clusters.
+	while ( heap.Num() ) {
+		curUpdate = RoutingHeapPop( heap );
+		if ( bestTravelTimes[curUpdate.clusterAreaNum] != curUpdate.travelTime ) {
+			continue;
 		}
-		else {
-			updateListEnd = NULL;
-		}
-		updateListStart = curUpdate->next;
 
-		curUpdate->isInList = false;
-
-		for ( i = 0, reach = file->GetArea( curUpdate->areaNum ).rev_reach; reach; reach = reach->rev_next, i++ ) {
+		for ( reach = file->GetArea( curUpdate.areaNum ).rev_reach; reach; reach = reach->rev_next ) {
 
 			// if the reachability uses an undesired travel type
 			if ( reach->travelType & badTravelFlags ) {
@@ -778,37 +822,27 @@ void idAASLocal::UpdateAreaRoutingCache( idRoutingCache *areaCache ) const {
 
 			// time already travelled plus the traveltime through the current area
 			// plus the travel time of the reachability towards the next area
-			t = curUpdate->tmpTravelTime + curUpdate->areaTravelTimes[i] + reach->travelTime;
+			t = curUpdate.travelTime + reach->travelTime;
+			if ( curUpdate.routeReach ) {
+				t += AreaTravelTime( curUpdate.areaNum, curUpdate.routeReach->start, reach->end );
+			}
+			propagationTime = t;
+			if ( badTravelFlags & TFL_FLY ) {
+				if ( file->GetArea( nextAreaNum ).flags & AREA_LEDGE ) {
+					propagationTime += LEDGE_TRAVELTIME_PANALTY;
+				}
+			}
 
-			if ( !areaCache->travelTimes[clusterAreaNum] || t < areaCache->travelTimes[clusterAreaNum] ) {
+			if ( !bestTravelTimes[clusterAreaNum] || propagationTime < bestTravelTimes[clusterAreaNum] ) {
 
-				areaCache->travelTimes[clusterAreaNum] = t;
+				areaCache->travelTimes[clusterAreaNum] = (unsigned short)( t < 65535 ? t : 65535 );
 				areaCache->reachabilities[clusterAreaNum] = reach->number; // reversed reachability used to get into this area
-				nextUpdate = &areaUpdate[clusterAreaNum];
-				nextUpdate->areaNum = nextAreaNum;
-				nextUpdate->tmpTravelTime = t;
-				nextUpdate->areaTravelTimes = reach->areaTravelTimes;
-
-				// if we are not allowed to fly
-				if ( badTravelFlags & TFL_FLY ) {
-					// avoid areas near ledges
-					if ( file->GetArea( nextAreaNum ).flags & AREA_LEDGE ) {
-						nextUpdate->tmpTravelTime += LEDGE_TRAVELTIME_PANALTY;
-					}
-				}
-
-				if ( !nextUpdate->isInList ) {
-					nextUpdate->next = NULL;
-					nextUpdate->prev = updateListEnd;
-					if ( updateListEnd ) {
-						updateListEnd->next = nextUpdate;
-					}
-					else {
-						updateListStart = nextUpdate;
-					}
-					updateListEnd = nextUpdate;
-					nextUpdate->isInList = true;
-				}
+				bestTravelTimes[clusterAreaNum] = propagationTime;
+				nextUpdate.areaNum = nextAreaNum;
+				nextUpdate.clusterAreaNum = clusterAreaNum;
+				nextUpdate.travelTime = propagationTime;
+				nextUpdate.routeReach = reach;
+				RoutingHeapPush( heap, nextUpdate );
 			}
 		}
 	}
@@ -1012,7 +1046,7 @@ bool idAASLocal::RouteToGoalArea( int areaNum, const idVec3 origin, int goalArea
 		return false;
 	}
 
-	while( totalCacheMemory > MAX_ROUTING_CACHE_MEMORY ) {
+	while( totalCacheMemory > aas_routingCacheMB.GetInteger() * 1024 * 1024 && cacheListStart ) {
 		DeleteOldestCache();
 	}
 

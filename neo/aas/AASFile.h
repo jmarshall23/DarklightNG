@@ -93,7 +93,7 @@ public:
 	idVec3						end;				// end point of inter area movement
 	int							edgeNum;			// edge crossed by this reachability
 	unsigned short				travelTime;			// travel time of the inter area movement
-	byte						number;				// reachability number within the fromAreaNum (must be < 256)
+	unsigned short				number;				// reachability number within the fromAreaNum
 	byte						disableCount;		// number of times this reachability has been disabled
 	idReachability *			next;				// next reachability in list
 	idReachability *			rev_next;			// next reachability in reversed list

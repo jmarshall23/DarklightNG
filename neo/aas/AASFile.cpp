@@ -1263,7 +1263,7 @@ void idAASFileLocal::ReportRoutingEfficiency( void ) const {
 
 	common->Printf( "%6d reachable areas\n", numReachableAreas );
 	common->Printf( "%6d reachabilities\n", NumReachabilities() );
-	common->Printf( "%6d KB max routing cache\n", ( total * 3 ) >> 10 );
+	common->Printf( "%6d KB max routing cache\n", ( total * 4 ) >> 10 );
 }
 
 /*

@@ -1,0 +1,333 @@
+/***********************************************************************
+
+	ai_monster_liztroop.script
+
+	Animation/state glue for the native idAI_DNFBase/idAI_LizTroop logic.
+
+***********************************************************************/
+
+object monster_liztroop : monster_base {
+	void	init();
+	void	state_Begin();
+	void	state_Idle();
+
+	float	check_attacks();
+	void	do_attack( float attack_flags );
+	void	combat_range();
+	void	combat_melee();
+	void	combat_takeoff();
+	void	combat_land();
+	void	combat_teleport();
+	void	combat_cloak();
+
+	void	Torso_Idle();
+	void	Torso_Pain();
+	void	Torso_RangeAttack();
+	void	Torso_MeleeAttack();
+	void	Torso_Takeoff();
+	void	Torso_Land();
+	void	Torso_Teleport();
+	void	Torso_Cloak();
+	void	Torso_Death();
+
+	void	Legs_Idle();
+	void	Legs_Walk();
+	void	Legs_Run();
+	void	Legs_Fly();
+	void	Legs_Death();
+};
+
+void monster_liztroop::Torso_Idle() {
+	if ( dnfIsFlying() ) {
+		idleAnim( ANIMCHANNEL_TORSO, "jet_idle" );
+	} else if ( dnfIsCloaked() ) {
+		idleAnim( ANIMCHANNEL_TORSO, "cloak_idle" );
+	} else {
+		idleAnim( ANIMCHANNEL_TORSO, "idle" );
+	}
+
+	eachFrame {
+		if ( AI_PAIN ) { animState( ANIMCHANNEL_TORSO, "Torso_Pain", 2 ); }
+	}
+}
+
+void monster_liztroop::Torso_Pain() {
+	overrideAnim( ANIMCHANNEL_LEGS );
+	playAnim( ANIMCHANNEL_TORSO, "pain" );
+	while ( !animDone( ANIMCHANNEL_TORSO, 3 ) ) {
+		waitFrame();
+	}
+	finishAction( "pain" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+}
+
+void monster_liztroop::Torso_RangeAttack() {
+	float shots;
+	float interval;
+	string animName;
+
+	allowMovement( false );
+	disablePain();
+	faceEnemy();
+	overrideAnim( ANIMCHANNEL_LEGS );
+
+	shots = dnfGetBurstCount();
+	interval = dnfGetBurstInterval();
+	if ( dnfIsFlying() ) {
+		animName = "jet_fire";
+	} else {
+		animName = "fire";
+	}
+	playAnim( ANIMCHANNEL_TORSO, animName );
+	sys.wait( 0.18 );
+
+	while ( shots > 0 ) {
+		dnfFireProjectile();
+		shots--;
+		if ( shots > 0 ) {
+			sys.wait( interval );
+		}
+	}
+
+	while ( !animDone( ANIMCHANNEL_TORSO, 3 ) ) {
+		lookAtEnemy( 1 );
+		waitFrame();
+	}
+
+	enablePain();
+	allowMovement( true );
+	finishAction( "range_attack" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+}
+
+void monster_liztroop::Torso_MeleeAttack() {
+	allowMovement( false );
+	disablePain();
+	faceEnemy();
+	overrideAnim( ANIMCHANNEL_LEGS );
+	playAnim( ANIMCHANNEL_TORSO, "melee_attack" );
+	sys.wait( 0.5 );
+	dnfMeleeAttack();
+	while ( !animDone( ANIMCHANNEL_TORSO, 3 ) ) {
+		waitFrame();
+	}
+	enablePain();
+	allowMovement( true );
+	finishAction( "melee_attack" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+}
+
+void monster_liztroop::Torso_Takeoff() {
+	allowMovement( false );
+	disablePain();
+	overrideAnim( ANIMCHANNEL_LEGS );
+	playAnim( ANIMCHANNEL_TORSO, "takeoff" );
+	while ( !animDone( ANIMCHANNEL_TORSO, 2 ) ) {
+		waitFrame();
+	}
+	dnfBeginFlight();
+	enablePain();
+	allowMovement( true );
+	finishAction( "takeoff" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 2 );
+}
+
+void monster_liztroop::Torso_Land() {
+	allowMovement( false );
+	disablePain();
+	overrideAnim( ANIMCHANNEL_LEGS );
+	dnfEndFlight();
+	playAnim( ANIMCHANNEL_TORSO, "landing" );
+	while ( !animDone( ANIMCHANNEL_TORSO, 2 ) ) {
+		waitFrame();
+	}
+	enablePain();
+	allowMovement( true );
+	finishAction( "land" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 2 );
+}
+
+void monster_liztroop::Torso_Teleport() {
+	allowMovement( false );
+	disablePain();
+	overrideAnim( ANIMCHANNEL_LEGS );
+	playAnim( ANIMCHANNEL_TORSO, "teleport_out" );
+	sys.wait( 0.3 );
+	dnfTeleport();
+	playAnim( ANIMCHANNEL_TORSO, "teleport_in" );
+	while ( !animDone( ANIMCHANNEL_TORSO, 3 ) ) {
+		waitFrame();
+	}
+	enablePain();
+	allowMovement( true );
+	finishAction( "teleport" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+}
+
+void monster_liztroop::Torso_Cloak() {
+	allowMovement( false );
+	disablePain();
+	overrideAnim( ANIMCHANNEL_LEGS );
+	if ( dnfIsCloaked() ) {
+		playAnim( ANIMCHANNEL_TORSO, "cloak_stop" );
+		sys.wait( 0.15 );
+		dnfSetCloaked( false );
+	} else {
+		playAnim( ANIMCHANNEL_TORSO, "cloak_start" );
+		sys.wait( 0.15 );
+		dnfSetCloaked( true );
+	}
+	while ( !animDone( ANIMCHANNEL_TORSO, 3 ) ) {
+		waitFrame();
+	}
+	enablePain();
+	allowMovement( true );
+	finishAction( "cloak" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+}
+
+void monster_liztroop::Torso_Death() {
+	allowMovement( false );
+	overrideAnim( ANIMCHANNEL_LEGS );
+	playAnim( ANIMCHANNEL_TORSO, "death" );
+	while ( !animDone( ANIMCHANNEL_TORSO, 0 ) ) {
+		waitFrame();
+	}
+	finishAction( "dead" );
+}
+
+void monster_liztroop::Legs_Idle() {
+	if ( dnfIsFlying() ) {
+		idleAnim( ANIMCHANNEL_LEGS, "jet_idle" );
+	} else {
+		idleAnim( ANIMCHANNEL_LEGS, "idle" );
+	}
+
+	eachFrame {
+		if ( dnfIsFlying() && AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Fly", 2 ); }
+		if ( !dnfIsFlying() && run && AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Run", 2 ); }
+		if ( !dnfIsFlying() && AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Walk", 2 ); }
+	}
+}
+
+void monster_liztroop::Legs_Walk() {
+	setFlySpeed( 120 );
+	playCycle( ANIMCHANNEL_LEGS, "walk" );
+	eachFrame {
+		if ( dnfIsFlying() ) { animState( ANIMCHANNEL_LEGS, "Legs_Fly", 2 ); }
+		if ( run && AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Run", 2 ); }
+		if ( !AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Idle", 2 ); }
+	}
+}
+
+void monster_liztroop::Legs_Run() {
+	setFlySpeed( 280 );
+	playCycle( ANIMCHANNEL_LEGS, "run" );
+	eachFrame {
+		if ( dnfIsFlying() ) { animState( ANIMCHANNEL_LEGS, "Legs_Fly", 2 ); }
+		if ( !run && AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Walk", 2 ); }
+		if ( !AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Idle", 2 ); }
+	}
+}
+
+void monster_liztroop::Legs_Fly() {
+	playCycle( ANIMCHANNEL_LEGS, "jet_forward" );
+	eachFrame {
+		if ( !dnfIsFlying() ) { animState( ANIMCHANNEL_LEGS, "Legs_Idle", 2 ); }
+		if ( !AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Idle", 2 ); }
+	}
+}
+
+void monster_liztroop::Legs_Death() {
+}
+
+void monster_liztroop::init() {
+	run_distance = 240;
+	walk_turn = 70;
+	setState( "state_Begin" );
+}
+
+void monster_liztroop::state_Begin() {
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 0 );
+	animState( ANIMCHANNEL_LEGS, "Legs_Idle", 0 );
+	monster_begin();
+	setMoveType( MOVETYPE_SLIDE );
+	setState( "state_Idle" );
+}
+
+void monster_liztroop::state_Idle() {
+	wait_for_enemy();
+	setState( "state_Combat" );
+}
+
+float monster_liztroop::check_attacks() {
+	return dnfChooseAction();
+}
+
+void monster_liztroop::do_attack( float attack_flags ) {
+	if ( attack_flags & ATTACK_SPECIAL4 ) {
+		combat_cloak();
+	} else if ( attack_flags & ATTACK_SPECIAL3 ) {
+		combat_teleport();
+	} else if ( attack_flags & ATTACK_SPECIAL2 ) {
+		combat_land();
+	} else if ( attack_flags & ATTACK_SPECIAL1 ) {
+		combat_takeoff();
+	} else if ( attack_flags & ATTACK_MELEE ) {
+		combat_melee();
+	} else if ( attack_flags & ATTACK_MISSILE ) {
+		combat_range();
+	}
+}
+
+void monster_liztroop::combat_range() {
+	faceEnemy();
+	animState( ANIMCHANNEL_TORSO, "Torso_RangeAttack", 2 );
+	waitAction( "range_attack" );
+	moveToEnemy();
+}
+
+void monster_liztroop::combat_melee() {
+	lookAtEnemy( 2 );
+	faceEnemy();
+	animState( ANIMCHANNEL_TORSO, "Torso_MeleeAttack", 2 );
+	waitAction( "melee_attack" );
+	lookAtEnemy( 1 );
+	moveToEnemy();
+}
+
+void monster_liztroop::combat_takeoff() {
+	stopMove();
+	faceEnemy();
+	animState( ANIMCHANNEL_TORSO, "Torso_Takeoff", 2 );
+	waitAction( "takeoff" );
+	animState( ANIMCHANNEL_LEGS, "Legs_Idle", 2 );
+	moveToEnemy();
+}
+
+void monster_liztroop::combat_land() {
+	stopMove();
+	faceEnemy();
+	animState( ANIMCHANNEL_TORSO, "Torso_Land", 2 );
+	waitAction( "land" );
+	animState( ANIMCHANNEL_LEGS, "Legs_Idle", 2 );
+	moveToEnemy();
+}
+
+void monster_liztroop::combat_teleport() {
+	stopMove();
+	faceEnemy();
+	animState( ANIMCHANNEL_TORSO, "Torso_Teleport", 2 );
+	waitAction( "teleport" );
+	animState( ANIMCHANNEL_LEGS, "Legs_Idle", 2 );
+	moveToEnemy();
+}
+
+void monster_liztroop::combat_cloak() {
+	stopMove();
+	faceEnemy();
+	animState( ANIMCHANNEL_TORSO, "Torso_Cloak", 2 );
+	waitAction( "cloak" );
+	animState( ANIMCHANNEL_LEGS, "Legs_Idle", 2 );
+	moveToEnemy();
+}

@@ -114,6 +114,7 @@ idAASBuild::MergeLeafNodes_r
 ============
 */
 void idAASBuild::MergeLeafNodes_r( idBrushBSP &bsp, idBrushBSPNode *node ) {
+	node = bsp.ResolveMergedLeaf( node );
 
 	if ( !node ) {
 		return;
@@ -150,6 +151,7 @@ void idAASBuild::MergeLeafNodes( idBrushBSP &bsp ) {
 	common->Printf( "[Merge Leaf Nodes]\n" );
 
 	MergeLeafNodes_r( bsp, bsp.GetRootNode() );
+	bsp.CanonicalizeMergedLeafNodes();
 	bsp.GetRootNode()->RemoveFlagRecurse( NODE_DONE );
 	bsp.PruneMergedTree_r( bsp.GetRootNode() );
 

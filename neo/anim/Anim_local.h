@@ -144,6 +144,8 @@ public:
 	virtual void				Shutdown( void );
 	virtual idMD5Anim *			GetAnim( const char *name );
 	virtual idAnimator *			AllocAnimator( void *owner );
+	virtual void				CreateAnimFrame( const idRenderModel *model, const idMD5Anim *anim, int numJoints, idJointMat *joints, int time, const idVec3 &offset, bool removeOriginOffset );
+	virtual idRenderModel *		CreateMeshForAnim( idRenderWorld *renderWorld, idRenderModel *model, const idMD5Anim *anim, int frame, const idVec3 &offset, const idDeclSkin *skin, bool removeOriginOffset );
 	virtual void				ReloadAnims( void );
 	virtual void				ListAnims( void ) const;
 	virtual int					JointIndex( const char *name );

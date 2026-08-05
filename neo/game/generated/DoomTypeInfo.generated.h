@@ -214,6 +214,18 @@ extern const idEventDef AI_StartEmitter;
 extern const idEventDef AI_GetEmitter;
 extern const idEventDef AI_StopEmitter;
 extern const idEventDef EV_CombatNode_MarkUsed;
+// ai/AI_DNFBase.h
+extern const idEventDef AI_DNFBase_ChooseAction;
+extern const idEventDef AI_DNFBase_GetBurstCount;
+extern const idEventDef AI_DNFBase_GetBurstInterval;
+extern const idEventDef AI_DNFBase_FireProjectile;
+extern const idEventDef AI_DNFBase_MeleeAttack;
+extern const idEventDef AI_DNFBase_BeginFlight;
+extern const idEventDef AI_DNFBase_EndFlight;
+extern const idEventDef AI_DNFBase_IsFlying;
+extern const idEventDef AI_DNFBase_Teleport;
+extern const idEventDef AI_DNFBase_SetCloaked;
+extern const idEventDef AI_DNFBase_IsCloaked;
 // ai/AI_Vagary.h
 extern const idEventDef AI_Vagary_ChooseObjectToThrow;
 extern const idEventDef AI_Vagary_ThrowObjectAtEnemy;
@@ -791,6 +803,18 @@ const idEventDef AI_StartEmitter( "startEmitter", "sss", 'e' );
 const idEventDef AI_GetEmitter( "getEmitter", "s", 'e' );
 const idEventDef AI_StopEmitter( "stopEmitter", "s" );
 const idEventDef EV_CombatNode_MarkUsed( "markUsed" );
+// ai/AI_DNFBase.h
+const idEventDef AI_DNFBase_ChooseAction( "dnfChooseAction", NULL, 'd' );
+const idEventDef AI_DNFBase_GetBurstCount( "dnfGetBurstCount", NULL, 'd' );
+const idEventDef AI_DNFBase_GetBurstInterval( "dnfGetBurstInterval", NULL, 'f' );
+const idEventDef AI_DNFBase_FireProjectile( "dnfFireProjectile" );
+const idEventDef AI_DNFBase_MeleeAttack( "dnfMeleeAttack" );
+const idEventDef AI_DNFBase_BeginFlight( "dnfBeginFlight" );
+const idEventDef AI_DNFBase_EndFlight( "dnfEndFlight" );
+const idEventDef AI_DNFBase_IsFlying( "dnfIsFlying", NULL, 'd' );
+const idEventDef AI_DNFBase_Teleport( "dnfTeleport", NULL, 'd' );
+const idEventDef AI_DNFBase_SetCloaked( "dnfSetCloaked", "d" );
+const idEventDef AI_DNFBase_IsCloaked( "dnfIsCloaked", NULL, 'd' );
 // ai/AI_Vagary.h
 const idEventDef AI_Vagary_ChooseObjectToThrow( "vagary_ChooseObjectToThrow", "vvfff", 'e' );
 const idEventDef AI_Vagary_ThrowObjectAtEnemy( "vagary_ThrowObjectAtEnemy", "ef" );
@@ -1423,6 +1447,25 @@ END_CLASS
 CLASS_DECLARATION( idEntity, idCombatNode )
 	EVENT( EV_Activate, idCombatNode::Event_Activate )
 	EVENT( EV_CombatNode_MarkUsed, idCombatNode::Event_MarkUsed )
+END_CLASS
+
+// ai/AI_DNFBase.h
+CLASS_DECLARATION( idAI, idAI_DNFBase )
+	EVENT( AI_DNFBase_ChooseAction, idAI_DNFBase::Event_ChooseAction )
+	EVENT( AI_DNFBase_GetBurstCount, idAI_DNFBase::Event_GetBurstCount )
+	EVENT( AI_DNFBase_GetBurstInterval, idAI_DNFBase::Event_GetBurstInterval )
+	EVENT( AI_DNFBase_FireProjectile, idAI_DNFBase::Event_FireProjectile )
+	EVENT( AI_DNFBase_MeleeAttack, idAI_DNFBase::Event_MeleeAttack )
+	EVENT( AI_DNFBase_BeginFlight, idAI_DNFBase::Event_BeginFlight )
+	EVENT( AI_DNFBase_EndFlight, idAI_DNFBase::Event_EndFlight )
+	EVENT( AI_DNFBase_IsFlying, idAI_DNFBase::Event_IsFlying )
+	EVENT( AI_DNFBase_Teleport, idAI_DNFBase::Event_Teleport )
+	EVENT( AI_DNFBase_SetCloaked, idAI_DNFBase::Event_SetCloaked )
+	EVENT( AI_DNFBase_IsCloaked, idAI_DNFBase::Event_IsCloaked )
+END_CLASS
+
+// ai/AI_LizTroop.h
+CLASS_DECLARATION( idAI_DNFBase, idAI_LizTroop )
 END_CLASS
 
 // ai/AI_Vagary.h

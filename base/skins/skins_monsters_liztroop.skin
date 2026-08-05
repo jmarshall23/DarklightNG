@@ -1,0 +1,4 @@
+skin skins/monsters/liztroop/cloaked {
+	models/characters/assaulttrooper/mt_skins8.Assault_Trooper.Assault_Trooper_Cloth_D.png	models/monsters/liztroop/cloak
+	models/characters/assaulttrooper/mt_skins8.Assault_Trooper.Assault_Trooper_Metal_D.png	models/monsters/liztroop/cloak
+}

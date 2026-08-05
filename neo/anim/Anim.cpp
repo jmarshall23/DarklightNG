@@ -954,6 +954,82 @@ idAnimator *idAnimManagerLocal::AllocAnimator( void *owner ) {
 
 /*
 ====================
+idAnimManagerLocal::CreateAnimFrame
+====================
+*/
+void idAnimManagerLocal::CreateAnimFrame( const idRenderModel *model, const idMD5Anim *anim, int numJoints, idJointMat *joints, int time, const idVec3 &offset, bool removeOriginOffset ) {
+	if ( !model || model->IsDefaultModel() || !anim ) {
+		return;
+	}
+	if ( numJoints != model->NumJoints() ) {
+		common->Error( "CreateAnimFrame: different # of joints in render entity than in model (%s)", model->Name() );
+	}
+	if ( numJoints <= 0 ) {
+		return;
+	}
+	if ( !joints ) {
+		common->Error( "CreateAnimFrame: NULL joint frame pointer on model (%s)", model->Name() );
+	}
+	if ( numJoints != anim->NumJoints() ) {
+		common->Warning( "Model '%s' has different # of joints than anim '%s'", model->Name(), anim->Name() );
+		for ( int i = 0; i < numJoints; i++ ) {
+			joints[ i ].SetRotation( mat3_identity );
+			joints[ i ].SetTranslation( offset );
+		}
+		return;
+	}
+
+	int *indexes = static_cast<int *>( _alloca16( numJoints * sizeof( int ) ) );
+	for ( int i = 0; i < numJoints; i++ ) {
+		indexes[ i ] = i;
+	}
+	frameBlend_t frame;
+	anim->ConvertTimeToFrame( time, 1, frame );
+	idJointQuat *jointFrame = static_cast<idJointQuat *>( _alloca16( numJoints * sizeof( idJointQuat ) ) );
+	anim->GetInterpolatedFrame( frame, jointFrame, indexes, numJoints );
+	SIMDProcessor->ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
+	joints[ 0 ].SetTranslation( removeOriginOffset ? offset : joints[ 0 ].ToVec3() + offset );
+
+	const idMD5Joint *modelJoints = model->GetJoints();
+	for ( int i = 1; i < numJoints; i++ ) {
+		joints[ i ] *= joints[ modelJoints[ i ].parent - modelJoints ];
+	}
+}
+
+/*
+====================
+idAnimManagerLocal::CreateMeshForAnim
+====================
+*/
+idRenderModel *idAnimManagerLocal::CreateMeshForAnim( idRenderWorld *renderWorld, idRenderModel *model, const idMD5Anim *anim, int frame, const idVec3 &offset, const idDeclSkin *skin, bool removeOriginOffset ) {
+	if ( !renderWorld || !model || model->IsDefaultModel() || !anim ) {
+		return NULL;
+	}
+
+	const int numJoints = model->NumJoints();
+	if ( numJoints <= 0 ) {
+		return NULL;
+	}
+
+	idRenderEntity *entity = renderWorld->AllocRenderEntity();
+	idBounds emptyBounds;
+	emptyBounds.Clear();
+	entity->SetBounds( emptyBounds );
+	entity->SetSuppressSurfaceInViewID( 0 );
+	entity->SetCustomSkin( skin );
+
+	idJointMat *joints = static_cast<idJointMat *>( Mem_Alloc16( numJoints * sizeof( idJointMat ) ) );
+	entity->SetJoints( numJoints, joints );
+	CreateAnimFrame( model, anim, numJoints, joints, FRAME2MS( frame ), offset, removeOriginOffset );
+	idRenderModel *newModel = model->InstantiateDynamicModel( entity, NULL, NULL );
+	entity->SetJoints( 0, NULL );
+	Mem_Free16( joints );
+	renderWorld->FreeRenderEntity( entity );
+	return newModel;
+}
+
+/*
+====================
 idAnimManagerLocal::GetAnim
 ====================
 */

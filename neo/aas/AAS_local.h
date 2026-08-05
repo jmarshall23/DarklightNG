@@ -46,7 +46,7 @@ private:
 	idRoutingCache *			time_next;				// next in time based list
 	idRoutingCache *			time_prev;				// previous in time based list
 	unsigned short				startTravelTime;		// travel time to start with
-	unsigned char *				reachabilities;			// reachabilities used for routing
+	unsigned short *				reachabilities;			// reachabilities used for routing
 	unsigned short *			travelTimes;			// travel time for every area
 };
 

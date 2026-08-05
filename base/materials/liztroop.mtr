@@ -1,0 +1,146 @@
+models/characters/assaulttrooper/mt_skins8.Assault_Trooper.Assault_Trooper_Cloth_D.png {
+	qer_editorimage models/md5/monsters/liztroop/body_cloth_d.tga
+	diffusemap models/md5/monsters/liztroop/body_cloth_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/characters/assaulttrooper/mt_skins8.Assault_Trooper.Assault_Trooper_Metal_D.png {
+	qer_editorimage models/md5/monsters/liztroop/body_metal_d.tga
+	diffusemap models/md5/monsters/liztroop/body_metal_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/weapons/at_gun/mt_skins8.Assault_Trooper.Assault_Trooper_Gun_D.png {
+	qer_editorimage models/md5/monsters/liztroop/weapons/grunt/gun_d.tga
+	diffusemap models/md5/monsters/liztroop/weapons/grunt/gun_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/weapons/at_capt_gun/mt_skins8.Assault_Trooper.AT_Capt_Gun_D.png {
+	qer_editorimage models/md5/monsters/liztroop/weapons/captain/gun_d.tga
+	diffusemap models/md5/monsters/liztroop/weapons/captain/gun_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+dnf/static/sm_armor/Assault_Trooper_Captain/AssCap_Hel_46ac1989 {
+	diffusemap models/md5/monsters/liztroop/armor/captain_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+dnf/static/sm_armor/Assault_Trooper_Captain/AssCap_Lef_4cca6ebc {
+	diffusemap models/md5/monsters/liztroop/armor/captain_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+dnf/static/sm_armor/Assault_Trooper_Captain/AssCap_Lef_c7ab058e {
+	diffusemap models/md5/monsters/liztroop/armor/metal_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+dnf/static/sm_armor/Assault_Trooper_Captain/AssCap_Lef_cfefef6f {
+	diffusemap models/md5/monsters/liztroop/armor/metal_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+dnf/static/sm_armor/Assault_Trooper_Captain/AssCap_Lef_02ecc087 {
+	diffusemap models/md5/monsters/liztroop/armor/metal_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+dnf/static/sm_armor/Assault_Trooper_Captain/AssCap_Rig_36bb6cf3 {
+	diffusemap models/md5/monsters/liztroop/armor/metal_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+dnf/static/sm_armor/Assault_Trooper_Captain/AssCap_Rig_e1aaf287 {
+	diffusemap models/md5/monsters/liztroop/armor/metal_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+dnf/static/sm_armor/Assault_Trooper_Captain/AssCap_Rig_fe92c9be {
+	diffusemap models/md5/monsters/liztroop/armor/metal_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_arm_gib_l/mt_skins8.Assault_Trooper.Assault_Trooper_Cloth_D.png {
+	diffusemap models/md5/monsters/liztroop/body_cloth_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_arm_gib_r/mt_skins8.Assault_Trooper.Assault_Trooper_Cloth_D.png {
+	diffusemap models/md5/monsters/liztroop/body_cloth_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_leg_gib_l/mt_skins8.Assault_Trooper.Assault_Trooper_Cloth_D.png {
+	diffusemap models/md5/monsters/liztroop/body_cloth_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_leg_gib_r/mt_skins8.Assault_Trooper.Assault_Trooper_Cloth_D.png {
+	diffusemap models/md5/monsters/liztroop/body_cloth_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_arm_gib_l/mt_skins8.PIGCOP.LimbStump_D.png {
+	diffusemap models/md5/monsters/liztroop/gibs/limb_stump_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_arm_gib_r/mt_skins8.PIGCOP.LimbStump_D.png {
+	diffusemap models/md5/monsters/liztroop/gibs/limb_stump_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_leg_gib_l/mt_skins8.PIGCOP.LimbStump_D.png {
+	diffusemap models/md5/monsters/liztroop/gibs/limb_stump_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_leg_gib_r/mt_skins8.PIGCOP.LimbStump_D.png {
+	diffusemap models/md5/monsters/liztroop/gibs/limb_stump_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_arm_gib_l/mt_skins8.PIGCOP.MeatShred_D.png {
+	diffusemap models/md5/monsters/liztroop/gibs/meat_shred_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/gibs/assaulttrooper_leg_gib_l/mt_skins8.PIGCOP.MeatShred_D.png {
+	diffusemap models/md5/monsters/liztroop/gibs/meat_shred_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/monsters/liztroop/cloak {
+	translucent
+	noShadows
+	sort nearest
+	{
+		blend add
+		map models/md5/monsters/liztroop/body_cloth_d.tga
+		rgb 0.12
+	}
+}

@@ -1,0 +1,301 @@
+/***********************************************************************
+
+	DNF assault trooper / liztroop
+
+***********************************************************************/
+
+model model_liztroop {
+	mesh						models/md5/monsters/liztroop/assaulttrooper.md5mesh
+
+	channel torso				( *spine )
+	channel legs				( *Root movement -*spine )
+
+	anim af_pose				models/md5/monsters/liztroop/anims/astr_a_combat_idle01.md5anim
+	anim ik_pose				models/md5/monsters/liztroop/anims/astr_a_combat_idle01.md5anim
+	anim idle					models/md5/monsters/liztroop/anims/astr_a_combat_idle01.md5anim
+	anim walk					models/md5/monsters/liztroop/anims/astr_a_combat_walk.md5anim
+	anim run					models/md5/monsters/liztroop/anims/astr_a_combat_run.md5anim
+	anim fire					models/md5/monsters/liztroop/anims/astr_a_combat_fire.md5anim
+	anim jet_idle				models/md5/monsters/liztroop/anims/astr_a_combat_jet_idle01.md5anim
+	anim jet_forward			models/md5/monsters/liztroop/anims/astr_a_combat_jet_forward.md5anim
+	anim jet_fire				models/md5/monsters/liztroop/anims/astr_a_combat_jet_fire.md5anim
+	anim takeoff				models/md5/monsters/liztroop/anims/astr_a_combat_jetpack_takeoff.md5anim
+	anim landing				models/md5/monsters/liztroop/anims/astr_a_combat_jetpack_landing.md5anim
+	anim melee_attack			models/md5/monsters/liztroop/anims/astr_a_combat_attack01.md5anim
+	anim pain					models/md5/monsters/liztroop/anims/pain_short_front.md5anim
+	anim teleport_out			models/md5/monsters/liztroop/anims/astr_a_combat_roar.md5anim
+	anim teleport_in			models/md5/monsters/liztroop/anims/astr_a_combat_flip.md5anim
+	anim cloak_start			models/md5/monsters/liztroop/anims/astr_a_combat_cloakstart.md5anim
+	anim cloak_stop				models/md5/monsters/liztroop/anims/astr_a_combat_cloakstop.md5anim
+	anim cloak_idle				models/md5/monsters/liztroop/anims/astr_a_combat_cloak_idle01.md5anim
+	anim death					models/md5/monsters/liztroop/anims/scr_a_splitdoor_death.md5anim
+}
+
+model model_liztroop_grunt_gun {
+	mesh						models/md5/monsters/liztroop/weapons/grunt/at_gun.md5mesh
+	anim idle					models/md5/monsters/liztroop/weapons/grunt/anims/idle.md5anim
+	anim fire					models/md5/monsters/liztroop/weapons/grunt/anims/fire.md5anim
+	anim activate				models/md5/monsters/liztroop/weapons/grunt/anims/activate.md5anim
+	anim deactivate			models/md5/monsters/liztroop/weapons/grunt/anims/deactivate.md5anim
+}
+
+model model_liztroop_captain_gun {
+	mesh						models/md5/monsters/liztroop/weapons/captain/at_capt_gun.md5mesh
+	anim idle					models/md5/monsters/liztroop/weapons/captain/anims/idle.md5anim
+	anim fire					models/md5/monsters/liztroop/weapons/captain/anims/fire.md5anim
+	anim fire_start			models/md5/monsters/liztroop/weapons/captain/anims/fire_start.md5anim
+	anim fire_stop				models/md5/monsters/liztroop/weapons/captain/anims/fire_stop.md5anim
+	anim activate				models/md5/monsters/liztroop/weapons/captain/anims/activate.md5anim
+	anim deactivate			models/md5/monsters/liztroop/weapons/captain/anims/deactivate.md5anim
+}
+
+entityDef liztroop_attachment_grunt_gun {
+	"spawnclass"					"idAnimated"
+	"model"						"model_liztroop_grunt_gun"
+	"joint"						"mount_carryitem"
+	"start_anim"					"idle"
+	"sound_bone"					"Root"
+	"remove"						"1"
+}
+
+entityDef liztroop_attachment_captain_gun {
+	"spawnclass"					"idAnimated"
+	"model"						"model_liztroop_captain_gun"
+	"joint"						"mount_carryitem"
+	"start_anim"					"idle"
+	"sound_bone"					"Root"
+	"remove"						"1"
+}
+
+entityDef liztroop_armor_helmet {
+	"spawnclass"					"idStaticEntity"
+	"model"						"models/md5/monsters/liztroop/armor/AssCap_Helmet.md3"
+	"joint"						"mount_armor_3"
+	"solid"						"0"
+	"remove"						"1"
+}
+
+entityDef liztroop_armor_left_forearm {
+	"spawnclass"					"idStaticEntity"
+	"model"						"models/md5/monsters/liztroop/armor/AssCap_LeftForearm.md3"
+	"joint"						"leftforearm"
+	"solid"						"0"
+	"remove"						"1"
+}
+
+entityDef liztroop_armor_left_shin {
+	"spawnclass"					"idStaticEntity"
+	"model"						"models/md5/monsters/liztroop/armor/AssCap_LeftShin.md3"
+	"joint"						"leftleg"
+	"solid"						"0"
+	"remove"						"1"
+}
+
+entityDef liztroop_armor_left_thigh {
+	"spawnclass"					"idStaticEntity"
+	"model"						"models/md5/monsters/liztroop/armor/AssCap_LeftThigh.md3"
+	"joint"						"mount_armor_5"
+	"solid"						"0"
+	"remove"						"1"
+}
+
+entityDef liztroop_armor_left_shoulder {
+	"spawnclass"					"idStaticEntity"
+	"model"						"models/md5/monsters/liztroop/armor/AssCap_LeftTopShoulder.md3"
+	"joint"						"mount_armor_9"
+	"solid"						"0"
+	"remove"						"1"
+}
+
+entityDef liztroop_armor_right_shin {
+	"spawnclass"					"idStaticEntity"
+	"model"						"models/md5/monsters/liztroop/armor/AssCap_RightShin.md3"
+	"joint"						"rightleg"
+	"solid"						"0"
+	"remove"						"1"
+}
+
+entityDef liztroop_armor_right_thigh {
+	"spawnclass"					"idStaticEntity"
+	"model"						"models/md5/monsters/liztroop/armor/AssCap_RightThigh.md3"
+	"joint"						"mount_armor_4"
+	"solid"						"0"
+	"remove"						"1"
+}
+
+entityDef liztroop_armor_right_shoulder {
+	"spawnclass"					"idStaticEntity"
+	"model"						"models/md5/monsters/liztroop/armor/AssCap_RightTopShoulder.md3"
+	"joint"						"mount_armor_2"
+	"solid"						"0"
+	"remove"						"1"
+}
+
+entityDef monster_liztroop_base {
+	"inherit"						"monster_default"
+	"spawnclass"					"idAI_LizTroop"
+	"model"						"model_liztroop"
+	"scriptobject"					"monster_liztroop"
+	"size"						"48 48 82"
+	"use_combat_bbox"				"1"
+	"use_aas"						"aas48"
+	"team"						"1"
+	"rank"						"1"
+	"health"						"55"
+	"mass"						"125"
+	"melee_range"					"58"
+	"def_melee"						"melee_liztroop_grunt"
+	"def_projectile"				"projectile_liztroop_bullet"
+	"attack_cone"					"70"
+	"attack_accuracy"				"4"
+	"turn_rate"						"270"
+	"fly_speed"						"280"
+	"fly_offset"					"72"
+	"fly_bob_strength"				"16"
+	"bone_focus"						"head"
+	"bone_orientation"				"Root"
+	"pain_delay"						"0.35"
+	"pain_threshold"					"8"
+	"skin_cloaked"					"skins/monsters/liztroop/cloaked"
+
+	"dnf_can_fly"					"1"
+	"dnf_ground_speed"				"280"
+	"dnf_air_speed"					"500"
+	"dnf_preferred_min_range"		"200"
+	"dnf_preferred_max_range"		"700"
+	"dnf_max_attack_range"			"1500"
+	"dnf_burst_min"					"3"
+	"dnf_burst_random"				"1"
+	"dnf_burst_interval"				"0.1"
+	"dnf_volley_delay"				"1.2"
+	"dnf_flight_chance"				"0.8"
+	"dnf_min_flight_time"			"1"
+	"dnf_land_chance"				"0.5"
+
+	"damage_zone head"				"*head"
+	"damage_zone chest"				"*spine -*leftarm -*rightarm"
+	"damage_zone left_arm"			"*leftarm"
+	"damage_zone right_arm"			"*rightarm"
+	"damage_zone legs"				"*leftupleg *rightupleg"
+	"damage_scale head"				"2"
+
+	"gib"							"1"
+	"def_dropGibItem1"				"moveable_item_liztroop_arm_l"
+	"dropGibItem1Joint"				"leftarm"
+	"def_dropGibItem2"				"moveable_item_liztroop_arm_r"
+	"dropGibItem2Joint"				"rightarm"
+	"def_dropGibItem3"				"moveable_item_liztroop_leg_l"
+	"dropGibItem3Joint"				"leftupleg"
+	"def_dropGibItem4"				"moveable_item_liztroop_leg_r"
+	"dropGibItem4Joint"				"rightupleg"
+
+	"mtr_flashShader"				"muzzleflash"
+	"flashTime"						"0.08"
+	"flashColor"					"1 0.72 0.32"
+	"flashRadius"					"100"
+}
+
+entityDef monster_liztroop_grunt {
+	"inherit"						"monster_liztroop_base"
+	"editor_displayFolder"			"Monsters/DNF"
+	"editor_usage"					"DNF assault trooper grunt"
+	"def_attach_weapon"				"liztroop_attachment_grunt_gun"
+}
+
+entityDef monster_liztroop {
+	"inherit"						"monster_liztroop_grunt"
+	"editor_displayFolder"			"Monsters/DNF"
+	"editor_usage"					"Alias for the DNF assault trooper grunt"
+}
+
+entityDef monster_liztroop_captain {
+	"inherit"						"monster_liztroop_base"
+	"editor_displayFolder"			"Monsters/DNF"
+	"editor_usage"					"DNF assault trooper captain with armor, teleport and cloak"
+	"rank"						"2"
+	"health"						"75"
+	"def_melee"						"melee_liztroop_captain"
+	"dnf_captain"					"1"
+	"dnf_can_teleport"				"1"
+	"dnf_teleport_chance"			"0.2"
+	"dnf_teleport_cooldown"			"5"
+	"dnf_teleport_min_range"		"250"
+	"dnf_teleport_max_range"		"1200"
+	"dnf_can_cloak"					"1"
+	"dnf_cloak_chance"				"0.2"
+	"dnf_cloak_duration"				"3"
+	"dnf_cloak_cooldown"				"8"
+	"def_attach_weapon"				"liztroop_attachment_captain_gun"
+	"def_attach_armor_helmet"		"liztroop_armor_helmet"
+	"def_attach_armor_left_forearm"	"liztroop_armor_left_forearm"
+	"def_attach_armor_left_shin"		"liztroop_armor_left_shin"
+	"def_attach_armor_left_thigh"		"liztroop_armor_left_thigh"
+	"def_attach_armor_left_shoulder"	"liztroop_armor_left_shoulder"
+	"def_attach_armor_right_shin"		"liztroop_armor_right_shin"
+	"def_attach_armor_right_thigh"		"liztroop_armor_right_thigh"
+	"def_attach_armor_right_shoulder"	"liztroop_armor_right_shoulder"
+}
+
+entityDef damage_liztroop_bullet {
+	"damage"						"5"
+	"kickDir"						"1 0 0"
+	"knockback"						"2"
+	"mtr_blob"						"genericDamage"
+	"blob_time"						"300"
+	"blob_size"						"400"
+	"blob_offset_x"					"400"
+	"smoke_wound_flesh"				"bloodwound.smoke"
+	"mtr_wound_flesh"				"textures/decals/hurt02"
+	"snd_flesh"						"bullet_impact_flesh"
+	"kick_time"						"200"
+	"kick_amplitude"					"1"
+}
+
+entityDef projectile_liztroop_bullet {
+	"inherit"						"projectile_bullet_zsec_machinegun"
+	"def_damage"						"damage_liztroop_bullet"
+	"cone"							"3"
+	"velocity"						"2400 0 0"
+}
+
+entityDef melee_liztroop_grunt {
+	"damage"						"20"
+	"kickDir"						"1 0 0"
+	"knockback"						"35"
+	"mtr_blob"						"genericDamage"
+	"blob_time"						"300"
+	"blob_size"						"400"
+	"kick_time"						"300"
+	"kick_amplitude"					"2"
+}
+
+entityDef melee_liztroop_captain {
+	"inherit"						"melee_liztroop_grunt"
+	"damage"						"35"
+	"knockback"						"50"
+}
+
+entityDef moveable_item_liztroop_arm_l {
+	"inherit"						"moveable_item_default"
+	"model"						"models/md5/monsters/liztroop/gibs/assaulttrooper_arm_gib_l/assaulttrooper_arm_gib_l.md5mesh"
+	"density"						"0.05"
+	"friction"						"0.2"
+	"bouncyness"						"0.1"
+	"smoke_trail"					"gibwound.prt"
+	"nopulse"						"1"
+}
+
+entityDef moveable_item_liztroop_arm_r {
+	"inherit"						"moveable_item_liztroop_arm_l"
+	"model"						"models/md5/monsters/liztroop/gibs/assaulttrooper_arm_gib_r/assaulttrooper_arm_gib_r.md5mesh"
+}
+
+entityDef moveable_item_liztroop_leg_l {
+	"inherit"						"moveable_item_liztroop_arm_l"
+	"model"						"models/md5/monsters/liztroop/gibs/assaulttrooper_leg_gib_l/assaulttrooper_leg_gib_l.md5mesh"
+}
+
+entityDef moveable_item_liztroop_leg_r {
+	"inherit"						"moveable_item_liztroop_arm_l"
+	"model"						"models/md5/monsters/liztroop/gibs/assaulttrooper_leg_gib_r/assaulttrooper_leg_gib_r.md5mesh"
+}

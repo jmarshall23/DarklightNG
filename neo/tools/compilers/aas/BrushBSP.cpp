@@ -28,6 +28,7 @@ GNU General Public License for more details.
 
 
 #define BSP_GRID_SIZE					512.0f
+#define BSP_GRID_MIN_BRUSHES			64
 #define SPLITTER_EPSILON				0.1f
 #define VERTEX_MELT_EPSILON				0.1f
 #define VERTEX_MELT_HASH_SIZE			32
@@ -214,6 +215,8 @@ idBrushBSPNode::idBrushBSPNode( void ) {
 	volume = NULL;
 	portals = NULL;
 	children[0] = children[1] = NULL;
+	parent = NULL;
+	mergeInto = NULL;
 	areaNum = 0;
 	occupied = 0;
 }
@@ -505,6 +508,7 @@ idBrushBSP::~idBrushBSP
 ============
 */
 idBrushBSP::~idBrushBSP( void ) {
+	CanonicalizeMergedLeafNodes();
 
 	RemoveMultipleLeafNodeReferences_r( root );
 	Free_r( root );
@@ -892,10 +896,11 @@ idBrushBSP::BuildGrid_r
 ============
 */
 void idBrushBSP::BuildGrid_r( idList<idBrushBSPNode *> &gridCells, idBrushBSPNode *node ) {
-	int axis;
-	float dist;
+	int axis, bestAxis, bestScore;
+	float dist, bestDist;
 	idBounds bounds;
-	idVec3 normal, halfSize;
+	idVec3 normal;
+	idBrush *brush;
 
 	if ( !node->brushList.Num() ) {
 		delete node->volume;
@@ -903,21 +908,67 @@ void idBrushBSP::BuildGrid_r( idList<idBrushBSPNode *> &gridCells, idBrushBSPNod
 		node->children[0] = node->children[1] = NULL;
 		return;
 	}
+	if ( node->brushList.Num() <= BSP_GRID_MIN_BRUSHES ) {
+		gridCells.Append( node );
+		return;
+	}
 
 	bounds = node->volume->GetBounds();
-	halfSize = (bounds[1] - bounds[0]) * 0.5f;
+	bestAxis = -1;
+	bestDist = 0.0f;
+	bestScore = INT_MAX;
+
+	// Only create a grid split when it actually partitions the brush workload.
+	// Large sealing brushes often span an entire outdoor map; splitting solely on
+	// world bounds duplicates those brushes into thousands of otherwise empty cells.
 	for ( axis = 0; axis < 3; axis++ ) {
-		if ( halfSize[axis] > BSP_GRID_SIZE ) {
-			dist = BSP_GRID_SIZE * ( floor( (bounds[0][axis] + halfSize[axis]) / BSP_GRID_SIZE ) + 1 );
+		int frontOnly = 0;
+		int backOnly = 0;
+		int spanning = 0;
+		int frontRefs, backRefs, score;
+		double centerSum = 0.0;
+
+		if ( bounds[1][axis] - bounds[0][axis] <= BSP_GRID_SIZE ) {
+			continue;
 		}
-		else {
-			dist = BSP_GRID_SIZE * ( floor( bounds[0][axis] / BSP_GRID_SIZE ) + 1 );
+		for ( brush = node->brushList.Head(); brush; brush = brush->Next() ) {
+			const idBounds &brushBounds = brush->GetBounds();
+			centerSum += ( brushBounds[0][axis] + brushBounds[1][axis] ) * 0.5;
 		}
-		if ( dist > bounds[0][axis] + 1.0f && dist < bounds[1][axis] - 1.0f ) {
-			break;
+		// Center the split on the actual workload. A terrain patch may occupy only
+		// a small part of a very large sealed world-volume cell.
+		dist = BSP_GRID_SIZE * floor( ( centerSum / node->brushList.Num() ) / BSP_GRID_SIZE + 0.5 );
+		if ( dist <= bounds[0][axis] + 1.0f || dist >= bounds[1][axis] - 1.0f ) {
+			continue;
+		}
+
+		for ( brush = node->brushList.Head(); brush; brush = brush->Next() ) {
+			const idBounds &brushBounds = brush->GetBounds();
+			if ( brushBounds[0][axis] >= dist - 0.1f ) {
+				frontOnly++;
+			}
+			else if ( brushBounds[1][axis] <= dist + 0.1f ) {
+				backOnly++;
+			}
+			else {
+				spanning++;
+			}
+		}
+
+		frontRefs = frontOnly + spanning;
+		backRefs = backOnly + spanning;
+		if ( !frontOnly || !backOnly || frontRefs >= node->brushList.Num() || backRefs >= node->brushList.Num() ) {
+			continue;
+		}
+
+		score = ( frontRefs > backRefs ? frontRefs : backRefs ) * 4 + spanning;
+		if ( score < bestScore ) {
+			bestScore = score;
+			bestAxis = axis;
+			bestDist = dist;
 		}
 	}
-	if ( axis >= 3 ) {
+	if ( bestAxis < 0 ) {
 		gridCells.Append( node );
 		return;
 	}
@@ -925,9 +976,9 @@ void idBrushBSP::BuildGrid_r( idList<idBrushBSPNode *> &gridCells, idBrushBSPNod
 	numSplits++;
 
 	normal = vec3_origin;
-	normal[axis] = 1.0f;
+	normal[bestAxis] = 1.0f;
 	node->plane.SetNormal( normal );
-	node->plane.SetDist( (int) dist );
+	node->plane.SetDist( (int) bestDist );
 
 	// allocate children
 	node->children[0] = new idBrushBSPNode();
@@ -948,6 +999,36 @@ void idBrushBSP::BuildGrid_r( idList<idBrushBSPNode *> &gridCells, idBrushBSPNod
 	// process children
 	BuildGrid_r( gridCells, node->children[0] );
 	BuildGrid_r( gridCells, node->children[1] );
+}
+
+/*
+============
+idBrushBSP::CollapseEqualLeafNodes_r
+
+Remove BSP splits which do not separate different contents. This is especially
+important for workload grid splits, which are useful while building but should
+not survive into portalization when both sides produced the same leaf.
+============
+*/
+bool idBrushBSP::CollapseEqualLeafNodes_r( idBrushBSPNode *node ) {
+	if ( !node || !node->children[0] || !node->children[1] ) {
+		return node && !node->children[0] && !node->children[1];
+	}
+
+	CollapseEqualLeafNodes_r( node->children[0] );
+	CollapseEqualLeafNodes_r( node->children[1] );
+
+	if ( !node->children[0]->children[0] && !node->children[0]->children[1] &&
+		 !node->children[1]->children[0] && !node->children[1]->children[1] &&
+		 node->children[0]->contents == node->children[1]->contents ) {
+		node->contents = node->children[0]->contents;
+		delete node->children[0];
+		delete node->children[1];
+		node->children[0] = node->children[1] = NULL;
+		numPrunedSplits++;
+		return true;
+	}
+	return false;
 }
 
 /*
@@ -992,6 +1073,11 @@ void idBrushBSP::Build( idBrushList brushList, int skipContents,
 	}
 	common->Printf( "\r%6d %%\n", 100 );
 #endif
+
+	CollapseEqualLeafNodes_r( root );
+	if ( numPrunedSplits ) {
+		common->Printf( "\r%6d redundant splits removed\n", numPrunedSplits );
+	}
 
 	common->Printf( "\r%6d splits\n", numSplits );
 
@@ -1844,38 +1930,45 @@ void idBrushBSP::PruneMergedTree_r( idBrushBSPNode *node ) {
 
 /*
 ============
-idBrushBSP::UpdateTreeAfterMerge_r
+idBrushBSP::ResolveMergedLeaf
 ============
 */
-void idBrushBSP::UpdateTreeAfterMerge_r( idBrushBSPNode *node, const idBounds &bounds, idBrushBSPNode *oldNode, idBrushBSPNode *newNode ) {
+idBrushBSPNode *idBrushBSP::ResolveMergedLeaf( idBrushBSPNode *node ) const {
+	while ( node && node->mergeInto ) {
+		node = node->mergeInto;
+	}
+	return node;
+}
 
+/*
+============
+idBrushBSP::CanonicalizeMergedLeafNodes_r
+============
+*/
+void idBrushBSP::CanonicalizeMergedLeafNodes_r( idBrushBSPNode *node ) {
 	if ( !node ) {
 		return;
 	}
+	for ( int i = 0; i < 2; i++ ) {
+		node->children[i] = ResolveMergedLeaf( node->children[i] );
+		CanonicalizeMergedLeafNodes_r( node->children[i] );
+	}
+}
 
-	if ( !node->children[0] && !node->children[1] ) {
+/*
+============
+idBrushBSP::CanonicalizeMergedLeafNodes
+============
+*/
+void idBrushBSP::CanonicalizeMergedLeafNodes( void ) {
+	if ( !mergedLeafNodes.Num() ) {
 		return;
 	}
-
-	if ( node->children[0] == oldNode ) {
-		node->children[0] = newNode;
+	CanonicalizeMergedLeafNodes_r( root );
+	for ( int i = 0; i < mergedLeafNodes.Num(); i++ ) {
+		delete mergedLeafNodes[i];
 	}
-	if ( node->children[1] == oldNode ) {
-		node->children[1] = newNode;
-	}
-
-	switch( bounds.PlaneSide( node->plane, 2.0f ) ) {
-		case PLANESIDE_FRONT:
-			UpdateTreeAfterMerge_r( node->children[0], bounds, oldNode, newNode );
-			break;
-		case PLANESIDE_BACK:
-			UpdateTreeAfterMerge_r( node->children[1], bounds, oldNode, newNode );
-			break;
-		default:
-			UpdateTreeAfterMerge_r( node->children[0], bounds, oldNode, newNode );
-			UpdateTreeAfterMerge_r( node->children[1], bounds, oldNode, newNode );
-			break;
-	}
+	mergedLeafNodes.Clear();
 }
 
 /*
@@ -1891,7 +1984,6 @@ bool idBrushBSP::TryMergeLeafNodes( idBrushBSPPortal *portal, int side ) {
 	idBrushBSPPortal *p1, *p2, *p, *nextp;
 	idPlane plane;
 	idWinding *w;
-	idBounds bounds, b;
 
 	nodes[0] = node1 = portal->nodes[side];
 	nodes[1] = node2 = portal->nodes[!side];
@@ -1956,18 +2048,11 @@ bool idBrushBSP::TryMergeLeafNodes( idBrushBSPPortal *portal, int side ) {
 		p->AddToNodes( nodes[0], nodes[1] );
 	}
 
-	// get bounds for the new node
-	bounds.Clear();
-	for ( p = node1->portals; p; p = p->next[s] ) {
-		s = (p->nodes[1] == node1);
-		p->GetWinding()->GetBounds( b );
-		bounds += b;
-	}
-
-	// replace every reference to node2 by a reference to node1
-	UpdateTreeAfterMerge_r( root, bounds, node2, node1 );
-
-	delete node2;
+	// Rewriting the complete BSP DAG after every successful merge is quadratic
+	// on large outdoor maps. Record the alias now and canonicalize all tree
+	// references once after the merge pass has finished.
+	node2->mergeInto = node1;
+	mergedLeafNodes.Append( node2 );
 
 	return true;
 }
