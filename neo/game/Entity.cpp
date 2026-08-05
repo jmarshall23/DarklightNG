@@ -1412,6 +1412,13 @@ void idEntity::PresentRenderInterpolation( float interpolation ) {
 		const int renderTime = gameLocal.previousTime + idMath::Ftoi( interpolation * ( gameLocal.time - gameLocal.previousTime ) );
 
 		if ( masterAnimator && masterAnimator->GetJointTransform( bindJoint, renderTime, jointOrigin, jointAxis ) ) {
+			// GetJointTransform builds the master's joints for renderTime before the
+			// renderer's model callback sees them.  Invalidate the cached MD5 snapshot
+			// now; otherwise the callback sees the same animator timestamp, reports no
+			// change, and leaves the visible master mesh one render sample behind this
+			// attachment.
+			bindMaster->renderEntity->UpdateRenderEntity();
+
 			// The master may already have been presented for this draw. Always use
 			// its saved simulation endpoint as the interpolation target so entity
 			// iteration order cannot affect the attachment.

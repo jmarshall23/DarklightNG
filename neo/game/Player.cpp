@@ -1162,6 +1162,8 @@ idPlayer::idPlayer() {
 	chestJoint				= INVALID_JOINT;
 	headJoint				= INVALID_JOINT;
 	fullBodyAimJoint		= INVALID_JOINT;
+	previousFullBodyAimPitch = 0.0f;
+	currentFullBodyAimPitch = 0.0f;
 
 	bobFoot					= 0;
 	bobFrac					= 0.0f;
@@ -1539,6 +1541,9 @@ void idPlayer::Init( void ) {
 	if ( spawnArgs.GetBool( "anim_singleChannel", "0" ) && fullBodyAimJoint == INVALID_JOINT ) {
 		gameLocal.Warning( "Full-body aim joint '%s' not found on '%s'", value, name.c_str() );
 	}
+	currentFullBodyAimPitch = CalculateFullBodyAimPitch();
+	previousFullBodyAimPitch = currentFullBodyAimPitch;
+	ApplyFullBodyAimPitch( currentFullBodyAimPitch );
 
 	// initialize the script variables
 	AI_FORWARD		= false;
@@ -2224,6 +2229,9 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	savefile->ReadJoint( chestJoint );
 	savefile->ReadJoint( headJoint );
 	fullBodyAimJoint = animator.GetJointHandle( spawnArgs.GetString( "joint_fullBodyAim", "" ) );
+	currentFullBodyAimPitch = CalculateFullBodyAimPitch();
+	previousFullBodyAimPitch = currentFullBodyAimPitch;
+	ApplyFullBodyAimPitch( currentFullBodyAimPitch );
 
 	savefile->ReadStaticObject( physicsObj );
 	RestorePhysics( &physicsObj );
@@ -6554,6 +6562,31 @@ void idPlayer::AdjustSpeed( void ) {
 
 /*
 ==============
+idPlayer::CalculateFullBodyAimPitch
+==============
+*/
+float idPlayer::CalculateFullBodyAimPitch( void ) const {
+	const float pitchScale = spawnArgs.GetFloat( "fullBodyAimPitchScale", "1" );
+	const float minPitch = spawnArgs.GetFloat( "fullBodyAimPitchMin", "-80" );
+	const float maxPitch = spawnArgs.GetFloat( "fullBodyAimPitchMax", "80" );
+	return idMath::ClampFloat( minPitch, maxPitch, viewAngles.pitch * pitchScale );
+}
+
+/*
+==============
+idPlayer::ApplyFullBodyAimPitch
+==============
+*/
+void idPlayer::ApplyFullBodyAimPitch( float pitch ) {
+	if ( !spawnArgs.GetBool( "anim_singleChannel", "0" ) || fullBodyAimJoint == INVALID_JOINT ) {
+		return;
+	}
+
+	animator.SetJointAxis( fullBodyAimJoint, JOINTMOD_WORLD, idAngles( pitch, 0.0f, 0.0f ).ToMat3() );
+}
+
+/*
+==============
 idPlayer::AdjustBodyAngles
 ==============
 */
@@ -6627,11 +6660,8 @@ void idPlayer::AdjustBodyAngles( void ) {
 
 	if ( spawnArgs.GetBool( "anim_singleChannel", "0" ) ) {
 		if ( fullBodyAimJoint != INVALID_JOINT ) {
-			const float pitchScale = spawnArgs.GetFloat( "fullBodyAimPitchScale", "1" );
-			const float minPitch = spawnArgs.GetFloat( "fullBodyAimPitchMin", "-80" );
-			const float maxPitch = spawnArgs.GetFloat( "fullBodyAimPitchMax", "80" );
-			const float aimPitch = idMath::ClampFloat( minPitch, maxPitch, viewAngles.pitch * pitchScale );
-			animator.SetJointAxis( fullBodyAimJoint, JOINTMOD_WORLD, idAngles( aimPitch, 0.0f, 0.0f ).ToMat3() );
+			currentFullBodyAimPitch = CalculateFullBodyAimPitch();
+			ApplyFullBodyAimPitch( currentFullBodyAimPitch );
 		}
 
 		// Single-channel actors do not have live torso or legs blends.  The
@@ -8409,6 +8439,77 @@ bool idPlayer::IsFullBodyFirstPersonActive( void ) const {
 		&& !gameLocal.inCinematic
 		&& !privateCameraView
 		&& !gameLocal.GetCamera();
+}
+
+/*
+===============
+idPlayer::SnapshotFullBodyAimRenderState
+
+Keep the procedural aim joint on the same previous/current timeline as entity
+render transforms. Rendering may have left the animator at an in-between pose,
+so restore the authoritative game-tick pose before the next simulation step.
+===============
+*/
+void idPlayer::SnapshotFullBodyAimRenderState( void ) {
+	previousFullBodyAimPitch = currentFullBodyAimPitch;
+	ApplyFullBodyAimPitch( currentFullBodyAimPitch );
+}
+
+/*
+===============
+idPlayer::PresentFullBodyAimRenderInterpolation
+
+Apply the render-time aim pose before the player body and joint-bound weapon
+are presented. Both will consequently build their joints from the same pose.
+===============
+*/
+void idPlayer::PresentFullBodyAimRenderInterpolation( float interpolation ) {
+	if ( !spawnArgs.GetBool( "anim_singleChannel", "0" ) || fullBodyAimJoint == INVALID_JOINT ) {
+		return;
+	}
+
+	interpolation = idMath::ClampFloat( 0.0f, 1.0f, interpolation );
+	const float renderPitch = previousFullBodyAimPitch + interpolation *
+		( currentFullBodyAimPitch - previousFullBodyAimPitch );
+	ApplyFullBodyAimPitch( renderPitch );
+
+	// A joint modification can change the visible body without changing its
+	// entity transform. Explicitly refresh the render entity for this pose.
+	if ( renderEntity != NULL ) {
+		renderEntity->UpdateRenderEntity();
+	}
+}
+
+/*
+===============
+idPlayer::GetFullBodyRenderViewOrigin
+
+Build the full-body camera translation from the same render-time skeleton and
+interpolated model transform used by joint-bound world weapons.
+===============
+*/
+bool idPlayer::GetFullBodyRenderViewOrigin( int renderTime, idVec3 &origin ) {
+	if ( !IsFullBodyFirstPersonActive() || renderEntity == NULL ) {
+		return false;
+	}
+
+	const char *cameraJointName = spawnArgs.GetString( "joint_fullBodyCamera", "mount_camera" );
+	const jointHandle_t cameraJoint = animator.GetJointHandle( cameraJointName );
+	idVec3 cameraOrigin;
+	idMat3 cameraAxis;
+	if ( cameraJoint == INVALID_JOINT || !animator.GetJointTransform( cameraJoint, renderTime, cameraOrigin, cameraAxis ) ) {
+		return false;
+	}
+
+	// PresentRenderInterpolation has already put the player render entity at its
+	// interpolated origin and axis.  Its origin includes modelOffset, matching the
+	// master transform used by the render-synchronized weapon attachment.
+	const idMat3 &bodyAxis = renderEntity->GetAxis();
+	origin = renderEntity->GetOrigin() + cameraOrigin * bodyAxis;
+	origin += bodyAxis[ 0 ] * g_fullBodyViewX.GetFloat();
+	origin += bodyAxis[ 1 ] * g_fullBodyViewY.GetFloat();
+	origin += bodyAxis[ 2 ] * g_fullBodyViewZ.GetFloat();
+	return true;
 }
 
 /*

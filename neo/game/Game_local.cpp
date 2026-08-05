@@ -2694,6 +2694,9 @@ void idGameLocal::SnapshotRenderState( void ) {
 
 	for ( int i = 0; i < MAX_CLIENTS; i++ ) {
 		idPlayer *player = entities[ i ] && entities[ i ]->IsType( idPlayer::Type ) ? static_cast<idPlayer *>( entities[ i ] ) : NULL;
+		if ( player ) {
+			player->SnapshotFullBodyAimRenderState();
+		}
 		const renderView_t *view = player ? player->GetRenderView() : NULL;
 		if ( view ) {
 			previousRenderViews[ i ] = *view;
@@ -2711,6 +2714,16 @@ idGameLocal::PresentRenderInterpolation
 */
 void idGameLocal::PresentRenderInterpolation( float interpolation ) {
 	interpolation = idMath::ClampFloat( 0.0f, 1.0f, interpolation );
+
+	// Procedural player joints must be prepared first because world weapons can
+	// sample those joints later in the entity presentation pass.
+	for ( int i = 0; i < MAX_CLIENTS; i++ ) {
+		idPlayer *player = entities[ i ] && entities[ i ]->IsType( idPlayer::Type ) ? static_cast<idPlayer *>( entities[ i ] ) : NULL;
+		if ( player ) {
+			player->PresentFullBodyAimRenderInterpolation( interpolation );
+		}
+	}
+
 	for ( idEntity *ent = spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
 		ent->PresentRenderInterpolation( interpolation );
 	}
@@ -2730,6 +2743,7 @@ const renderView_t *idGameLocal::GetInterpolatedRenderView( idPlayer *player, fl
 	view = *current;
 	const int clientNum = player->entityNumber;
 	if ( clientNum < 0 || clientNum >= MAX_CLIENTS || !previousRenderViewValid[ clientNum ] ) {
+		player->GetFullBodyRenderViewOrigin( view.time, view.vieworg );
 		return &view;
 	}
 
@@ -2747,6 +2761,11 @@ const renderView_t *idGameLocal::GetInterpolatedRenderView( idPlayer *player, fl
 	for ( int i = 0; i < MAX_GLOBAL_SHADER_PARMS; i++ ) {
 		view.shaderParms[ i ] = previous.shaderParms[ i ] + interpolation * ( current->shaderParms[ i ] - previous.shaderParms[ i ] );
 	}
+
+	// The full-body weapon is evaluated from the interpolated player skeleton.
+	// Rebuild the camera translation from that same pose instead of linearly
+	// interpolating two tick-time mount_camera positions along a different path.
+	player->GetFullBodyRenderViewOrigin( view.time, view.vieworg );
 	return &view;
 }
 

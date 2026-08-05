@@ -425,6 +425,9 @@ public:
 	void					CalculateRenderView( void );	// called every tic by player code
 	void					CalculateFirstPersonView( void );
 	bool					IsFullBodyFirstPersonActive( void ) const;
+	bool					GetFullBodyRenderViewOrigin( int renderTime, idVec3 &origin );
+	void					SnapshotFullBodyAimRenderState( void );
+	void					PresentFullBodyAimRenderInterpolation( float interpolation );
 
 	void					DrawHUD( idUserInterface *hud );
 
@@ -582,6 +585,8 @@ private:
 	jointHandle_t			chestJoint;
 	jointHandle_t			headJoint;
 	jointHandle_t			fullBodyAimJoint;
+	float					previousFullBodyAimPitch;
+	float					currentFullBodyAimPitch;
 
 	idPhysics_Player		physicsObj;			// player physics
 
@@ -718,6 +723,8 @@ private:
 	void					EvaluateControls( void );
 	void					AdjustSpeed( void );
 	void					AdjustBodyAngles( void );
+	float					CalculateFullBodyAimPitch( void ) const;
+	void					ApplyFullBodyAimPitch( float pitch );
 	void					InitAASLocation( void );
 	void					SetAASLocation( void );
 	void					Move( void );
