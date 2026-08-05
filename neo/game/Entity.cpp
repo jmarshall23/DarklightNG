@@ -1400,6 +1400,46 @@ void idEntity::PresentRenderInterpolation( float interpolation ) {
 		currentRenderAxis = renderEntity->GetAxis();
 	}
 
+	// A zero-offset skeletal attachment must follow the exact interpolated joint
+	// pose. Interpolating the attachment as an unrelated rigid entity takes a
+	// different path between ticks, which lets a held weapon slide against the
+	// animated hands. This is opt-in because it assumes identity local transform.
+	if ( spawnArgs.GetBool( "jointBindRenderSync", "0" ) && bindMaster &&
+		bindJoint != INVALID_JOINT && bindMaster->renderEntity ) {
+		idAnimator *masterAnimator = bindMaster->GetAnimator();
+		idVec3 jointOrigin;
+		idMat3 jointAxis;
+		const int renderTime = gameLocal.previousTime + idMath::Ftoi( interpolation * ( gameLocal.time - gameLocal.previousTime ) );
+
+		if ( masterAnimator && masterAnimator->GetJointTransform( bindJoint, renderTime, jointOrigin, jointAxis ) ) {
+			// The master may already have been presented for this draw. Always use
+			// its saved simulation endpoint as the interpolation target so entity
+			// iteration order cannot affect the attachment.
+			const idVec3 masterCurrentOrigin = bindMaster->renderInterpolationApplied
+				? bindMaster->currentRenderOrigin : bindMaster->renderEntity->GetOrigin();
+			const idMat3 masterCurrentAxis = bindMaster->renderInterpolationApplied
+				? bindMaster->currentRenderAxis : bindMaster->renderEntity->GetAxis();
+			idVec3 masterRenderOrigin = masterCurrentOrigin;
+			idMat3 masterRenderAxis = masterCurrentAxis;
+
+			if ( bindMaster->renderInterpolationValid ) {
+				const idVec3 masterDelta = masterCurrentOrigin - bindMaster->previousRenderOrigin;
+				if ( masterDelta.LengthSqr() < Square( 512.0f ) ) {
+					masterRenderOrigin = bindMaster->previousRenderOrigin + interpolation * masterDelta;
+					idQuat interpolatedMasterAxis;
+					interpolatedMasterAxis.Slerp( bindMaster->previousRenderAxis.ToQuat(), masterCurrentAxis.ToQuat(), interpolation );
+					masterRenderAxis = interpolatedMasterAxis.ToMat3();
+				}
+			}
+
+			renderEntity->SetOrigin( masterRenderOrigin + jointOrigin * masterRenderAxis );
+			renderEntity->SetAxis( jointAxis * masterRenderAxis );
+			renderEntity->UpdateRenderEntity();
+			renderInterpolationApplied = interpolation < 1.0f;
+			return;
+		}
+	}
+
 	const idVec3 delta = currentRenderOrigin - previousRenderOrigin;
 	const bool transformChanged = delta.LengthSqr() > 0.0f || currentRenderAxis != previousRenderAxis;
 	if ( transformChanged && delta.LengthSqr() < Square( 512.0f ) ) {

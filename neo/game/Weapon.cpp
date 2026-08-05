@@ -801,6 +801,10 @@ void idWeapon::InitWorldModel( const idDeclEntityDef *def ) {
 		ent->BindToJoint( owner, attach, true );
 		ent->GetPhysics()->SetOrigin( vec3_origin );
 		ent->GetPhysics()->SetAxis( mat3_identity );
+		// The full-body view renders this attachment close to the camera. Sample
+		// it from the same interpolated player joint pose instead of interpolating
+		// the weapon as a separate rigid object between simulation ticks.
+		ent->spawnArgs.SetBool( "jointBindRenderSync", true );
 
 		// supress model in player views, but allow it in mirrors and remote views
 		idRenderEntity *worldModelRenderEntity = ent->GetRenderEntity();
