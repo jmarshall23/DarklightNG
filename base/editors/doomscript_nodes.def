@@ -132,6 +132,14 @@ node	event:AI_MuzzleFlash	Muzzle Flash	AI	muzzleFlash	object	eventCall	void	0	id
 node	event:AI_NextEnemy	Next Enemy	Actor	nextEnemy	object	eventCall	entity	0	idActor	idActor::Event_NextEnemy	Actor.h:346	entity:ent	0	0		
 node	event:AI_NumSmokeEmitters	Num Smoke Emitters	AI	numSmokeEmitters	object	eventCall	float	0	idAI	idAI::Event_NumSmokeEmitters	ai/AI.h:711		0	0		
 node	event:AI_OverrideAnim	Override Anim	Actor	overrideAnim	object	eventCall	void	0	idActor	idActor::Event_OverrideAnim	Actor.h:316	enum(animChannel_t):channel	0	0		
+node	event:AI_PigCop_BeginBerserk	Pig Begin Berserk	AI_PigCop	pigBeginBerserk	object	eventCall	void	0	idAI_PigCop	idAI_PigCop::Event_BeginBerserk	ai/AI_PigCop.h:84		0	0		
+node	event:AI_PigCop_ChooseAction	Pig Choose Action	AI_PigCop	pigChooseAction	object	eventCall	float	0	idAI_PigCop	idAI_PigCop::Event_ChooseAction	ai/AI_PigCop.h:72		0	0		
+node	event:AI_PigCop_FireProjectile	Pig Fire Projectile	AI_PigCop	pigFireProjectile	object	eventCall	void	0	idAI_PigCop	idAI_PigCop::Event_FireProjectile	ai/AI_PigCop.h:80		0	0		
+node	event:AI_PigCop_GetBurstCount	Pig Get Burst Count	AI_PigCop	pigGetBurstCount	object	eventCall	float	0	idAI_PigCop	idAI_PigCop::Event_GetBurstCount	ai/AI_PigCop.h:74		0	0		
+node	event:AI_PigCop_GetBurstInterval	Pig Get Burst Interval	AI_PigCop	pigGetBurstInterval	object	eventCall	float	0	idAI_PigCop	idAI_PigCop::Event_GetBurstInterval	ai/AI_PigCop.h:76		0	0		
+node	event:AI_PigCop_GetMuzzleSide	Pig Get Muzzle Side	AI_PigCop	pigGetMuzzleSide	object	eventCall	float	0	idAI_PigCop	idAI_PigCop::Event_GetMuzzleSide	ai/AI_PigCop.h:78		0	0		
+node	event:AI_PigCop_IsBerserk	Pig Is Berserk	AI_PigCop	pigIsBerserk	object	eventCall	float	0	idAI_PigCop	idAI_PigCop::Event_IsBerserk	ai/AI_PigCop.h:86		0	0		
+node	event:AI_PigCop_MeleeAttack	Pig Melee Attack	AI_PigCop	pigMeleeAttack	object	eventCall	void	0	idAI_PigCop	idAI_PigCop::Event_MeleeAttack	ai/AI_PigCop.h:82		0	0		
 node	event:AI_PlayAnim	Play Anim	Actor	playAnim	object	eventCall	float	0	idActor,idWeapon	idActor::Event_PlayAnim,idWeapon::Event_PlayAnim	Actor.h:308	enum(animChannel_t):channel,string:name	0	0		
 node	event:AI_PlayCycle	Play Cycle	Actor	playCycle	object	eventCall	float	0	idActor,idWeapon	idActor::Event_PlayCycle,idWeapon::Event_PlayCycle	Actor.h:310	enum(animChannel_t):channel,string:name	0	0		
 node	event:AI_PreBurn	Pre Burn	AI	preBurn	object	eventCall	void	0	idAI	idAI::Event_PreBurn	ai/AI.h:705		0	0		

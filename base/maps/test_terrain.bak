@@ -7,16 +7,84 @@ Version 2
 {
  brushDef3
  {
-  ( 0 0 -1 8 ) ( ( 0.0078125 0 0 ) ( 0 0.0078125 0 ) ) "textures/default" 0 0 0
-  ( -0 0 1 -72 ) ( ( 0.0078125 0 0 ) ( 0 0.0078125 0 ) ) "textures/default" 0 0 0
-  ( -0 -1 -0 2112 ) ( ( 0.0078125 0 0 ) ( 0 0.0078125 0 ) ) "textures/default" 0 0 0
-  ( 0.9999999404 0 0 4575.9995117188 ) ( ( 0.0078125 0 0 ) ( 0 0.0078125 0 ) ) "textures/default" 0 0 0
-  ( -0 1 0 -2440 ) ( ( 0.0078125 0 0 ) ( 0 0.0078125 0 ) ) "textures/default" 0 0 0
-  ( -0.9999999404 0 0 -4879.9995117188 ) ( ( 0.0078125 0 0 ) ( 0 0.0078125 0 ) ) "textures/default" 0 0 0
+  ( -0 -0 -1 -1152 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -0 1 -12128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -1 0 17000 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 1 0 -0 -17000 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( -1 0 0 -17000 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+ }
+}
+// primitive 1
+{
+ brushDef3
+ {
+  ( -0 -0 -1 -1152 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -0 1 -12128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 1 0 -0 -17000 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 1 0 17000 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( -1 0 0 -17000 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+ }
+}
+// primitive 2
+{
+ brushDef3
+ {
+  ( -0 -0 -1 -1152 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -0 1 -12128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 1 0 -0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( -1 0 0 17000 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+ }
+}
+// primitive 3
+{
+ brushDef3
+ {
+  ( -0 -0 -1 -1152 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -0 1 -12128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 1 0 -0 17000 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( -1 0 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+ }
+}
+// primitive 4
+{
+ brushDef3
+ {
+  ( -0 -0 -1 12000 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -0 1 -12128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 1 0 -0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( -1 0 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+ }
+}
+// primitive 5
+{
+ brushDef3
+ {
+  ( -0 -0 -1 -1152 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -0 1 1024 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 -1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 1 0 -0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( 0 1 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
+  ( -1 0 0 -17128 ) ( ( 0.0004882812 0 0 ) ( 0 0.0004882812 0 ) ) "textures/skies/valley_atmosphere" 0 0 0
  }
 }
 }
 // entity 1
+{
+"anim" "idle"
+"classname" "monster_pigcop"
+"name" "monster_pigcop_1"
+"origin" "-1360 -3392 0"
+"angle" "-90"
+}
+// entity 2
 {
 "anim" "idle"
 "classname" "monster_liztroop"
@@ -24,14 +92,14 @@ Version 2
 "origin" "-1512 -3384 0"
 "angle" "-90"
 }
-// entity 2
+// entity 3
 {
 "classname" "info_player_start"
 "name" "info_player_start_1"
 "origin" "-1480 -3800 8"
 "angle" "90"
 }
-// entity 3
+// entity 4
 {
 "classname" "func_static"
 "name" "terrain_test_terrain_000437b5"
@@ -41,7 +109,7 @@ Version 2
 "origin" "0 0 0"
 "bakeLightmap" "1"
 }
-// entity 4
+// entity 5
 {
 "classname" "func_static"
 "name" "valley_instance_0103"
@@ -49,7 +117,7 @@ Version 2
 "origin" "-2284 -1293 -5"
 "bakeLightmap" "0"
 }
-// entity 5
+// entity 6
 {
 "classname" "func_static"
 "name" "func_static_1"
@@ -57,7 +125,7 @@ Version 2
 "origin" "-3036 571 -5"
 "bakeLightmap" "0"
 }
-// entity 6
+// entity 7
 {
 "classname" "func_static"
 "name" "func_static_2"
@@ -65,7 +133,7 @@ Version 2
 "origin" "-2076 451 -5"
 "bakeLightmap" "0"
 }
-// entity 7
+// entity 8
 {
 "classname" "func_static"
 "name" "func_static_3"
@@ -73,7 +141,7 @@ Version 2
 "origin" "-1388 -1101 -5"
 "bakeLightmap" "0"
 }
-// entity 8
+// entity 9
 {
 "classname" "func_static"
 "name" "func_static_4"
@@ -81,7 +149,7 @@ Version 2
 "origin" "-1556 -245 -5"
 "bakeLightmap" "0"
 }
-// entity 9
+// entity 10
 {
 "classname" "func_static"
 "name" "func_static_5"
@@ -89,7 +157,7 @@ Version 2
 "origin" "-3180 -405 -5"
 "bakeLightmap" "0"
 }
-// entity 10
+// entity 11
 {
 "classname" "func_static"
 "name" "func_static_6"
@@ -97,7 +165,7 @@ Version 2
 "origin" "-1116 -2085 -5"
 "bakeLightmap" "0"
 }
-// entity 11
+// entity 12
 {
 "classname" "func_static"
 "name" "func_static_7"

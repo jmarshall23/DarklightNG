@@ -1,0 +1,48 @@
+models/monsters/pigcop/body {
+	qer_editorimage models/md5/monsters/pigcop/body_d.tga
+	diffusemap models/md5/monsters/pigcop/body_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/monsters/pigcop/pistol {
+	qer_editorimage models/md5/monsters/pigcop/weapons/pistol/pistol_d.tga
+	diffusemap models/md5/monsters/pigcop/weapons/pistol/pistol_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/monsters/pigcop/shotgun_1 {
+	qer_editorimage models/md5/monsters/pigcop/weapons/shotgun/shotgun_1_d.tga
+	diffusemap models/md5/monsters/pigcop/weapons/shotgun/shotgun_1_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/monsters/pigcop/shotgun_2 {
+	qer_editorimage models/md5/monsters/pigcop/weapons/shotgun/shotgun_2_d.tga
+	diffusemap models/md5/monsters/pigcop/weapons/shotgun/shotgun_2_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/monsters/pigcop/gib_body {
+	qer_editorimage models/md5/monsters/pigcop/body_d.tga
+	diffusemap models/md5/monsters/pigcop/body_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/monsters/pigcop/gib_stump {
+	qer_editorimage models/md5/monsters/pigcop/gibs/gib_stump_d.tga
+	diffusemap models/md5/monsters/pigcop/gibs/gib_stump_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/monsters/pigcop/gib_meat {
+	qer_editorimage models/md5/monsters/pigcop/gibs/gib_meat_d.tga
+	diffusemap models/md5/monsters/pigcop/gibs/gib_meat_d.tga
+	bumpmap _flat
+	specularmap _black
+}

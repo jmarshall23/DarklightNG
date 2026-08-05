@@ -69,8 +69,6 @@ void monster_liztroop::Torso_RangeAttack() {
 	allowMovement( false );
 	disablePain();
 	faceEnemy();
-	overrideAnim( ANIMCHANNEL_LEGS );
-
 	shots = dnfGetBurstCount();
 	interval = dnfGetBurstInterval();
 	if ( dnfIsFlying() ) {
@@ -79,6 +77,10 @@ void monster_liztroop::Torso_RangeAttack() {
 		animName = "fire";
 	}
 	playAnim( ANIMCHANNEL_TORSO, animName );
+	// Sync the legs only after the correct ground/air attack has become the
+	// active torso clip.  This prevents the previous standing clip from being
+	// captured during the transition into an airborne burst.
+	overrideAnim( ANIMCHANNEL_LEGS );
 	sys.wait( 0.18 );
 
 	while ( shots > 0 ) {
@@ -98,6 +100,7 @@ void monster_liztroop::Torso_RangeAttack() {
 	allowMovement( true );
 	finishAction( "range_attack" );
 	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+	animState( ANIMCHANNEL_LEGS, "Legs_Idle", 3 );
 }
 
 void monster_liztroop::Torso_MeleeAttack() {

@@ -2207,6 +2207,57 @@ HMENU CXYWnd::PrepareContextMenu( int x, int y ) {
 				pMakeEntityPop->AppendMenu(MF_STRING, nID++, strName);
 			}
 		}
+		if ( pChild ) {
+			pMakeEntityPop->AppendMenu(
+				MF_POPUP,
+				reinterpret_cast<UINT_PTR>( pChild->GetSafeHmenu() ),
+				strActive
+			);
+			g_ptrMenus.Add( pChild );
+			pChild = NULL;
+		}
+
+		// The prefix-based menu above is retained for compatibility, but custom
+		// game content can also request an explicit, easier-to-find folder.  The
+		// original Radiant code never consumed editor_displayFolder, leaving DNF
+		// monsters hidden among the very large generic "monster" submenu.
+		struct editorFolderMenu_t {
+			idStr	name;
+			CMenu	*menu;
+		};
+		idList<editorFolderMenu_t> editorFolders;
+		for ( e = eclass; e; e = e->next ) {
+			const char *folderName = e->defArgs.GetString( "editor_displayFolder" );
+			if ( !folderName[0] ) {
+				continue;
+			}
+
+			int folderIndex = -1;
+			for ( int i = 0; i < editorFolders.Num(); ++i ) {
+				if ( !editorFolders[i].name.Icmp( folderName ) ) {
+					folderIndex = i;
+					break;
+				}
+			}
+			if ( folderIndex < 0 ) {
+				editorFolderMenu_t folder;
+				folder.name = folderName;
+				folder.menu = new CMenu;
+				folder.menu->CreatePopupMenu();
+				folderIndex = editorFolders.Append( folder );
+			}
+
+			editorFolders[folderIndex].menu->AppendMenu( MF_STRING, nID++, e->name );
+		}
+
+		for ( int i = 0; i < editorFolders.Num(); ++i ) {
+			pMakeEntityPop->AppendMenu(
+				MF_POPUP,
+				reinterpret_cast<UINT_PTR>( editorFolders[i].menu->GetSafeHmenu() ),
+				editorFolders[i].name.c_str()
+			);
+			g_ptrMenus.Add( editorFolders[i].menu );
+		}
 		if ( pMakeEntityPop != &m_mnuDrop ) {
 			m_mnuDrop.AppendMenu (
 				MF_POPUP,

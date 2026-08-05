@@ -226,6 +226,15 @@ extern const idEventDef AI_DNFBase_IsFlying;
 extern const idEventDef AI_DNFBase_Teleport;
 extern const idEventDef AI_DNFBase_SetCloaked;
 extern const idEventDef AI_DNFBase_IsCloaked;
+// ai/AI_PigCop.h
+extern const idEventDef AI_PigCop_ChooseAction;
+extern const idEventDef AI_PigCop_GetBurstCount;
+extern const idEventDef AI_PigCop_GetBurstInterval;
+extern const idEventDef AI_PigCop_GetMuzzleSide;
+extern const idEventDef AI_PigCop_FireProjectile;
+extern const idEventDef AI_PigCop_MeleeAttack;
+extern const idEventDef AI_PigCop_BeginBerserk;
+extern const idEventDef AI_PigCop_IsBerserk;
 // ai/AI_Vagary.h
 extern const idEventDef AI_Vagary_ChooseObjectToThrow;
 extern const idEventDef AI_Vagary_ThrowObjectAtEnemy;
@@ -815,6 +824,15 @@ const idEventDef AI_DNFBase_IsFlying( "dnfIsFlying", NULL, 'd' );
 const idEventDef AI_DNFBase_Teleport( "dnfTeleport", NULL, 'd' );
 const idEventDef AI_DNFBase_SetCloaked( "dnfSetCloaked", "d" );
 const idEventDef AI_DNFBase_IsCloaked( "dnfIsCloaked", NULL, 'd' );
+// ai/AI_PigCop.h
+const idEventDef AI_PigCop_ChooseAction( "pigChooseAction", NULL, 'd' );
+const idEventDef AI_PigCop_GetBurstCount( "pigGetBurstCount", NULL, 'd' );
+const idEventDef AI_PigCop_GetBurstInterval( "pigGetBurstInterval", NULL, 'f' );
+const idEventDef AI_PigCop_GetMuzzleSide( "pigGetMuzzleSide", NULL, 'd' );
+const idEventDef AI_PigCop_FireProjectile( "pigFireProjectile" );
+const idEventDef AI_PigCop_MeleeAttack( "pigMeleeAttack" );
+const idEventDef AI_PigCop_BeginBerserk( "pigBeginBerserk" );
+const idEventDef AI_PigCop_IsBerserk( "pigIsBerserk", NULL, 'd' );
 // ai/AI_Vagary.h
 const idEventDef AI_Vagary_ChooseObjectToThrow( "vagary_ChooseObjectToThrow", "vvfff", 'e' );
 const idEventDef AI_Vagary_ThrowObjectAtEnemy( "vagary_ThrowObjectAtEnemy", "ef" );
@@ -1466,6 +1484,18 @@ END_CLASS
 
 // ai/AI_LizTroop.h
 CLASS_DECLARATION( idAI_DNFBase, idAI_LizTroop )
+END_CLASS
+
+// ai/AI_PigCop.h
+CLASS_DECLARATION( idAI, idAI_PigCop )
+	EVENT( AI_PigCop_ChooseAction, idAI_PigCop::Event_ChooseAction )
+	EVENT( AI_PigCop_GetBurstCount, idAI_PigCop::Event_GetBurstCount )
+	EVENT( AI_PigCop_GetBurstInterval, idAI_PigCop::Event_GetBurstInterval )
+	EVENT( AI_PigCop_GetMuzzleSide, idAI_PigCop::Event_GetMuzzleSide )
+	EVENT( AI_PigCop_FireProjectile, idAI_PigCop::Event_FireProjectile )
+	EVENT( AI_PigCop_MeleeAttack, idAI_PigCop::Event_MeleeAttack )
+	EVENT( AI_PigCop_BeginBerserk, idAI_PigCop::Event_BeginBerserk )
+	EVENT( AI_PigCop_IsBerserk, idAI_PigCop::Event_IsBerserk )
 END_CLASS
 
 // ai/AI_Vagary.h

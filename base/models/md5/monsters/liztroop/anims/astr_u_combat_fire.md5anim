@@ -1,6 +1,8 @@
 MD5Version 10
 commandline "dnf_retail_models.py astr_u_combat_fire.anm"
 
+// darklight_root_z_rebased (upper-body clip; root is supplied by legs channel)
+
 numFrames 20
 numJoints 72
 frameRate 30

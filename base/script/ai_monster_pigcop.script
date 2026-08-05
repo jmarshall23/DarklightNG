@@ -1,0 +1,251 @@
+/***********************************************************************
+
+	ai_monster_pigcop.script
+
+	Animation/state glue for the native idAI_PigCop combat logic.
+
+***********************************************************************/
+
+object monster_pigcop : monster_base {
+	void	init();
+	void	state_Begin();
+	void	state_Idle();
+
+	float	check_attacks();
+	void	do_attack( float attack_flags );
+	void	combat_range();
+	void	combat_melee();
+	void	combat_berserk();
+
+	void	Torso_Idle();
+	void	Torso_Pain();
+	void	Torso_RangeAttack();
+	void	Torso_MeleeAttack();
+	void	Torso_BeginBerserk();
+	void	Torso_Death();
+
+	void	Legs_Idle();
+	void	Legs_Walk();
+	void	Legs_Run();
+	void	Legs_Death();
+};
+
+void monster_pigcop::Torso_Idle() {
+	if ( pigIsBerserk() ) {
+		idleAnim( ANIMCHANNEL_TORSO, "berserk_idle" );
+	} else {
+		idleAnim( ANIMCHANNEL_TORSO, "idle" );
+	}
+
+	eachFrame {
+		if ( AI_PAIN ) { animState( ANIMCHANNEL_TORSO, "Torso_Pain", 2 ); }
+	}
+}
+
+void monster_pigcop::Torso_Pain() {
+	playAnim( ANIMCHANNEL_TORSO, "pain" );
+	overrideAnim( ANIMCHANNEL_LEGS );
+	while ( !animDone( ANIMCHANNEL_TORSO, 3 ) ) {
+		waitFrame();
+	}
+	finishAction( "pain" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+}
+
+void monster_pigcop::Torso_RangeAttack() {
+	float shots;
+	float interval;
+
+	allowMovement( false );
+	disablePain();
+	faceEnemy();
+	shots = pigGetBurstCount();
+	interval = pigGetBurstInterval();
+
+	while ( shots > 0 ) {
+		if ( pigGetMuzzleSide() ) {
+			playAnim( ANIMCHANNEL_TORSO, "fire_right" );
+		} else {
+			playAnim( ANIMCHANNEL_TORSO, "fire_left" );
+		}
+		sys.wait( 0.04 );
+		pigFireProjectile();
+		shots--;
+		if ( shots > 0 ) {
+			sys.wait( interval );
+		}
+	}
+
+	sys.wait( 0.08 );
+	while ( !animDone( ANIMCHANNEL_TORSO, 3 ) ) {
+		waitFrame();
+	}
+	enablePain();
+	allowMovement( true );
+	finishAction( "range_attack" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+}
+
+void monster_pigcop::Torso_MeleeAttack() {
+	float variant;
+	string animName;
+	float hitTime;
+
+	allowMovement( false );
+	disablePain();
+	faceEnemy();
+	if ( pigIsBerserk() ) {
+		variant = sys.random( 3 );
+		if ( variant < 1 ) {
+			animName = "berserk_attack1";
+		} else if ( variant < 2 ) {
+			animName = "berserk_attack2";
+		} else {
+			animName = "berserk_attack3";
+		}
+		hitTime = 0.3;
+	} else {
+		animName = "melee";
+		hitTime = 0.32;
+	}
+
+	playAnim( ANIMCHANNEL_TORSO, animName );
+	overrideAnim( ANIMCHANNEL_LEGS );
+	sys.wait( hitTime );
+	pigMeleeAttack();
+	while ( !animDone( ANIMCHANNEL_TORSO, 3 ) ) {
+		waitFrame();
+	}
+	enablePain();
+	allowMovement( true );
+	finishAction( "melee_attack" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+}
+
+void monster_pigcop::Torso_BeginBerserk() {
+	allowMovement( false );
+	disablePain();
+	stopMove();
+	faceEnemy();
+	pigBeginBerserk();
+	playAnim( ANIMCHANNEL_TORSO, "berserk_start" );
+	overrideAnim( ANIMCHANNEL_LEGS );
+	while ( !animDone( ANIMCHANNEL_TORSO, 3 ) ) {
+		waitFrame();
+	}
+	enablePain();
+	allowMovement( true );
+	finishAction( "berserk" );
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 3 );
+}
+
+void monster_pigcop::Torso_Death() {
+	allowMovement( false );
+	setLinearVelocity( '0 0 0' );
+	setAngularVelocity( '0 0 0' );
+	playAnim( ANIMCHANNEL_TORSO, "death" );
+	overrideAnim( ANIMCHANNEL_LEGS );
+	while ( !animDone( ANIMCHANNEL_TORSO, 0 ) ) {
+		waitFrame();
+	}
+	finishAction( "dead" );
+}
+
+void monster_pigcop::Legs_Idle() {
+	if ( pigIsBerserk() ) {
+		idleAnim( ANIMCHANNEL_LEGS, "berserk_idle" );
+	} else {
+		idleAnim( ANIMCHANNEL_LEGS, "idle" );
+	}
+
+	eachFrame {
+		if ( getEnemy() ) { run = true; }
+		if ( run && AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Run", 3 ); }
+		if ( AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Walk", 3 ); }
+	}
+}
+
+void monster_pigcop::Legs_Walk() {
+	setFlySpeed( 140 );
+	playCycle( ANIMCHANNEL_LEGS, "walk" );
+	eachFrame {
+		if ( pigIsBerserk() ) { animState( ANIMCHANNEL_LEGS, "Legs_Run", 2 ); }
+		if ( run && AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Run", 3 ); }
+		if ( !AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Idle", 3 ); }
+	}
+}
+
+void monster_pigcop::Legs_Run() {
+	if ( pigIsBerserk() ) {
+		setFlySpeed( 360 );
+		playCycle( ANIMCHANNEL_LEGS, "berserk_run" );
+	} else {
+		setFlySpeed( 280 );
+		playCycle( ANIMCHANNEL_LEGS, "run" );
+	}
+
+	eachFrame {
+		if ( !run && AI_FORWARD && !pigIsBerserk() ) { animState( ANIMCHANNEL_LEGS, "Legs_Walk", 3 ); }
+		if ( !AI_FORWARD ) { animState( ANIMCHANNEL_LEGS, "Legs_Idle", 3 ); }
+	}
+}
+
+void monster_pigcop::Legs_Death() {
+}
+
+void monster_pigcop::init() {
+	run_distance = 350;
+	walk_turn = 65;
+	setState( "state_Begin" );
+}
+
+void monster_pigcop::state_Begin() {
+	animState( ANIMCHANNEL_TORSO, "Torso_Idle", 0 );
+	animState( ANIMCHANNEL_LEGS, "Legs_Idle", 0 );
+	monster_begin();
+	setMoveType( MOVETYPE_SLIDE );
+	setState( "state_Idle" );
+}
+
+void monster_pigcop::state_Idle() {
+	wait_for_enemy();
+	setState( "state_Combat" );
+}
+
+float monster_pigcop::check_attacks() {
+	return pigChooseAction();
+}
+
+void monster_pigcop::do_attack( float attack_flags ) {
+	if ( attack_flags & ATTACK_SPECIAL1 ) {
+		combat_berserk();
+	} else if ( attack_flags & ATTACK_MELEE ) {
+		combat_melee();
+	} else if ( attack_flags & ATTACK_MISSILE ) {
+		combat_range();
+	}
+}
+
+void monster_pigcop::combat_range() {
+	stopMove();
+	faceEnemy();
+	animState( ANIMCHANNEL_TORSO, "Torso_RangeAttack", 2 );
+	waitAction( "range_attack" );
+	moveToEnemy();
+}
+
+void monster_pigcop::combat_melee() {
+	lookAtEnemy( 2 );
+	faceEnemy();
+	animState( ANIMCHANNEL_TORSO, "Torso_MeleeAttack", 2 );
+	waitAction( "melee_attack" );
+	lookAtEnemy( 1 );
+	moveToEnemy();
+}
+
+void monster_pigcop::combat_berserk() {
+	animState( ANIMCHANNEL_TORSO, "Torso_BeginBerserk", 2 );
+	waitAction( "berserk" );
+	animState( ANIMCHANNEL_LEGS, "Legs_Idle", 2 );
+	moveToEnemy();
+}

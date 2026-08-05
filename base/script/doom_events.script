@@ -28,6 +28,7 @@
    |  |  |  |  |  |- idAI
    |  |  |  |  |  |  |- idAI_DNFBase
    |  |  |  |  |  |  |  +- idAI_LizTroop
+   |  |  |  |  |  |  |- idAI_PigCop
    |  |  |  |  |  |  +- idAI_Vagary
    |  |  |  |  |  +- idPlayer
    |  |  |  |  |- idAFEntity_Generic
@@ -516,6 +517,21 @@ scriptEvent float dnfIsCloaked();
 
 /*
 ================================================
+	idAI_PigCop
+================================================
+*/
+
+scriptEvent float pigChooseAction();
+scriptEvent float pigGetBurstCount();
+scriptEvent float pigGetBurstInterval();
+scriptEvent float pigGetMuzzleSide();
+scriptEvent void pigFireProjectile();
+scriptEvent void pigMeleeAttack();
+scriptEvent void pigBeginBerserk();
+scriptEvent float pigIsBerserk();
+
+/*
+================================================
 	idAI_Vagary
 ================================================
 */
@@ -859,6 +875,6 @@ scriptEvent float influenceActive();
 #endif // __DOOM_EVENTS_SCRIPT__
 
 //@doomscript-blueprint begin 6
-//@source AAAA3CBB
-//@catalog 31F387D7
+//@source 6D717784
+//@catalog 5C54CF75
 //@doomscript-blueprint end

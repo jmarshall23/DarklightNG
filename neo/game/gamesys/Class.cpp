@@ -32,6 +32,7 @@ instancing of objects.
 #include "../Game_local.h"
 #include "../ai/AI_DNFBase.h"
 #include "../ai/AI_LizTroop.h"
+#include "../ai/AI_PigCop.h"
 #include "../ai/AI_Vagary.h"
 
 #include "TypeInfo.h"

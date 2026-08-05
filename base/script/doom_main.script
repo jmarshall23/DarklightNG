@@ -40,6 +40,7 @@ This is the main script that is loaded before any level scripts load.
 #include "script/ai_monster_demon_pinky.script"
 #include "script/ai_monster_demon_revenant.script"
 #include "script/ai_monster_liztroop.script"
+#include "script/ai_monster_pigcop.script"
 #include "script/ai_monster_demon_trite.script"
 #include "script/ai_monster_demon_wraith.script"
 #include "script/ai_monster_flying_lostsoul.script"
