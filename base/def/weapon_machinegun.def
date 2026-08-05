@@ -40,10 +40,13 @@ entityDef weapon_machinegun {
 
 	"spawnclass"				"idItem"
 	"size"						"32 32 32"
-	"model"						"models/weapons/machinegun/w_machinegun.lwo"
+	"model"						"worldmodel_duke_machinegun"
 	"model_view" 				"viewmodel_machinegun"
-	"model_world" 				"worldmodel_machinegun"
-	"joint_attach"				"MGATTACHER"
+	"model_world" 				"worldmodel_duke_machinegun"
+	"joint_attach"				"mount_handright"
+	"joint_world_flash"		"mount_barrel_middle"
+	"joint_world_muzzle"		"mount_barrel_middle"
+	"joint_world_eject"		"mount_eject"
 	"def_dropItem"				"moveable_item_machinegun"
 
 	"weaponAngleOffsetAverages" "10"

@@ -1,0 +1,539 @@
+{
+  "source": {
+    "definition": "weapons/pistol/pistol.def",
+    "definition_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol.def",
+    "mesh": "weapons/pistol/pistol.msh",
+    "mesh_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol.msh",
+    "skeleton": "weapons/pistol/pistol.skl",
+    "skeleton_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol.skl",
+    "animation_directories": [
+      "weapons/pistol"
+    ]
+  },
+  "config": "dnf-retail-model-conversion-v2",
+  "type": "skeletal",
+  "format": "md5",
+  "output_directory": "models/weapons/pistol",
+  "files": [
+    "models/weapons/pistol/pistol.md5mesh",
+    "models/weapons/pistol/anims/dualpistol_activate.md5anim",
+    "models/weapons/pistol/anims/dualpistol_deactivate.md5anim",
+    "models/weapons/pistol/anims/dualpistol_fire.md5anim",
+    "models/weapons/pistol/anims/dualpistol_fire_off.md5anim",
+    "models/weapons/pistol/anims/dualpistol_fire_stop.md5anim",
+    "models/weapons/pistol/anims/dualpistol_idle.md5anim",
+    "models/weapons/pistol/anims/dualpistol_idletwirl.md5anim",
+    "models/weapons/pistol/anims/dualpistol_melee.md5anim",
+    "models/weapons/pistol/anims/dualpistol_reload.md5anim",
+    "models/weapons/pistol/anims/pistol_activate.md5anim",
+    "models/weapons/pistol/anims/pistol_deactivate.md5anim",
+    "models/weapons/pistol/anims/pistol_fire.md5anim",
+    "models/weapons/pistol/anims/pistol_idle.md5anim",
+    "models/weapons/pistol/anims/pistol_idletwirl.md5anim",
+    "models/weapons/pistol/anims/pistol_melee.md5anim",
+    "models/weapons/pistol/anims/pistol_reload.md5anim",
+    "models/weapons/pistol/anims/scr_a_edf_cpr_transition_b.md5anim"
+  ],
+  "geometry": {
+    "joints": 13,
+    "surfaces": 1,
+    "source_vertices": 2936,
+    "output_vertices": 2936,
+    "triangles": 2389,
+    "weights": 2936,
+    "max_bind_reconstruction_error": 0.0,
+    "resolved_shaders": 1,
+    "unresolved_shaders": 0,
+    "warnings": []
+  },
+  "skeleton": {
+    "bones": 13,
+    "roots": [
+      "Root"
+    ],
+    "bone_sets": {
+      "pistol": 12,
+      "no hand mount": 10
+    }
+  },
+  "materials": {
+    "resolved": true,
+    "slots": [
+      "models/weapons/pistol/mt_skins6.1911Pistol.1911_D.png"
+    ],
+    "source_objects": [
+      "mt_skins6.1911Pistol.1911_FB"
+    ],
+    "albedo_resolved": true,
+    "slot_bindings": [
+      {
+        "slot": 0,
+        "material": "mt_skins6.1911Pistol.1911_FB",
+        "albedo_textures": [
+          "mt_skins6.1911Pistol.1911_D"
+        ],
+        "primary_albedo": "mt_skins6.1911Pistol.1911_D",
+        "shader": "models/weapons/pistol/mt_skins6.1911Pistol.1911_D.png",
+        "resolved": true,
+        "composite_color_layers": false
+      }
+    ],
+    "source_asset": "c_dnweapon.Pistol"
+  },
+  "animations": [
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\dualpistol_activate.anm",
+      "kind": "binary",
+      "size": 257,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 240,
+      "uncompressed_size": 515,
+      "duration": 0.5,
+      "output": "anims/dualpistol_activate.md5anim",
+      "conversion": {
+        "frames": 16,
+        "frame_rate": 30,
+        "duration": 0.5,
+        "active_bones": 10,
+        "animated_components": 60,
+        "scale_tracks": 10,
+        "discarded_non_bind_scale_tracks": 10,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\dualpistol_deactivate.anm",
+      "kind": "binary",
+      "size": 257,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 240,
+      "uncompressed_size": 515,
+      "duration": 0.5,
+      "output": "anims/dualpistol_deactivate.md5anim",
+      "conversion": {
+        "frames": 16,
+        "frame_rate": 30,
+        "duration": 0.5,
+        "active_bones": 10,
+        "animated_components": 60,
+        "scale_tracks": 10,
+        "discarded_non_bind_scale_tracks": 10,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\dualpistol_fire.anm",
+      "kind": "binary_with_events",
+      "size": 667,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 306,
+      "uncompressed_size": 619,
+      "duration": 0.20000000298023224,
+      "output": "anims/dualpistol_fire.md5anim",
+      "conversion": {
+        "frames": 7,
+        "frame_rate": 30,
+        "duration": 0.20000000298023224,
+        "active_bones": 10,
+        "animated_components": 60,
+        "scale_tracks": 10,
+        "discarded_non_bind_scale_tracks": 10,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\dualpistol_fire_off.anm",
+      "kind": "binary_with_events",
+      "size": 602,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 241,
+      "uncompressed_size": 515,
+      "duration": 0.20000000298023224,
+      "output": "anims/dualpistol_fire_off.md5anim",
+      "conversion": {
+        "frames": 7,
+        "frame_rate": 30,
+        "duration": 0.20000000298023224,
+        "active_bones": 10,
+        "animated_components": 60,
+        "scale_tracks": 10,
+        "discarded_non_bind_scale_tracks": 10,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\dualpistol_fire_stop.anm",
+      "kind": "binary",
+      "size": 258,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 241,
+      "uncompressed_size": 515,
+      "duration": 0.20000000298023224,
+      "output": "anims/dualpistol_fire_stop.md5anim",
+      "conversion": {
+        "frames": 7,
+        "frame_rate": 30,
+        "duration": 0.20000000298023224,
+        "active_bones": 10,
+        "animated_components": 60,
+        "scale_tracks": 10,
+        "discarded_non_bind_scale_tracks": 10,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\dualpistol_idle.anm",
+      "kind": "binary",
+      "size": 258,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 241,
+      "uncompressed_size": 515,
+      "duration": 1.600000023841858,
+      "output": "anims/dualpistol_idle.md5anim",
+      "conversion": {
+        "frames": 49,
+        "frame_rate": 30,
+        "duration": 1.600000023841858,
+        "active_bones": 10,
+        "animated_components": 60,
+        "scale_tracks": 10,
+        "discarded_non_bind_scale_tracks": 10,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\dualpistol_idletwirl.anm",
+      "kind": "binary_with_events",
+      "size": 407,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 240,
+      "uncompressed_size": 515,
+      "duration": 2.0,
+      "output": "anims/dualpistol_idletwirl.md5anim",
+      "conversion": {
+        "frames": 61,
+        "frame_rate": 30,
+        "duration": 2.0,
+        "active_bones": 10,
+        "animated_components": 60,
+        "scale_tracks": 10,
+        "discarded_non_bind_scale_tracks": 10,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\dualpistol_melee.anm",
+      "kind": "binary",
+      "size": 258,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 241,
+      "uncompressed_size": 515,
+      "duration": 0.800000011920929,
+      "output": "anims/dualpistol_melee.md5anim",
+      "conversion": {
+        "frames": 25,
+        "frame_rate": 30,
+        "duration": 0.800000011920929,
+        "active_bones": 10,
+        "animated_components": 60,
+        "scale_tracks": 10,
+        "discarded_non_bind_scale_tracks": 10,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\dualpistol_reload.anm",
+      "kind": "binary_with_events",
+      "size": 906,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 358,
+      "uncompressed_size": 632,
+      "duration": 2.1666667461395264,
+      "output": "anims/dualpistol_reload.md5anim",
+      "conversion": {
+        "frames": 66,
+        "frame_rate": 30,
+        "duration": 2.1666667461395264,
+        "active_bones": 9,
+        "animated_components": 54,
+        "scale_tracks": 9,
+        "discarded_non_bind_scale_tracks": 0,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.27483876529628,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol_activate.anm",
+      "kind": "binary_with_events",
+      "size": 685,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 299,
+      "uncompressed_size": 644,
+      "duration": 0.6666666865348816,
+      "output": "anims/pistol_activate.md5anim",
+      "conversion": {
+        "frames": 21,
+        "frame_rate": 30,
+        "duration": 0.6666666865348816,
+        "active_bones": 13,
+        "animated_components": 78,
+        "scale_tracks": 13,
+        "discarded_non_bind_scale_tracks": 13,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol_deactivate.anm",
+      "kind": "binary_with_events",
+      "size": 570,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 299,
+      "uncompressed_size": 644,
+      "duration": 0.6666666865348816,
+      "output": "anims/pistol_deactivate.md5anim",
+      "conversion": {
+        "frames": 21,
+        "frame_rate": 30,
+        "duration": 0.6666666865348816,
+        "active_bones": 13,
+        "animated_components": 78,
+        "scale_tracks": 13,
+        "discarded_non_bind_scale_tracks": 13,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol_fire.anm",
+      "kind": "binary_with_events",
+      "size": 732,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 369,
+      "uncompressed_size": 732,
+      "duration": 0.36666667461395264,
+      "output": "anims/pistol_fire.md5anim",
+      "conversion": {
+        "frames": 12,
+        "frame_rate": 30,
+        "duration": 0.36666667461395264,
+        "active_bones": 13,
+        "animated_components": 78,
+        "scale_tracks": 13,
+        "discarded_non_bind_scale_tracks": 0,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.27501393718144,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol_idle.anm",
+      "kind": "binary",
+      "size": 314,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 297,
+      "uncompressed_size": 644,
+      "duration": 1.600000023841858,
+      "output": "anims/pistol_idle.md5anim",
+      "conversion": {
+        "frames": 49,
+        "frame_rate": 30,
+        "duration": 1.600000023841858,
+        "active_bones": 13,
+        "animated_components": 78,
+        "scale_tracks": 13,
+        "discarded_non_bind_scale_tracks": 13,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol_idletwirl.anm",
+      "kind": "binary_with_events",
+      "size": 458,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 295,
+      "uncompressed_size": 644,
+      "duration": 2.0,
+      "output": "anims/pistol_idletwirl.md5anim",
+      "conversion": {
+        "frames": 61,
+        "frame_rate": 30,
+        "duration": 2.0,
+        "active_bones": 13,
+        "animated_components": 78,
+        "scale_tracks": 13,
+        "discarded_non_bind_scale_tracks": 0,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.27489223738774,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol_melee.anm",
+      "kind": "binary",
+      "size": 316,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 299,
+      "uncompressed_size": 644,
+      "duration": 0.5333333611488342,
+      "output": "anims/pistol_melee.md5anim",
+      "conversion": {
+        "frames": 17,
+        "frame_rate": 30,
+        "duration": 0.5333333611488342,
+        "active_bones": 13,
+        "animated_components": 78,
+        "scale_tracks": 13,
+        "discarded_non_bind_scale_tracks": 13,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 21.274970912302273,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol_reload.anm",
+      "kind": "binary_with_events",
+      "size": 2202,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 1228,
+      "uncompressed_size": 2345,
+      "duration": 2.1666667461395264,
+      "output": "anims/pistol_reload.md5anim",
+      "conversion": {
+        "frames": 66,
+        "frame_rate": 30,
+        "duration": 2.1666667461395264,
+        "active_bones": 12,
+        "animated_components": 72,
+        "scale_tracks": 12,
+        "discarded_non_bind_scale_tracks": 1,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 47.99895313524109,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\scr_a_edf_cpr_transition_b.anm",
+      "kind": "binary",
+      "size": 1718,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 1701,
+      "uncompressed_size": 2025,
+      "duration": 3.0333333015441895,
+      "output": "anims/scr_a_edf_cpr_transition_b.md5anim",
+      "conversion": {
+        "frames": 92,
+        "frame_rate": 30,
+        "duration": 3.0333333015441895,
+        "active_bones": 12,
+        "animated_components": 72,
+        "scale_tracks": 12,
+        "discarded_non_bind_scale_tracks": 0,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 10.723872757614776,
+        "bounds_extent": 45.21421674280681,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    }
+  ],
+  "animation_summary": {
+    "inventoried": 17,
+    "converted": 17,
+    "failed": 0,
+    "hardlinked": 0,
+    "derived_or_procedural": 0,
+    "discarded_non_bind_scale_tracks": 133,
+    "discarded_out_of_range_tracks": 0
+  },
+  "mac_transform": {
+    "position": "(source_x, -source_y, source_z)",
+    "uv": "(u, 1-v)",
+    "winding": "reversed"
+  },
+  "mounts": [],
+  "warnings": [
+    "133 animated scale tracks were omitted because MD5Anim has no joint-scale channels."
+  ],
+  "texture_directory": "models/weapons/pistol",
+  "texture_index": "_reports/model_textures.json",
+  "texture_files": [
+    "models/weapons/pistol/mt_skins6.1911Pistol.1911_D.png"
+  ],
+  "texture_bindings": [
+    {
+      "object": "mt_skins6.1911Pistol.1911_D",
+      "file": "models/weapons/pistol/mt_skins6.1911Pistol.1911_D.png"
+    }
+  ]
+}

@@ -331,6 +331,9 @@ private:
 	void					MuzzleRise( idVec3 &origin, idMat3 &axis );
 	void					UpdateNozzleFx( void );
 	void					UpdateFlashPosition( void );
+	bool					UseWorldModelForFirstPerson( void ) const;
+	bool					GetActiveJointTransform( jointHandle_t viewJoint, jointHandle_t worldJoint, idVec3 &offset, idMat3 &axis );
+	bool					GetActiveJointTransform( jointHandle_t viewJoint, const char *jointName, idVec3 &offset, idMat3 &axis );
 
 	// script events
 	D3_EVENT( EV_Weapon_Clear, "<clear>", void )

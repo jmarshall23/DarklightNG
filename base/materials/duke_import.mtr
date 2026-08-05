@@ -1,0 +1,48 @@
+models/md5/player/duke_body {
+	qer_editorimage models/md5/player/duke_body_d.tga
+	diffusemap models/md5/player/duke_body_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/md5/player/duke_head {
+	qer_editorimage models/md5/player/duke_head_d.tga
+	diffusemap models/md5/player/duke_head_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/md5/player/duke_hands {
+	qer_editorimage models/md5/player/duke_hand_d.tga
+	diffusemap models/md5/player/duke_hand_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/weapons2/pistol/duke_pistol {
+	qer_editorimage models/weapons2/pistol/duke_pistol_d.tga
+	diffusemap models/weapons2/pistol/duke_pistol_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/weapons2/shotgun/duke_shotgun_body {
+	qer_editorimage models/weapons2/shotgun/duke_shotgun_body_d.tga
+	diffusemap models/weapons2/shotgun/duke_shotgun_body_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/weapons2/shotgun/duke_shotgun_details {
+	qer_editorimage models/weapons2/shotgun/duke_shotgun_details_d.tga
+	diffusemap models/weapons2/shotgun/duke_shotgun_details_d.tga
+	bumpmap _flat
+	specularmap _black
+}
+
+models/weapons2/machinegun/duke_machinegun {
+	qer_editorimage models/weapons2/machinegun/duke_machinegun_d.tga
+	diffusemap models/weapons2/machinegun/duke_machinegun_d.tga
+	bumpmap _flat
+	specularmap _black
+}

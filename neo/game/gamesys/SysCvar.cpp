@@ -311,6 +311,10 @@ idCVar pm_modelView(				"pm_modelView",				"0",			CVAR_GAME | CVAR_NETWORKSYNC |
 idCVar pm_airTics(					"pm_air",					"1800",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_INTEGER, "how long in milliseconds the player can go without air before he starts taking damage" );
 
 idCVar g_showPlayerShadow(			"g_showPlayerShadow",		"0",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "enables shadow of player model" );
+idCVar g_fullBodyFirstPerson(		"g_fullBodyFirstPerson",	"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "use the animated player body and world weapon in first person" );
+idCVar g_fullBodyViewX(				"g_fullBodyViewX",			"0",			CVAR_GAME | CVAR_ARCHIVE | CVAR_FLOAT, "forward offset of the full-body first-person camera" );
+idCVar g_fullBodyViewY(				"g_fullBodyViewY",			"0",			CVAR_GAME | CVAR_ARCHIVE | CVAR_FLOAT, "side offset of the full-body first-person camera" );
+idCVar g_fullBodyViewZ(				"g_fullBodyViewZ",			"0",			CVAR_GAME | CVAR_ARCHIVE | CVAR_FLOAT, "up offset of the full-body first-person camera" );
 idCVar g_showHud(					"g_showHud",				"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "" );
 idCVar g_showProjectilePct(			"g_showProjectilePct",		"0",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "enables display of player hit percentage" );
 idCVar g_showBrass(					"g_showBrass",				"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "enables ejected shells from weapon" );

@@ -1161,6 +1161,7 @@ idPlayer::idPlayer() {
 	hipJoint				= INVALID_JOINT;
 	chestJoint				= INVALID_JOINT;
 	headJoint				= INVALID_JOINT;
+	fullBodyAimJoint		= INVALID_JOINT;
 
 	bobFoot					= 0;
 	bobFrac					= 0.0f;
@@ -1531,6 +1532,12 @@ void idPlayer::Init( void ) {
 	headJoint = animator.GetJointHandle( value );
 	if ( headJoint == INVALID_JOINT ) {
 		gameLocal.Error( "Joint '%s' not found for 'bone_head' on '%s'", value, name.c_str() );
+	}
+
+	value = spawnArgs.GetString( "joint_fullBodyAim", "" );
+	fullBodyAimJoint = ( value && value[ 0 ] ) ? animator.GetJointHandle( value ) : INVALID_JOINT;
+	if ( spawnArgs.GetBool( "anim_singleChannel", "0" ) && fullBodyAimJoint == INVALID_JOINT ) {
+		gameLocal.Warning( "Full-body aim joint '%s' not found on '%s'", value, name.c_str() );
 	}
 
 	// initialize the script variables
@@ -2216,6 +2223,7 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	savefile->ReadJoint( hipJoint );
 	savefile->ReadJoint( chestJoint );
 	savefile->ReadJoint( headJoint );
+	fullBodyAimJoint = animator.GetJointHandle( spawnArgs.GetString( "joint_fullBodyAim", "" ) );
 
 	savefile->ReadStaticObject( physicsObj );
 	RestorePhysics( &physicsObj );
@@ -6617,6 +6625,21 @@ void idPlayer::AdjustBodyAngles( void ) {
 	legsAxis = idAngles( 0.0f, legsYaw, 0.0f ).ToMat3();
 	animator.SetJointAxis( hipJoint, JOINTMOD_WORLD, legsAxis );
 
+	if ( spawnArgs.GetBool( "anim_singleChannel", "0" ) ) {
+		if ( fullBodyAimJoint != INVALID_JOINT ) {
+			const float pitchScale = spawnArgs.GetFloat( "fullBodyAimPitchScale", "1" );
+			const float minPitch = spawnArgs.GetFloat( "fullBodyAimPitchMin", "-80" );
+			const float maxPitch = spawnArgs.GetFloat( "fullBodyAimPitchMax", "80" );
+			const float aimPitch = idMath::ClampFloat( minPitch, maxPitch, viewAngles.pitch * pitchScale );
+			animator.SetJointAxis( fullBodyAimJoint, JOINTMOD_WORLD, idAngles( aimPitch, 0.0f, 0.0f ).ToMat3() );
+		}
+
+		// Single-channel actors do not have live torso or legs blends.  The
+		// aim_upper joint modification above replaces Doom's three-way synced
+		// torso aim grid and keeps the hands attached to mouse-look pitch.
+		return;
+	}
+
 	// calculate the blending between down, straight, and up
 	frac = viewAngles.pitch / 90.0f;
 	if ( frac > 0.0f ) {
@@ -7146,6 +7169,7 @@ void idPlayer::Think( void ) {
 
 	// this may use firstPersonView, or a thirdPeroson / camera view
 	CalculateRenderView();
+	UpdateFirstPersonBodyVisibility();
 
 	inventory.UpdateArmor();
 
@@ -7204,7 +7228,8 @@ void idPlayer::Think( void ) {
 		}
 	}
 
-	if ( gameLocal.isMultiplayer || g_showPlayerShadow.GetBool() ) {
+	const bool fullBodyFirstPerson = IsFullBodyFirstPersonActive();
+	if ( gameLocal.isMultiplayer || g_showPlayerShadow.GetBool() || fullBodyFirstPerson ) {
 		renderEntity->SetSuppressShadowInViewID( 0 );
 		if ( headRenderEnt ) {
 			headRenderEnt->SetSuppressShadowInViewID( 0 );
@@ -7215,10 +7240,12 @@ void idPlayer::Think( void ) {
 			headRenderEnt->SetSuppressShadowInViewID( entityNumber + 1 );
 		}
 	}
-	// never cast shadows from our first-person muzzle flashes
-	renderEntity->SetSuppressShadowInLightID( LIGHTID_VIEW_MUZZLE_FLASH + entityNumber );
+	// Never cast shadows from the muzzle flash used by the active first-person
+	// presentation.  The world flash replaces the view flash in full-body mode.
+	const int firstPersonMuzzleLightID = ( fullBodyFirstPerson ? LIGHTID_WORLD_MUZZLE_FLASH : LIGHTID_VIEW_MUZZLE_FLASH ) + entityNumber;
+	renderEntity->SetSuppressShadowInLightID( firstPersonMuzzleLightID );
 	if ( headRenderEnt ) {
-		headRenderEnt->SetSuppressShadowInLightID( LIGHTID_VIEW_MUZZLE_FLASH + entityNumber );
+		headRenderEnt->SetSuppressShadowInLightID( firstPersonMuzzleLightID );
 	}
 
 	if ( !g_stopTime.GetBool() ) {
@@ -8310,7 +8337,9 @@ idPlayer::CalculateFirstPersonView
 ===============
 */
 void idPlayer::CalculateFirstPersonView( void ) {
-	if ( ( pm_modelView.GetInteger() == 1 ) || ( ( pm_modelView.GetInteger() == 2 ) && ( health <= 0 ) ) ) {
+	const bool fullBodyFirstPerson = IsFullBodyFirstPersonActive();
+
+	if ( !fullBodyFirstPerson && ( ( pm_modelView.GetInteger() == 1 ) || ( ( pm_modelView.GetInteger() == 2 ) && ( health <= 0 ) ) ) ) {
 		//	Displays the view from the point of view of the "camera" joint in the player model
 
 		idMat3 axis;
@@ -8327,10 +8356,77 @@ void idPlayer::CalculateFirstPersonView( void ) {
 	} else {
 		// offset for local bobbing and kicks
 		GetViewPos( firstPersonViewOrigin, firstPersonViewAxis );
+
+		if ( fullBodyFirstPerson ) {
+			const idMat3 bodyAxis = viewAxis * physicsObj.GetGravityAxis();
+			idAngles fullBodyViewAngles = viewAngles + playerView.AngleOffset();
+			const char *cameraJointName = spawnArgs.GetString( "joint_fullBodyCamera", "mount_camera" );
+			const jointHandle_t cameraJoint = animator.GetJointHandle( cameraJointName );
+			idVec3 cameraOrigin;
+			idMat3 cameraAxis;
+
+			// The imported full-body animation already moves mount_camera with the
+			// character.  Do not layer Doom's procedural viewBob/viewBobAngles on
+			// top of that motion.  Keep view/damage kick through AngleOffset().
+			firstPersonViewAxis = fullBodyViewAngles.ToMat3() * physicsObj.GetGravityAxis();
+
+			// Anchor only the camera translation to the imported model's eye-level
+			// joint.  Mouse-look remains responsible for orientation so weapon and
+			// head animation cannot rotate the first-person view away from the aim.
+			if ( cameraJoint != INVALID_JOINT && animator.GetJointTransform( cameraJoint, gameLocal.time, cameraOrigin, cameraAxis ) ) {
+				firstPersonViewOrigin = ( cameraOrigin + modelOffset ) * bodyAxis + physicsObj.GetOrigin();
+			} else {
+				// Match GetViewPos's non-bobbed eye/nodal position if the imported
+				// model does not provide its configured camera joint.
+				firstPersonViewOrigin = GetEyePosition();
+				firstPersonViewOrigin += physicsObj.GetGravityNormal() * g_viewNodalZ.GetFloat();
+				firstPersonViewOrigin += firstPersonViewAxis[ 0 ] * g_viewNodalX.GetFloat();
+				firstPersonViewOrigin += firstPersonViewAxis[ 2 ] * g_viewNodalZ.GetFloat();
+			}
+
+			firstPersonViewOrigin += bodyAxis[ 0 ] * g_fullBodyViewX.GetFloat();
+			firstPersonViewOrigin += bodyAxis[ 1 ] * g_fullBodyViewY.GetFloat();
+			firstPersonViewOrigin += bodyAxis[ 2 ] * g_fullBodyViewZ.GetFloat();
+		}
 #if 0
 		// shakefrom sound stuff only happens in first person
 		firstPersonViewAxis = firstPersonViewAxis * playerView.ShakeAxis();
 #endif
+	}
+}
+
+/*
+===============
+idPlayer::IsFullBodyFirstPersonActive
+===============
+*/
+bool idPlayer::IsFullBodyFirstPersonActive( void ) const {
+	return g_fullBodyFirstPerson.GetBool()
+		&& gameLocal.GetLocalPlayer() == this
+		&& health > 0
+		&& !spectating
+		&& !pm_thirdPerson.GetBool()
+		&& !gameLocal.inCinematic
+		&& !privateCameraView
+		&& !gameLocal.GetCamera();
+}
+
+/*
+===============
+idPlayer::UpdateFirstPersonBodyVisibility
+===============
+*/
+void idPlayer::UpdateFirstPersonBodyVisibility( void ) {
+	const int playerViewID = entityNumber + 1;
+	const bool fullBodyFirstPerson = IsFullBodyFirstPersonActive();
+
+	// The body is the first-person model in full-body mode.  The separately
+	// attached head remains hidden only in this player's view so mirrors,
+	// cameras and other players still see a complete character.
+	renderEntity->SetSuppressSurfaceInViewID( fullBodyFirstPerson ? 0 : playerViewID );
+
+	if ( head.GetEntity() && head.GetEntity()->GetRenderEntity() ) {
+		head.GetEntity()->GetRenderEntity()->SetSuppressSurfaceInViewID( playerViewID );
 	}
 }
 
@@ -9008,6 +9104,7 @@ void idPlayer::ClientPredictionThink( void ) {
 
 	// this may use firstPersonView, or a thirdPerson / camera view
 	CalculateRenderView();
+	UpdateFirstPersonBodyVisibility();
 
 	if ( !gameLocal.inCinematic && weapon.GetEntity() && ( health > 0 ) && !( gameLocal.isMultiplayer && spectating ) ) {
 		UpdateWeapon();
@@ -9035,7 +9132,8 @@ void idPlayer::ClientPredictionThink( void ) {
 		}
 	}
 
-	if ( gameLocal.isMultiplayer || g_showPlayerShadow.GetBool() ) {
+	const bool fullBodyFirstPerson = IsFullBodyFirstPersonActive();
+	if ( gameLocal.isMultiplayer || g_showPlayerShadow.GetBool() || fullBodyFirstPerson ) {
 		renderEntity->SetSuppressShadowInViewID( 0 );
 		if ( headRenderEnt ) {
 			headRenderEnt->SetSuppressShadowInViewID( 0 );
@@ -9046,10 +9144,12 @@ void idPlayer::ClientPredictionThink( void ) {
 			headRenderEnt->SetSuppressShadowInViewID( entityNumber + 1 );
 		}
 	}
-	// never cast shadows from our first-person muzzle flashes
-	renderEntity->SetSuppressShadowInLightID( LIGHTID_VIEW_MUZZLE_FLASH + entityNumber );
+	// Never cast shadows from the muzzle flash used by the active first-person
+	// presentation.  The world flash replaces the view flash in full-body mode.
+	const int firstPersonMuzzleLightID = ( fullBodyFirstPerson ? LIGHTID_WORLD_MUZZLE_FLASH : LIGHTID_VIEW_MUZZLE_FLASH ) + entityNumber;
+	renderEntity->SetSuppressShadowInLightID( firstPersonMuzzleLightID );
 	if ( headRenderEnt ) {
-		headRenderEnt->SetSuppressShadowInLightID( LIGHTID_VIEW_MUZZLE_FLASH + entityNumber );
+		headRenderEnt->SetSuppressShadowInLightID( firstPersonMuzzleLightID );
 	}
 
 	if ( !gameLocal.inCinematic ) {
@@ -9604,7 +9704,7 @@ idPlayer::CanShowWeaponViewmodel
 ===============
 */
 bool idPlayer::CanShowWeaponViewmodel( void ) const {
-	return showWeaponViewModel;
+	return showWeaponViewModel || IsFullBodyFirstPersonActive();
 }
 
 /*

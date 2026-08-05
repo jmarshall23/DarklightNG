@@ -1,0 +1,86 @@
+{
+  "source": {
+    "mesh": "weapons/pistol/pistol_lod2.msh",
+    "mesh_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol_lod2.msh",
+    "skeleton": "weapons/pistol/pistol.skl",
+    "skeleton_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\pistol\\pistol.skl"
+  },
+  "config": "dnf-retail-supplemental-mesh-v1",
+  "type": "skeletal",
+  "role": "lod",
+  "format": "md5",
+  "output_directory": "models/weapons/pistol",
+  "files": [
+    "models/weapons/pistol/pistol_lod2.md5mesh"
+  ],
+  "geometry": {
+    "joints": 13,
+    "surfaces": 1,
+    "source_vertices": 1007,
+    "output_vertices": 1007,
+    "triangles": 597,
+    "weights": 1016,
+    "max_bind_reconstruction_error": 0.0,
+    "resolved_shaders": 1,
+    "unresolved_shaders": 0,
+    "warnings": []
+  },
+  "skeleton": {
+    "bones": 13,
+    "synthetic": false,
+    "augmented_identity_bones": 0
+  },
+  "materials": {
+    "resolved": true,
+    "slots": [
+      "models/weapons/pistol/mt_skins6.1911Pistol.1911_D.png"
+    ],
+    "source_objects": [
+      "mt_skins6.1911Pistol.1911_FB"
+    ],
+    "albedo_resolved": true,
+    "inherited_from": "weapons/pistol",
+    "slot_bindings": [
+      {
+        "slot": 0,
+        "material": "mt_skins6.1911Pistol.1911_FB",
+        "albedo_textures": [
+          "mt_skins6.1911Pistol.1911_D"
+        ],
+        "primary_albedo": "mt_skins6.1911Pistol.1911_D",
+        "shader": "models/weapons/pistol/mt_skins6.1911Pistol.1911_D.png",
+        "resolved": true,
+        "composite_color_layers": false
+      }
+    ],
+    "source_asset": "c_dnweapon.Pistol"
+  },
+  "animations": [],
+  "animation_summary": {
+    "inventoried": 0,
+    "converted": 0,
+    "failed": 0,
+    "hardlinked": 0,
+    "derived_or_procedural": 0,
+    "discarded_non_bind_scale_tracks": 0,
+    "discarded_out_of_range_tracks": 0
+  },
+  "mac_transform": {
+    "position": "(source_x, -source_y, source_z)",
+    "uv": "(u, 1-v)",
+    "winding": "reversed"
+  },
+  "mounts": [],
+  "warnings": [],
+  "texture_directory": "models/weapons/pistol",
+  "texture_index": "_reports/model_textures.json",
+  "texture_files": [
+    "models/weapons/pistol/mt_skins6.1911Pistol.1911_D.png"
+  ],
+  "texture_bindings": [
+    {
+      "object": "mt_skins6.1911Pistol.1911_D",
+      "file": "models/weapons/pistol/mt_skins6.1911Pistol.1911_D.png"
+    }
+  ]
+}

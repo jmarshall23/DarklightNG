@@ -814,9 +814,9 @@ void idWeapon::InitWorldModel( const idDeclEntityDef *def ) {
 		ent->Hide();
 	}
 
-	flashJointWorld = ent->GetAnimator()->GetJointHandle( "flash" );
-	barrelJointWorld = ent->GetAnimator()->GetJointHandle( "muzzle" );
-	ejectJointWorld = ent->GetAnimator()->GetJointHandle( "eject" );
+	flashJointWorld = ent->GetAnimator()->GetJointHandle( def->dict.GetString( "joint_world_flash", "flash" ) );
+	barrelJointWorld = ent->GetAnimator()->GetJointHandle( def->dict.GetString( "joint_world_muzzle", "muzzle" ) );
+	ejectJointWorld = ent->GetAnimator()->GetJointHandle( def->dict.GetString( "joint_world_eject", "eject" ) );
 }
 
 /*
@@ -1280,7 +1280,7 @@ void idWeapon::MuzzleFlashLight( void ) {
 		return;
 	}
 
-	if ( flashJointView == INVALID_JOINT ) {
+	if ( flashJointView == INVALID_JOINT && flashJointWorld == INVALID_JOINT ) {
 		return;
 	}
 
@@ -1377,6 +1377,59 @@ bool idWeapon::GetGlobalJointTransform( bool viewModel, const jointHandle_t join
 			return true;
 		}
 	}
+	offset = viewWeaponOrigin;
+	axis = viewWeaponAxis;
+	return false;
+}
+
+/*
+================
+idWeapon::UseWorldModelForFirstPerson
+================
+*/
+bool idWeapon::UseWorldModelForFirstPerson( void ) const {
+	return owner && owner->IsFullBodyFirstPersonActive();
+}
+
+/*
+================
+idWeapon::GetActiveJointTransform
+
+Uses the attached world weapon for effects in full-body first person and
+falls back to the view weapon for weapons whose world model lacks the joint.
+================
+*/
+bool idWeapon::GetActiveJointTransform( jointHandle_t viewJoint, jointHandle_t worldJoint, idVec3 &offset, idMat3 &axis ) {
+	if ( UseWorldModelForFirstPerson() && worldJoint != INVALID_JOINT && GetGlobalJointTransform( false, worldJoint, offset, axis ) ) {
+		return true;
+	}
+
+	if ( viewJoint != INVALID_JOINT && GetGlobalJointTransform( true, viewJoint, offset, axis ) ) {
+		return true;
+	}
+
+	offset = viewWeaponOrigin;
+	axis = viewWeaponAxis;
+	return false;
+}
+
+/*
+================
+idWeapon::GetActiveJointTransform
+================
+*/
+bool idWeapon::GetActiveJointTransform( jointHandle_t viewJoint, const char *jointName, idVec3 &offset, idMat3 &axis ) {
+	if ( UseWorldModelForFirstPerson() && jointName && jointName[ 0 ] && worldModel.GetEntity() ) {
+		const jointHandle_t worldJoint = worldModel.GetEntity()->GetAnimator()->GetJointHandle( jointName );
+		if ( worldJoint != INVALID_JOINT && GetGlobalJointTransform( false, worldJoint, offset, axis ) ) {
+			return true;
+		}
+	}
+
+	if ( viewJoint != INVALID_JOINT && GetGlobalJointTransform( true, viewJoint, offset, axis ) ) {
+		return true;
+	}
+
 	offset = viewWeaponOrigin;
 	axis = viewWeaponAxis;
 	return false;
@@ -1754,8 +1807,12 @@ void idWeapon::UpdateNozzleFx( void ) {
 	}
 	renderEntity->SetShaderParm( 5, s );
 	renderEntity->SetShaderParm( 6, l );
+	if ( worldModel.GetEntity() ) {
+		worldModel.GetEntity()->SetShaderParm( 5, s );
+		worldModel.GetEntity()->SetShaderParm( 6, l );
+	}
 
-	if ( ventLightJointView == INVALID_JOINT ) {
+	if ( ventLightJointView == INVALID_JOINT && ( !UseWorldModelForFirstPerson() || barrelJointWorld == INVALID_JOINT ) ) {
 		return;
 	}
 
@@ -1775,14 +1832,14 @@ void idWeapon::UpdateNozzleFx( void ) {
 		nozzleGlow->SetShaderParm( SHADERPARM_TIMEOFFSET, -MS2SEC( gameLocal.time ) );
 		idVec3 glowOrigin;
 		idMat3 glowAxis;
-		GetGlobalJointTransform( true, ventLightJointView, glowOrigin, glowAxis );
+		GetActiveJointTransform( ventLightJointView, barrelJointWorld, glowOrigin, glowAxis );
 		nozzleGlow->SetOrigin( glowOrigin );
 		nozzleGlow->SetAxis( glowAxis );
 	}
 
 	idVec3 glowOrigin;
 	idMat3 glowAxis;
-	GetGlobalJointTransform( true, ventLightJointView, glowOrigin, glowAxis );
+	GetActiveJointTransform( ventLightJointView, barrelJointWorld, glowOrigin, glowAxis );
 	nozzleGlow->SetOrigin( glowOrigin );
 	nozzleGlow->SetAxis( glowAxis );
 
@@ -1813,7 +1870,7 @@ bool idWeapon::BloodSplat( float size ) {
 		return false;
 	}
 
-	if ( !GetGlobalJointTransform( true, ejectJointView, localOrigin, localAxis ) ) {
+	if ( !GetActiveJointTransform( ejectJointView, ejectJointWorld, localOrigin, localAxis ) ) {
 		return false;
 	}
 
@@ -2038,6 +2095,9 @@ idWeapon::PresentWeapon
 ================
 */
 void idWeapon::PresentWeapon( bool showViewModel ) {
+	const bool fullBodyFirstPerson = UseWorldModelForFirstPerson();
+	showViewModel = showViewModel && !fullBodyFirstPerson;
+
 	playerViewOrigin = owner->firstPersonViewOrigin;
 	playerViewAxis = owner->firstPersonViewAxis;
 
@@ -2081,6 +2141,10 @@ void idWeapon::PresentWeapon( bool showViewModel ) {
 
 	// only show the surface in player view
 	renderEntity->SetAllowSurfaceInViewID( owner->entityNumber + 1 );
+	// In full-body mode the attached world weapon is the only visible gun.  Keep
+	// the explicit view filter in addition to freeing the render model so a model
+	// definition left over from a prior frame cannot flash back into the view.
+	renderEntity->SetSuppressSurfaceInViewID( fullBodyFirstPerson ? owner->entityNumber + 1 : 0 );
 
 	// crunch the depth range so it never pokes into walls this breaks the machine gun gui
 	renderEntity->SetWeaponDepthHack( true );
@@ -2093,14 +2157,27 @@ void idWeapon::PresentWeapon( bool showViewModel ) {
 	}
 
 	if ( worldModel.GetEntity() && worldModel.GetEntity()->GetRenderEntity() ) {
-		// deal with the third-person visible world model
-		// don't show shadows of the world model in first person
-		if ( gameLocal.isMultiplayer || g_showPlayerShadow.GetBool() || pm_thirdPerson.GetBool() ) {
-			worldModel.GetEntity()->GetRenderEntity()->SetSuppressShadowInViewID( 0 );
+		// The attached world weapon becomes the first-person weapon in full-body
+		// mode.  View IDs still keep it out of classic first person while leaving
+		// mirrors, cameras and remote player views unchanged.
+		idRenderEntity *worldModelRenderEntity = worldModel.GetEntity()->GetRenderEntity();
+		worldModelRenderEntity->SetSuppressSurfaceInViewID( fullBodyFirstPerson ? 0 : owner->entityNumber + 1 );
+
+		if ( gameLocal.isMultiplayer || g_showPlayerShadow.GetBool() || pm_thirdPerson.GetBool() || fullBodyFirstPerson ) {
+			worldModelRenderEntity->SetSuppressShadowInViewID( 0 );
 		} else {
-			worldModel.GetEntity()->GetRenderEntity()->SetSuppressShadowInViewID( owner->entityNumber + 1 );
-			worldModel.GetEntity()->GetRenderEntity()->SetSuppressShadowInLightID( LIGHTID_VIEW_MUZZLE_FLASH + owner->entityNumber );
+			worldModelRenderEntity->SetSuppressShadowInViewID( owner->entityNumber + 1 );
 		}
+		worldModelRenderEntity->SetSuppressShadowInLightID( ( fullBodyFirstPerson ? LIGHTID_WORLD_MUZZLE_FLASH : LIGHTID_VIEW_MUZZLE_FLASH ) + owner->entityNumber );
+	}
+
+	// Exactly one muzzle flash is visible in the player's view.  Both are still
+	// maintained because mirrors and remote views use the world flash.
+	if ( muzzleFlash ) {
+		muzzleFlash->SetSuppressLightInViewID( fullBodyFirstPerson ? owner->entityNumber + 1 : 0 );
+	}
+	if ( worldMuzzleFlash ) {
+		worldMuzzleFlash->SetSuppressLightInViewID( fullBodyFirstPerson ? 0 : owner->entityNumber + 1 );
 	}
 
 	if ( nozzleFx ) {
@@ -2108,15 +2185,18 @@ void idWeapon::PresentWeapon( bool showViewModel ) {
 	}
 
 	// muzzle smoke
-	if ( showViewModel && !disabled && weaponSmoke && ( weaponSmokeStartTime != 0 ) ) {
+	if ( ( showViewModel || fullBodyFirstPerson ) && !disabled && weaponSmoke && ( weaponSmokeStartTime != 0 ) ) {
 		// use the barrel joint if available
+		bool foundSmokeJoint = false;
+		if ( fullBodyFirstPerson && barrelJointWorld != INVALID_JOINT ) {
+			foundSmokeJoint = GetGlobalJointTransform( false, barrelJointWorld, muzzleOrigin, muzzleAxis );
+		} else if ( smokeJointView != INVALID_JOINT ) {
+			foundSmokeJoint = GetGlobalJointTransform( true, smokeJointView, muzzleOrigin, muzzleAxis );
+		} else if ( barrelJointView != INVALID_JOINT ) {
+			foundSmokeJoint = GetGlobalJointTransform( true, barrelJointView, muzzleOrigin, muzzleAxis );
+		}
 
-		if(smokeJointView != INVALID_JOINT) {
-			GetGlobalJointTransform( true, smokeJointView, muzzleOrigin, muzzleAxis );
-		} else if (barrelJointView != INVALID_JOINT) {
-			GetGlobalJointTransform( true, barrelJointView, muzzleOrigin, muzzleAxis );
-		} else {
-			// default to going straight out the view
+		if ( !foundSmokeJoint ) {
 			muzzleOrigin = playerViewOrigin;
 			muzzleAxis = playerViewAxis;
 		}
@@ -2126,23 +2206,22 @@ void idWeapon::PresentWeapon( bool showViewModel ) {
 		}
 	}
 
-	if ( showViewModel && strikeSmoke && strikeSmokeStartTime != 0 ) {
+	if ( ( showViewModel || fullBodyFirstPerson ) && strikeSmoke && strikeSmokeStartTime != 0 ) {
 		// spit out a particle
 		if ( !gameLocal.smokeParticles->EmitSmoke( strikeSmoke, strikeSmokeStartTime, gameLocal.random.RandomFloat(), strikePos, strikeAxis, timeGroup /*_D3XP*/ ) ) {
 			strikeSmokeStartTime = 0;
 		}
 	}
 
-	if ( showViewModel && !hide ) {
+	if ( ( showViewModel || fullBodyFirstPerson ) && !hide ) {
 
 		for( int i = 0; i < weaponParticles.Num(); i++ ) {
 			WeaponParticle_t* part = weaponParticles.GetIndex(i);
 
 			if(part->active) {
 				if(part->smoke) {
-					if(part->joint != INVALID_JOINT) {
-						GetGlobalJointTransform( true, part->joint, muzzleOrigin, muzzleAxis );
-					} else {
+					const char *jointName = weaponDef ? weaponDef->dict.GetString( va( "%s_joint", part->name ) ) : "";
+					if ( !GetActiveJointTransform( part->joint, jointName, muzzleOrigin, muzzleAxis ) ) {
 						// default to going straight out the view
 						muzzleOrigin = playerViewOrigin;
 						muzzleAxis = playerViewAxis;
@@ -2156,7 +2235,8 @@ void idWeapon::PresentWeapon( bool showViewModel ) {
 					idRenderEntity *rendEnt = part->emitter->GetRenderEntity();
 					idVec3 emitterOrigin;
 					idMat3 emitterAxis;
-					GetGlobalJointTransform( true, part->joint, emitterOrigin, emitterAxis );
+					const char *jointName = weaponDef ? weaponDef->dict.GetString( va( "%s_joint", part->name ) ) : "";
+					GetActiveJointTransform( part->joint, jointName, emitterOrigin, emitterAxis );
 					rendEnt->SetOrigin( emitterOrigin );
 					rendEnt->SetAxis( emitterAxis );
 
@@ -2174,7 +2254,8 @@ void idWeapon::PresentWeapon( bool showViewModel ) {
 
 				idVec3 lightOrigin;
 				idMat3 lightAxis;
-				GetGlobalJointTransform( true, light->joint, lightOrigin, lightAxis );
+				const char *jointName = weaponDef ? weaponDef->dict.GetString( va( "%s_joint", light->name ) ) : "";
+				GetActiveJointTransform( light->joint, jointName, lightOrigin, lightAxis );
 				light->light->SetOrigin( lightOrigin );
 				light->light->SetAxis( lightAxis );
 				light->light->UpdateRenderLight();
@@ -2203,7 +2284,7 @@ void idWeapon::PresentWeapon( bool showViewModel ) {
 	if ( guiLight != NULL && guiLight->GetLightRadius()[0] && guiLightJointView != INVALID_JOINT ) {
 		idVec3 lightOrigin;
 		idMat3 lightAxis;
-		GetGlobalJointTransform( true, guiLightJointView, lightOrigin, lightAxis );
+		GetActiveJointTransform( guiLightJointView, "guiLight", lightOrigin, lightAxis );
 		guiLight->SetOrigin( lightOrigin );
 		guiLight->SetAxis( lightAxis );
 
@@ -3183,9 +3264,8 @@ void idWeapon::Event_LaunchProjectiles( int num_projectiles, float spread, float
 	}
 
 	// calculate the muzzle position
-	if ( barrelJointView != INVALID_JOINT && projectileDict.GetBool( "launchFromBarrel" ) ) {
+	if ( projectileDict.GetBool( "launchFromBarrel" ) && GetActiveJointTransform( barrelJointView, barrelJointWorld, muzzleOrigin, muzzleAxis ) ) {
 		// there is an explicit joint for the muzzle
-		GetGlobalJointTransform( true, barrelJointView, muzzleOrigin, muzzleAxis );
 	} else {
 		// go straight out of the view
 		muzzleOrigin = playerViewOrigin;
@@ -3350,9 +3430,8 @@ void idWeapon::Event_LaunchProjectilesEllipse( int num_projectiles, float spread
 	}
 
 	// calculate the muzzle position
-	if ( barrelJointView != INVALID_JOINT && projectileDict.GetBool( "launchFromBarrel" ) ) {
+	if ( projectileDict.GetBool( "launchFromBarrel" ) && GetActiveJointTransform( barrelJointView, barrelJointWorld, muzzleOrigin, muzzleAxis ) ) {
 		// there is an explicit joint for the muzzle
-		GetGlobalJointTransform( true, barrelJointView, muzzleOrigin, muzzleAxis );
 	} else {
 		// go straight out of the view
 		muzzleOrigin = playerViewOrigin;
@@ -3697,7 +3776,7 @@ void idWeapon::Event_EjectBrass( void ) {
 		return;
 	}
 
-	if ( ejectJointView == INVALID_JOINT || !brassDict.GetNumKeyVals() ) {
+	if ( !brassDict.GetNumKeyVals() ) {
 		return;
 	}
 
@@ -3709,7 +3788,7 @@ void idWeapon::Event_EjectBrass( void ) {
 	idVec3 origin, linear_velocity, angular_velocity;
 	idEntity *ent;
 
-	if ( !GetGlobalJointTransform( true, ejectJointView, origin, axis ) ) {
+	if ( !GetActiveJointTransform( ejectJointView, ejectJointWorld, origin, axis ) ) {
 		return;
 	}
 

@@ -1,0 +1,244 @@
+/***********************************************************************
+
+	Duke full-body player and weapon models
+
+***********************************************************************/
+
+model model_sp_duke {
+	mesh			models/md5/player/duke_retarget.md5mesh
+
+	// Doom's player script still uses torso/legs state names as controllers,
+	// but this model renders one complete MD5 on ANIMCHANNEL_ALL.  Leave the
+	// legacy body channels empty so they cannot compose two visible poses.
+	channel torso	( )
+	channel legs	( )
+
+	anim af_pose		models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+	anim ik_pose		models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+	anim initial		models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+	anim teleport	models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+	anim exit		models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+
+	// Complete no-weapon/fists locomotion clips.
+	anim idle					models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+	anim crouch_down			models/md5/player/anims/ai_a_ready_fists_stand_2_crouch.md5anim
+	anim crouch				models/md5/player/anims/ai_a_neutral_noweapon_crouch_idle.md5anim
+	anim crouch_up			models/md5/player/anims/ai_a_ready_fists_crouch_2_stand.md5anim
+	// The Duke export has no complete crouch-walk clip.  Use its complete
+	// crouch cycle here instead of recombining the partial b_* asset.
+	anim crouch_walk			models/md5/player/anims/ai_a_neutral_noweapon_crouch_idle.md5anim
+	anim crouch_walk_backwards	models/md5/player/anims/ai_a_neutral_noweapon_crouch_idle.md5anim
+	anim walk					models/md5/player/anims/ai_a_ready_fists_stand_walk.md5anim
+	anim walk_backwards			models/md5/player/anims/ai_a_ready_fists_stand_walkback.md5anim
+	anim walk_strafe_left		models/md5/player/anims/ai_a_ready_fists_stand_strafeleft.md5anim
+	anim walk_strafe_right		models/md5/player/anims/ai_a_ready_fists_stand_straferight.md5anim
+	anim run_forward			models/md5/player/anims/ai_a_ready_fists_stand_run.md5anim
+	anim run_backwards			models/md5/player/anims/ai_a_ready_fists_stand_runback.md5anim
+	anim run_strafe_left		models/md5/player/anims/ai_a_ready_fists_stand_strafeleft.md5anim
+	anim run_strafe_right		models/md5/player/anims/ai_a_ready_fists_stand_straferight.md5anim
+	anim jump					models/md5/player/anims/ai_a_ready_fists_jump_takeoff.md5anim
+	anim run_jump				models/md5/player/anims/ai_a_ready_fists_jump_takeoff.md5anim
+	anim soft_land				models/md5/player/anims/ai_a_ready_fists_jump_landing.md5anim
+	anim hard_land				models/md5/player/anims/ai_a_ready_fists_jump_landinghard.md5anim
+	anim fall					models/md5/player/anims/ai_a_ready_fists_jump_falloff.md5anim
+	anim turn_left				models/md5/player/anims/ai_a_ready_fists_stand_turn90left.md5anim
+	anim turn_right				models/md5/player/anims/ai_a_ready_fists_stand_turn90right.md5anim
+	anim pain					models/md5/player/anims/ai_a_ready_fists_pain_stand_big_front.md5anim
+	anim pain_head				models/md5/player/anims/ai_a_ready_fists_pain_stand_short_front.md5anim
+	anim pain_right_arm			models/md5/player/anims/ai_a_ready_fists_pain_stand_big_right.md5anim
+	anim pain_left_arm			models/md5/player/anims/ai_a_ready_fists_pain_stand_big_left.md5anim
+	anim pain_chest				models/md5/player/anims/ai_a_ready_fists_pain_stand_big_front.md5anim
+
+	anim pda_raise	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim pda_idle	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim pda_lower	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+
+	// Fists: one complete MD5 per state.
+	anim fists_raise			models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+	anim fists_idle			models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+	anim fists_aim			models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+	anim fists_punch_right	models/md5/player/anims/ai_a_ready_fists_stand_melee01.md5anim
+	anim fists_punch_left	models/md5/player/anims/ai_a_ready_fists_stand_melee02.md5anim
+	anim fists_lower			models/md5/player/anims/ai_a_ready_fists_stand_idle.md5anim
+
+	// Pistol: bake the correct upper-body fire onto a complete idle pose so
+	// single-channel playback keeps a valid full-body skeleton while firing.
+	anim pistol_raise	models/md5/player/anims/fullbody/pistol_raise.md5anim
+	anim pistol_idle	models/md5/player/anims/fullbody/pistol_idle.md5anim
+	anim pistol_aim		models/md5/player/anims/fullbody/pistol_aim.md5anim
+	anim pistol_fire1	models/md5/player/anims/fullbody/pistol_fire1.md5anim
+	anim pistol_reload	models/md5/player/anims/fullbody/pistol_reload.md5anim
+	anim pistol_lower	models/md5/player/anims/fullbody/pistol_lower.md5anim
+
+	anim pistol_crouch_down			models/md5/player/anims/fullbody/pistol_crouch_down.md5anim
+	anim pistol_crouch				models/md5/player/anims/fullbody/pistol_crouch.md5anim
+	anim pistol_crouch_up			models/md5/player/anims/fullbody/pistol_crouch_up.md5anim
+	anim pistol_crouch_walk			models/md5/player/anims/fullbody/pistol_crouch_walk.md5anim
+	anim pistol_crouch_walk_backwards	models/md5/player/anims/fullbody/pistol_crouch_walk_backwards.md5anim
+	anim pistol_walk				models/md5/player/anims/fullbody/pistol_walk.md5anim
+	anim pistol_walk_backwards		models/md5/player/anims/fullbody/pistol_walk_backwards.md5anim
+	anim pistol_walk_strafe_left		models/md5/player/anims/fullbody/pistol_walk_strafe_left.md5anim
+	anim pistol_walk_strafe_right	models/md5/player/anims/fullbody/pistol_walk_strafe_right.md5anim
+	anim pistol_run_forward			models/md5/player/anims/fullbody/pistol_run_forward.md5anim
+	anim pistol_run_backwards		models/md5/player/anims/fullbody/pistol_run_backwards.md5anim
+	anim pistol_run_strafe_left		models/md5/player/anims/fullbody/pistol_run_strafe_left.md5anim
+	anim pistol_run_strafe_right		models/md5/player/anims/fullbody/pistol_run_strafe_right.md5anim
+	anim pistol_jump				models/md5/player/anims/fullbody/pistol_jump.md5anim
+	anim pistol_run_jump			models/md5/player/anims/fullbody/pistol_run_jump.md5anim
+	anim pistol_soft_land			models/md5/player/anims/fullbody/pistol_soft_land.md5anim
+	anim pistol_hard_land			models/md5/player/anims/fullbody/pistol_hard_land.md5anim
+	anim pistol_fall				models/md5/player/anims/fullbody/pistol_fall.md5anim
+	anim pistol_turn_left			models/md5/player/anims/fullbody/pistol_turn_left.md5anim
+	anim pistol_turn_right			models/md5/player/anims/fullbody/pistol_turn_right.md5anim
+
+	// Shotgun: use the matching Duke upper-body clips for each weapon state,
+	// baked over complete lower-body motion for single-channel playback.
+	anim shotgun_raise			models/md5/player/anims/fullbody/shotgun_raise.md5anim
+	anim shotgun_idle			models/md5/player/anims/fullbody/shotgun_idle.md5anim
+	anim shotgun_aim			models/md5/player/anims/fullbody/shotgun_aim.md5anim
+	anim shotgun_fire1			models/md5/player/anims/fullbody/shotgun_fire1.md5anim
+	anim shotgun_reload_start	models/md5/player/anims/fullbody/shotgun_reload_start.md5anim
+	anim shotgun_reload_loop	models/md5/player/anims/fullbody/shotgun_reload_loop.md5anim
+	anim shotgun_reload_end		models/md5/player/anims/fullbody/shotgun_reload_end.md5anim
+	anim shotgun_lower			models/md5/player/anims/fullbody/shotgun_lower.md5anim
+
+	anim shotgun_crouch_down			models/md5/player/anims/fullbody/shotgun_crouch_down.md5anim
+	anim shotgun_crouch				models/md5/player/anims/fullbody/shotgun_crouch.md5anim
+	anim shotgun_crouch_up			models/md5/player/anims/fullbody/shotgun_crouch_up.md5anim
+	anim shotgun_crouch_walk			models/md5/player/anims/fullbody/shotgun_crouch_walk.md5anim
+	anim shotgun_crouch_walk_backwards	models/md5/player/anims/fullbody/shotgun_crouch_walk_backwards.md5anim
+	anim shotgun_walk				models/md5/player/anims/fullbody/shotgun_walk.md5anim
+	anim shotgun_walk_backwards		models/md5/player/anims/fullbody/shotgun_walk_backwards.md5anim
+	anim shotgun_walk_strafe_left	models/md5/player/anims/fullbody/shotgun_walk_strafe_left.md5anim
+	anim shotgun_walk_strafe_right	models/md5/player/anims/fullbody/shotgun_walk_strafe_right.md5anim
+	anim shotgun_run_forward			models/md5/player/anims/fullbody/shotgun_run_forward.md5anim
+	anim shotgun_run_backwards		models/md5/player/anims/fullbody/shotgun_run_backwards.md5anim
+	anim shotgun_run_strafe_left		models/md5/player/anims/fullbody/shotgun_run_strafe_left.md5anim
+	anim shotgun_run_strafe_right	models/md5/player/anims/fullbody/shotgun_run_strafe_right.md5anim
+	anim shotgun_jump				models/md5/player/anims/fullbody/shotgun_jump.md5anim
+	anim shotgun_run_jump			models/md5/player/anims/fullbody/shotgun_run_jump.md5anim
+	anim shotgun_soft_land			models/md5/player/anims/fullbody/shotgun_soft_land.md5anim
+	anim shotgun_hard_land			models/md5/player/anims/fullbody/shotgun_hard_land.md5anim
+	anim shotgun_fall				models/md5/player/anims/fullbody/shotgun_fall.md5anim
+	anim shotgun_turn_left			models/md5/player/anims/fullbody/shotgun_turn_left.md5anim
+	anim shotgun_turn_right			models/md5/player/anims/fullbody/shotgun_turn_right.md5anim
+
+	// Machinegun: matching weapon/body clips baked into one MD5 per state.
+	anim machinegun_raise	models/md5/player/anims/fullbody/machinegun_raise.md5anim
+	anim machinegun_idle	models/md5/player/anims/fullbody/machinegun_idle.md5anim
+	anim machinegun_aim		models/md5/player/anims/fullbody/machinegun_aim.md5anim
+	anim machinegun_fire1	models/md5/player/anims/fullbody/machinegun_fire1.md5anim
+	anim machinegun_reload	models/md5/player/anims/fullbody/machinegun_reload.md5anim
+	anim machinegun_lower	models/md5/player/anims/fullbody/machinegun_lower.md5anim
+
+	anim machinegun_crouch_down			models/md5/player/anims/fullbody/machinegun_crouch_down.md5anim
+	anim machinegun_crouch				models/md5/player/anims/fullbody/machinegun_crouch.md5anim
+	anim machinegun_crouch_up			models/md5/player/anims/fullbody/machinegun_crouch_up.md5anim
+	anim machinegun_crouch_walk			models/md5/player/anims/fullbody/machinegun_crouch_walk.md5anim
+	anim machinegun_crouch_walk_backwards	models/md5/player/anims/fullbody/machinegun_crouch_walk_backwards.md5anim
+	anim machinegun_walk				models/md5/player/anims/fullbody/machinegun_walk.md5anim
+	anim machinegun_walk_backwards		models/md5/player/anims/fullbody/machinegun_walk_backwards.md5anim
+	anim machinegun_walk_strafe_left	models/md5/player/anims/fullbody/machinegun_walk_strafe_left.md5anim
+	anim machinegun_walk_strafe_right	models/md5/player/anims/fullbody/machinegun_walk_strafe_right.md5anim
+	anim machinegun_run_forward			models/md5/player/anims/fullbody/machinegun_run_forward.md5anim
+	anim machinegun_run_backwards		models/md5/player/anims/fullbody/machinegun_run_backwards.md5anim
+	anim machinegun_run_strafe_left		models/md5/player/anims/fullbody/machinegun_run_strafe_left.md5anim
+	anim machinegun_run_strafe_right	models/md5/player/anims/fullbody/machinegun_run_strafe_right.md5anim
+	anim machinegun_jump				models/md5/player/anims/fullbody/machinegun_jump.md5anim
+	anim machinegun_run_jump			models/md5/player/anims/fullbody/machinegun_run_jump.md5anim
+	anim machinegun_soft_land			models/md5/player/anims/fullbody/machinegun_soft_land.md5anim
+	anim machinegun_hard_land			models/md5/player/anims/fullbody/machinegun_hard_land.md5anim
+	anim machinegun_fall				models/md5/player/anims/fullbody/machinegun_fall.md5anim
+	anim machinegun_turn_left			models/md5/player/anims/fullbody/machinegun_turn_left.md5anim
+	anim machinegun_turn_right			models/md5/player/anims/fullbody/machinegun_turn_right.md5anim
+
+	// Unsupported Doom weapons retain a valid Duke pose instead of mixing the
+	// incompatible marine skeleton into this model.
+	anim chaingun_raise		models/md5/player/anims/ai_a_ready_machinegun_stand_activate.md5anim
+	anim chaingun_idle		models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim chaingun_aim		models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim chaingun_fire		models/md5/player/anims/ai_u_ready_machinegun_stand_fire.md5anim
+	anim chaingun_reload	models/md5/player/anims/ai_a_ready_machinegun_stand_reload.md5anim
+	anim chaingun_lower		models/md5/player/anims/ai_a_ready_machinegun_stand_deactivate.md5anim
+	anim plasmagun_raise	models/md5/player/anims/ai_a_ready_machinegun_stand_activate.md5anim
+	anim plasmagun_idle		models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim plasmagun_aim		models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim plasmagun_fire1	models/md5/player/anims/ai_u_ready_machinegun_stand_fire.md5anim
+	anim plasmagun_reload	models/md5/player/anims/ai_a_ready_machinegun_stand_reload.md5anim
+	anim plasmagun_lower	models/md5/player/anims/ai_a_ready_machinegun_stand_deactivate.md5anim
+	anim handgrenade_raise			models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim handgrenade_idle			models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim handgrenade_aim			models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim handgrenade_throw_quick	models/md5/player/anims/ai_a_ready_fists_stand_melee01.md5anim
+	anim handgrenade_throw_start	models/md5/player/anims/ai_a_ready_fists_stand_melee01.md5anim
+	anim handgrenade_throw			models/md5/player/anims/ai_a_ready_fists_stand_melee01.md5anim
+	anim handgrenade_startfire		models/md5/player/anims/ai_a_ready_fists_stand_melee01.md5anim
+	anim handgrenade_fire			models/md5/player/anims/ai_a_ready_fists_stand_melee01.md5anim
+	anim handgrenade_lower			models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim chainsaw_raise	models/md5/player/anims/ai_a_ready_machinegun_stand_activate.md5anim
+	anim chainsaw_idle	models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim chainsaw_aim	models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim chainsaw_fire	models/md5/player/anims/ai_u_ready_machinegun_stand_fire.md5anim
+	anim chainsaw_lower	models/md5/player/anims/ai_a_ready_machinegun_stand_deactivate.md5anim
+	anim rocketlauncher_raise	models/md5/player/anims/ai_a_ready_machinegun_stand_activate.md5anim
+	anim rocketlauncher_idle	models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim rocketlauncher_aim		models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim rocketlauncher_fire	models/md5/player/anims/ai_u_ready_machinegun_stand_fire.md5anim
+	anim rocketlauncher_reload	models/md5/player/anims/ai_a_ready_machinegun_stand_reload.md5anim
+	anim rocketlauncher_lower	models/md5/player/anims/ai_a_ready_machinegun_stand_deactivate.md5anim
+	anim flashlight_raise	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim flashlight_idle	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim flashlight_lower	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim flashlight_aim		models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim flashlight_fire1	models/md5/player/anims/ai_a_ready_fists_stand_melee01.md5anim
+	anim flashlight_fire2	models/md5/player/anims/ai_a_ready_fists_stand_melee02.md5anim
+	anim bfg_raise		models/md5/player/anims/ai_a_ready_machinegun_stand_activate.md5anim
+	anim bfg_idle		models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim bfg_aim		models/md5/player/anims/ai_a_ready_machinegun_stand_idle.md5anim
+	anim bfg_startfire	models/md5/player/anims/ai_u_ready_machinegun_stand_fire.md5anim
+	anim bfg_fire		models/md5/player/anims/ai_u_ready_machinegun_stand_fire.md5anim
+	anim bfg_reload		models/md5/player/anims/ai_a_ready_machinegun_stand_reload.md5anim
+	anim bfg_lower		models/md5/player/anims/ai_a_ready_machinegun_stand_deactivate.md5anim
+	anim soulcube_raise	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim soulcube_idle	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim soulcube_aim	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+	anim soulcube_fire	models/md5/player/anims/ai_a_ready_fists_stand_melee01.md5anim
+	anim soulcube_lower	models/md5/player/anims/ai_a_neutral_noweapon_stand_idle.md5anim
+}
+
+model worldmodel_duke_pistol {
+	mesh models/weapons2/pistol/pistol.md5mesh
+	anim raise		models/weapons2/pistol/anims/pistol_activate.md5anim
+	anim idle		models/weapons2/pistol/anims/pistol_idle.md5anim
+	anim idle_empty	models/weapons2/pistol/anims/pistol_idle.md5anim
+	anim fire1		models/weapons2/pistol/anims/pistol_fire.md5anim
+	anim reload		models/weapons2/pistol/anims/pistol_reload.md5anim
+	anim noammo		models/weapons2/pistol/anims/pistol_idle.md5anim
+	anim putaway		models/weapons2/pistol/anims/pistol_deactivate.md5anim
+}
+
+model worldmodel_duke_shotgun {
+	mesh models/weapons2/shotgun/shotgun.md5mesh
+	anim raise			models/weapons2/shotgun/anims/shotgun_activate.md5anim
+	anim idle			models/weapons2/shotgun/anims/shotgun_idle.md5anim
+	anim fire1			models/weapons2/shotgun/anims/shotgun_fire.md5anim
+	anim fire2			models/weapons2/shotgun/anims/shotgun_fire.md5anim
+	anim fire3			models/weapons2/shotgun/anims/shotgun_fire.md5anim
+	anim reload_start	models/weapons2/shotgun/anims/shotgun_reload_start.md5anim
+	anim reload_loop1	models/weapons2/shotgun/anims/shotgun_reload.md5anim
+	anim reload_loop2	models/weapons2/shotgun/anims/shotgun_reload.md5anim
+	anim reload_loop3	models/weapons2/shotgun/anims/shotgun_reload.md5anim
+	anim reload_end		models/weapons2/shotgun/anims/shotgun_reload_stop.md5anim
+	anim noammo			models/weapons2/shotgun/anims/shotgun_idle.md5anim
+	anim putaway			models/weapons2/shotgun/anims/shotgun_deactivate.md5anim
+}
+
+model worldmodel_duke_machinegun {
+	mesh models/weapons2/machinegun/machinegun.md5mesh
+	anim raise		models/weapons2/machinegun/anims/machinegun_activate.md5anim
+	anim idle		models/weapons2/machinegun/anims/machinegun_idle.md5anim
+	anim fire1		models/weapons2/machinegun/anims/machinegun_fire.md5anim
+	anim reload		models/weapons2/machinegun/anims/machinegun_reload.md5anim
+	anim noammo		models/weapons2/machinegun/anims/machinegun_idle.md5anim
+	anim putaway		models/weapons2/machinegun/anims/machinegun_deactivate.md5anim
+}

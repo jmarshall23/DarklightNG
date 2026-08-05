@@ -1,0 +1,302 @@
+{
+  "source": {
+    "definition": "weapons/machinegun/machinegun.def",
+    "definition_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun.def",
+    "mesh": "weapons/machinegun/machinegun.msh",
+    "mesh_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun.msh",
+    "skeleton": "weapons/machinegun/machinegun.skl",
+    "skeleton_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun.skl",
+    "animation_directories": [
+      "weapons/machinegun"
+    ]
+  },
+  "config": "dnf-retail-model-conversion-v2",
+  "type": "skeletal",
+  "format": "md5",
+  "output_directory": "models/weapons/machinegun",
+  "files": [
+    "models/weapons/machinegun/machinegun.md5mesh",
+    "models/weapons/machinegun/anims/machinegun_activate.md5anim",
+    "models/weapons/machinegun/anims/machinegun_deactivate.md5anim",
+    "models/weapons/machinegun/anims/machinegun_fire.md5anim",
+    "models/weapons/machinegun/anims/machinegun_fire_start.md5anim",
+    "models/weapons/machinegun/anims/machinegun_fire_stop.md5anim",
+    "models/weapons/machinegun/anims/machinegun_idle.md5anim",
+    "models/weapons/machinegun/anims/machinegun_melee.md5anim",
+    "models/weapons/machinegun/anims/machinegun_reload.md5anim"
+  ],
+  "geometry": {
+    "joints": 12,
+    "surfaces": 1,
+    "source_vertices": 3244,
+    "output_vertices": 3244,
+    "triangles": 3600,
+    "weights": 3244,
+    "max_bind_reconstruction_error": 3.4684476073050936e-15,
+    "resolved_shaders": 1,
+    "unresolved_shaders": 0,
+    "warnings": []
+  },
+  "skeleton": {
+    "bones": 12,
+    "roots": [
+      "Root"
+    ],
+    "bone_sets": {}
+  },
+  "materials": {
+    "resolved": true,
+    "slots": [
+      "models/weapons/machinegun/mt_skins4.ripper.new_ripper_d.png"
+    ],
+    "source_objects": [
+      "mt_skins4.ripper.new_ripper_fb"
+    ],
+    "albedo_resolved": true,
+    "slot_bindings": [
+      {
+        "slot": 0,
+        "material": "mt_skins4.ripper.new_ripper_fb",
+        "albedo_textures": [
+          "mt_skins4.ripper.new_ripper_d"
+        ],
+        "primary_albedo": "mt_skins4.ripper.new_ripper_d",
+        "shader": "models/weapons/machinegun/mt_skins4.ripper.new_ripper_d.png",
+        "resolved": true,
+        "composite_color_layers": false
+      }
+    ],
+    "source_asset": "c_dnweapon.MachineGun"
+  },
+  "animations": [
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun_activate.anm",
+      "kind": "binary_with_events",
+      "size": 667,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 295,
+      "uncompressed_size": 601,
+      "duration": 0.6666666865348816,
+      "output": "anims/machinegun_activate.md5anim",
+      "conversion": {
+        "frames": 21,
+        "frame_rate": 30,
+        "duration": 0.6666666865348816,
+        "active_bones": 12,
+        "animated_components": 72,
+        "scale_tracks": 12,
+        "discarded_non_bind_scale_tracks": 12,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 25.018757245993317,
+        "bounds_extent": 49.321423457445434,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun_deactivate.anm",
+      "kind": "binary_with_events",
+      "size": 566,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 295,
+      "uncompressed_size": 601,
+      "duration": 0.6666666865348816,
+      "output": "anims/machinegun_deactivate.md5anim",
+      "conversion": {
+        "frames": 21,
+        "frame_rate": 30,
+        "duration": 0.6666666865348816,
+        "active_bones": 12,
+        "animated_components": 72,
+        "scale_tracks": 12,
+        "discarded_non_bind_scale_tracks": 12,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 25.018757245993317,
+        "bounds_extent": 49.321423457445434,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun_fire.anm",
+      "kind": "binary_with_events",
+      "size": 553,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 294,
+      "uncompressed_size": 601,
+      "duration": 0.06666667014360428,
+      "output": "anims/machinegun_fire.md5anim",
+      "conversion": {
+        "frames": 3,
+        "frame_rate": 30,
+        "duration": 0.06666667014360428,
+        "active_bones": 12,
+        "animated_components": 72,
+        "scale_tracks": 12,
+        "discarded_non_bind_scale_tracks": 12,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 25.018757245993317,
+        "bounds_extent": 49.321423457445434,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun_fire_start.anm",
+      "kind": "binary_with_events",
+      "size": 553,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 294,
+      "uncompressed_size": 601,
+      "duration": 0.03333333507180214,
+      "output": "anims/machinegun_fire_start.md5anim",
+      "conversion": {
+        "frames": 2,
+        "frame_rate": 30,
+        "duration": 0.03333333507180214,
+        "active_bones": 12,
+        "animated_components": 72,
+        "scale_tracks": 12,
+        "discarded_non_bind_scale_tracks": 12,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 25.018757245993317,
+        "bounds_extent": 49.321423457445434,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun_fire_stop.anm",
+      "kind": "binary",
+      "size": 309,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 292,
+      "uncompressed_size": 601,
+      "duration": 0.5,
+      "output": "anims/machinegun_fire_stop.md5anim",
+      "conversion": {
+        "frames": 16,
+        "frame_rate": 30,
+        "duration": 0.5,
+        "active_bones": 12,
+        "animated_components": 72,
+        "scale_tracks": 12,
+        "discarded_non_bind_scale_tracks": 0,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 25.018757245993317,
+        "bounds_extent": 49.32134699936467,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun_idle.anm",
+      "kind": "binary",
+      "size": 312,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 295,
+      "uncompressed_size": 601,
+      "duration": 1.600000023841858,
+      "output": "anims/machinegun_idle.md5anim",
+      "conversion": {
+        "frames": 49,
+        "frame_rate": 30,
+        "duration": 1.600000023841858,
+        "active_bones": 12,
+        "animated_components": 72,
+        "scale_tracks": 12,
+        "discarded_non_bind_scale_tracks": 12,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 25.018757245993317,
+        "bounds_extent": 49.321423457445434,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun_melee.anm",
+      "kind": "binary",
+      "size": 518,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 501,
+      "uncompressed_size": 822,
+      "duration": 0.800000011920929,
+      "output": "anims/machinegun_melee.md5anim",
+      "conversion": {
+        "frames": 25,
+        "frame_rate": 30,
+        "duration": 0.800000011920929,
+        "active_bones": 11,
+        "animated_components": 66,
+        "scale_tracks": 11,
+        "discarded_non_bind_scale_tracks": 1,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 25.018757245993317,
+        "bounds_extent": 49.32126488103823,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun_reload.anm",
+      "kind": "binary_with_events",
+      "size": 2123,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 1374,
+      "uncompressed_size": 1902,
+      "duration": 2.200000047683716,
+      "output": "anims/machinegun_reload.md5anim",
+      "conversion": {
+        "frames": 67,
+        "frame_rate": 30,
+        "duration": 2.200000047683716,
+        "active_bones": 11,
+        "animated_components": 66,
+        "scale_tracks": 11,
+        "discarded_non_bind_scale_tracks": 0,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 25.018757245993317,
+        "bounds_extent": 62.482321988502434,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    }
+  ],
+  "animation_summary": {
+    "inventoried": 8,
+    "converted": 8,
+    "failed": 0,
+    "hardlinked": 0,
+    "derived_or_procedural": 0,
+    "discarded_non_bind_scale_tracks": 61,
+    "discarded_out_of_range_tracks": 0
+  },
+  "mac_transform": {
+    "position": "(source_x, -source_y, source_z)",
+    "uv": "(u, 1-v)",
+    "winding": "reversed"
+  },
+  "mounts": [],
+  "warnings": [
+    "61 animated scale tracks were omitted because MD5Anim has no joint-scale channels."
+  ],
+  "texture_directory": "models/weapons/machinegun",
+  "texture_index": "_reports/model_textures.json",
+  "texture_files": [
+    "models/weapons/machinegun/mt_skins4.ripper.new_ripper_d.png"
+  ],
+  "texture_bindings": [
+    {
+      "object": "mt_skins4.ripper.new_ripper_d",
+      "file": "models/weapons/machinegun/mt_skins4.ripper.new_ripper_d.png"
+    }
+  ]
+}

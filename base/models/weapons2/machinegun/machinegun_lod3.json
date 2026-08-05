@@ -1,0 +1,86 @@
+{
+  "source": {
+    "mesh": "weapons/machinegun/machinegun_lod3.msh",
+    "mesh_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun_lod3.msh",
+    "skeleton": "weapons/machinegun/machinegun.skl",
+    "skeleton_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\machinegun\\machinegun.skl"
+  },
+  "config": "dnf-retail-supplemental-mesh-v1",
+  "type": "skeletal",
+  "role": "lod",
+  "format": "md5",
+  "output_directory": "models/weapons/machinegun",
+  "files": [
+    "models/weapons/machinegun/machinegun_lod3.md5mesh"
+  ],
+  "geometry": {
+    "joints": 12,
+    "surfaces": 1,
+    "source_vertices": 912,
+    "output_vertices": 912,
+    "triangles": 584,
+    "weights": 912,
+    "max_bind_reconstruction_error": 2.8435583831733384e-15,
+    "resolved_shaders": 1,
+    "unresolved_shaders": 0,
+    "warnings": []
+  },
+  "skeleton": {
+    "bones": 12,
+    "synthetic": false,
+    "augmented_identity_bones": 0
+  },
+  "materials": {
+    "resolved": true,
+    "slots": [
+      "models/weapons/machinegun/mt_skins4.ripper.new_ripper_d.png"
+    ],
+    "source_objects": [
+      "mt_skins4.ripper.new_ripper_fb"
+    ],
+    "albedo_resolved": true,
+    "inherited_from": "weapons/machinegun",
+    "slot_bindings": [
+      {
+        "slot": 0,
+        "material": "mt_skins4.ripper.new_ripper_fb",
+        "albedo_textures": [
+          "mt_skins4.ripper.new_ripper_d"
+        ],
+        "primary_albedo": "mt_skins4.ripper.new_ripper_d",
+        "shader": "models/weapons/machinegun/mt_skins4.ripper.new_ripper_d.png",
+        "resolved": true,
+        "composite_color_layers": false
+      }
+    ],
+    "source_asset": "c_dnweapon.MachineGun"
+  },
+  "animations": [],
+  "animation_summary": {
+    "inventoried": 0,
+    "converted": 0,
+    "failed": 0,
+    "hardlinked": 0,
+    "derived_or_procedural": 0,
+    "discarded_non_bind_scale_tracks": 0,
+    "discarded_out_of_range_tracks": 0
+  },
+  "mac_transform": {
+    "position": "(source_x, -source_y, source_z)",
+    "uv": "(u, 1-v)",
+    "winding": "reversed"
+  },
+  "mounts": [],
+  "warnings": [],
+  "texture_directory": "models/weapons/machinegun",
+  "texture_index": "_reports/model_textures.json",
+  "texture_files": [
+    "models/weapons/machinegun/mt_skins4.ripper.new_ripper_d.png"
+  ],
+  "texture_bindings": [
+    {
+      "object": "mt_skins4.ripper.new_ripper_d",
+      "file": "models/weapons/machinegun/mt_skins4.ripper.new_ripper_d.png"
+    }
+  ]
+}

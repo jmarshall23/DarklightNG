@@ -56,10 +56,13 @@ entityDef weapon_pistol {
 
 	"spawnclass"				"idItem"
 	"size"						"32 32 32"
-	"model"						"models/weapons/pistol/w_pistol.lwo"
+	"model"						"worldmodel_duke_pistol"
 	"model_view" 				"viewmodel_pistol"
-	"model_world" 				"worldmodel_pistol"
-	"joint_attach"				"PISTOL_ATTACHER"
+	"model_world" 				"worldmodel_duke_pistol"
+	"joint_attach"				"mount_handright"
+	"joint_world_flash"		"mount_muzzle"
+	"joint_world_muzzle"		"mount_muzzle"
+	"joint_world_eject"		"mount_eject"
 	"def_dropItem"				"moveable_item_pistol"
 
 	"inv_name"					"Pistol"

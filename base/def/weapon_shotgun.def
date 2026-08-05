@@ -46,10 +46,13 @@ entityDef weapon_shotgun {
 
 	"spawnclass"				"idItem"
 	"size"						"32 32 32"
-	"model"						"models/weapons/shotgun/w_shotgun2.lwo"
+	"model"						"worldmodel_duke_shotgun"
 	"model_view" 				"viewmodel_shotgun"
-	"model_world" 				"worldmodel_shotgun"
-	"joint_attach"				"SHOTGUN_ATTACHER"
+	"model_world" 				"worldmodel_duke_shotgun"
+	"joint_attach"				"mount_handright"
+	"joint_world_flash"		"mount_muzzle"
+	"joint_world_muzzle"		"mount_muzzle"
+	"joint_world_eject"		"mount_eject"
 	"def_dropItem"				"moveable_item_shotgun"
 
 	"inv_name"					"Shotgun"
@@ -94,7 +97,7 @@ entityDef weapon_shotgun {
 entityDef moveable_item_shotgun {
 	"inherit"					"weapon_shotgun"
 	"spawnclass"				"idMoveableItem"
-	"model"						"models/weapons/shotgun/w_shotgun2.lwo"
+	"model"						"worldmodel_duke_shotgun"
 	"density"					"0.05"
 	"friction"					"0.2"
 	"bouncyness"				"0"

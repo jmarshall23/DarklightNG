@@ -17,10 +17,10 @@ enum	moverState_t	MOVER_POS1,MOVER_POS2,MOVER_1TO2,MOVER_2TO1
 node	event:AI_AllowDamage	Allow Damage	AI	allowDamage	object	eventCall	void	0	idAI	idAI::Event_AllowDamage	ai/AI.h:607		0	0		
 node	event:AI_AllowHiddenMovement	Allow Hidden Movement	AI	allowHiddenMovement	object	eventCall	void	0	idAI	idAI::Event_AllowHiddenMovement	ai/AI.h:793	float:enable	0	0		
 node	event:AI_AllowMovement	Allow Movement	AI	allowMovement	object	eventCall	void	0	idAI	idAI::Event_AllowMovement	ai/AI.h:725	float:flag	0	0		
-node	event:AI_AnimDistance	Anim Distance	Actor	animDistance	object	eventCall	float	0	idActor	idActor::Event_AnimDistance	Actor.h:341	enum(animChannel_t):channel,string:animname	0	0		
-node	event:AI_AnimDone	Anim Done	Actor	animDone	object	eventCall	float	0	idActor,idWeapon	idActor::Event_AnimDone,idWeapon::Event_AnimDone	Actor.h:331	enum(animChannel_t):channel,float:blendFrames	0	0		
-node	event:AI_AnimLength	Anim Length	Actor	animLength	object	eventCall	float	0	idActor	idActor::Event_AnimLength	Actor.h:339	enum(animChannel_t):channel,string:animname	0	0		
-node	event:AI_AnimState	Anim State	Actor	animState	object	eventCall	void	0	idActor	idActor::Event_AnimState	Actor.h:323	enum(animChannel_t):channel,string:name,float:blendFrames	0	0		
+node	event:AI_AnimDistance	Anim Distance	Actor	animDistance	object	eventCall	float	0	idActor	idActor::Event_AnimDistance	Actor.h:342	enum(animChannel_t):channel,string:animname	0	0		
+node	event:AI_AnimDone	Anim Done	Actor	animDone	object	eventCall	float	0	idActor,idWeapon	idActor::Event_AnimDone,idWeapon::Event_AnimDone	Actor.h:332	enum(animChannel_t):channel,float:blendFrames	0	0		
+node	event:AI_AnimLength	Anim Length	Actor	animLength	object	eventCall	float	0	idActor	idActor::Event_AnimLength	Actor.h:340	enum(animChannel_t):channel,string:animname	0	0		
+node	event:AI_AnimState	Anim State	Actor	animState	object	eventCall	void	0	idActor	idActor::Event_AnimState	Actor.h:324	enum(animChannel_t):channel,string:name,float:blendFrames	0	0		
 node	event:AI_AnimTurn	Anim Turn	AI	animTurn	object	eventCall	void	0	idAI	idAI::Event_AnimTurn	ai/AI.h:791	float:angles	0	0		
 node	event:AI_AttackMelee	Attack Melee	AI	attackMelee	object	eventCall	float	0	idAI	idAI::Event_AttackMelee	ai/AI.h:579	string:meleeDefName	0	0		
 node	event:AI_AttackMissile	Attack Missile	AI	attackMissile	object	eventCall	entity	0	idAI	idAI::Event_AttackMissile	ai/AI.h:571	string:jointname	0	0		
@@ -38,26 +38,26 @@ node	event:AI_CanReachEntity	Can Reach Entity	AI	canReachEntity	object	eventCall
 node	event:AI_CanReachPosition	Can Reach Position	AI	canReachPosition	object	eventCall	float	0	idAI	idAI::Event_CanReachPosition	ai/AI.h:799	vector:pos	0	0		
 node	event:AI_CanSeeEntity	Can See	AI	canSee	object	eventCall	float	0	idAI	idAI::Event_CanSeeEntity	ai/AI.h:659	entity:ent	0	0		
 node	event:AI_ChargeAttack	Charge Attack	AI	chargeAttack	object	eventCall	void	0	idAI	idAI::Event_ChargeAttack	ai/AI.h:687	string:damageDef	0	0		
-node	event:AI_CheckAnim	Check Anim	Actor	checkAnim	object	eventCall	void	0	idActor	idActor::Event_CheckAnim	Actor.h:335	enum(animChannel_t):channel,string:animname	0	0		
-node	event:AI_ChooseAnim	Choose Anim	Actor	chooseAnim	object	eventCall	string	0	idActor	idActor::Event_ChooseAnim	Actor.h:337	enum(animChannel_t):channel,string:animname	0	0		
+node	event:AI_CheckAnim	Check Anim	Actor	checkAnim	object	eventCall	void	0	idActor	idActor::Event_CheckAnim	Actor.h:336	enum(animChannel_t):channel,string:animname	0	0		
+node	event:AI_ChooseAnim	Choose Anim	Actor	chooseAnim	object	eventCall	string	0	idActor	idActor::Event_ChooseAnim	Actor.h:338	enum(animChannel_t):channel,string:animname	0	0		
 node	event:AI_ClearBurn	Clear Burn	AI	clearBurn	object	eventCall	void	0	idAI	idAI::Event_ClearBurn	ai/AI.h:707		0	0		
 node	event:AI_ClearEnemy	Clear Enemy	AI	clearEnemy	object	eventCall	void	0	idAI	idAI::Event_ClearEnemy	ai/AI.h:565		0	0		
 node	event:AI_ClearFlyOffset	Clear Fly Offset	AI	clearFlyOffset	object	eventCall	void	0	idAI	idAI::Event_ClearFlyOffset	ai/AI.h:745		0	0		
-node	event:AI_ClosestEnemyToPoint	Closest Enemy To Point	Actor	closestEnemyToPoint	object	eventCall	entity	0	idActor	idActor::Event_ClosestEnemyToPoint	Actor.h:347	vector:pos	0	0		
+node	event:AI_ClosestEnemyToPoint	Closest Enemy To Point	Actor	closestEnemyToPoint	object	eventCall	entity	0	idActor	idActor::Event_ClosestEnemyToPoint	Actor.h:348	vector:pos	0	0		
 node	event:AI_ClosestReachableEnemyOfEntity	Closest Reachable Enemy Of Entity	AI	closestReachableEnemyOfEntity	object	eventCall	entity	0	idAI	idAI::Event_ClosestReachableEnemyOfEntity	ai/AI.h:559	entity:team_mate	0	0		
 node	event:AI_CreateMissile	Create Missile	AI	createMissile	object	eventCall	entity	0	idAI	idAI::Event_CreateMissile	ai/AI.h:569	string:jointname	0	0		
 node	event:AI_DirectDamage	Direct Damage	AI	directDamage	object	eventCall	void	0	idAI	idAI::Event_DirectDamage	ai/AI.h:581	entity:damageTarget,string:damageDefName	0	0		
 node	event:AI_DisableAFPush	Disable AFPush	AI	disableAFPush	object	eventCall	void	0	idAI	idAI::Event_DisableAFPush	ai/AI.h:739		0	0		
 node	event:AI_DisableClip	Disable Clip	AI	disableClip	object	eventCall	void	0	idAI	idAI::Event_DisableClip	ai/AI.h:731		0	0		
-node	event:AI_DisableEyeFocus	Disable Eye Focus	Actor	disableEyeFocus	object	eventCall	void	0	idActor	idActor::Event_DisableEyeFocus	Actor.h:280		0	0		
+node	event:AI_DisableEyeFocus	Disable Eye Focus	Actor	disableEyeFocus	object	eventCall	void	0	idActor	idActor::Event_DisableEyeFocus	Actor.h:281		0	0		
 node	event:AI_DisableGravity	Disable Gravity	AI	disableGravity	object	eventCall	void	0	idAI	idAI::Event_DisableGravity	ai/AI.h:735		0	0		
-node	event:AI_DisablePain	Disable Pain	Actor	disablePain	object	eventCall	void	0	idActor	idActor::Event_DisablePain	Actor.h:299		0	0		
+node	event:AI_DisablePain	Disable Pain	Actor	disablePain	object	eventCall	void	0	idActor	idActor::Event_DisablePain	Actor.h:300		0	0		
 node	event:AI_EnableAFPush	Enable AFPush	AI	enableAFPush	object	eventCall	void	0	idAI	idAI::Event_EnableAFPush	ai/AI.h:737		0	0		
-node	event:AI_EnableAnim	Enable Anim	Actor	enableAnim	object	eventCall	void	0	idActor	idActor::Event_EnableAnim	Actor.h:317	enum(animChannel_t):channel,float:blendFrames	0	0		
+node	event:AI_EnableAnim	Enable Anim	Actor	enableAnim	object	eventCall	void	0	idActor	idActor::Event_EnableAnim	Actor.h:318	enum(animChannel_t):channel,float:blendFrames	0	0		
 node	event:AI_EnableClip	Enable Clip	AI	enableClip	object	eventCall	void	0	idAI	idAI::Event_EnableClip	ai/AI.h:729		0	0		
-node	event:AI_EnableEyeFocus	Enable Eye Focus	Actor	enableEyeFocus	object	eventCall	void	0	idActor	idActor::Event_EnableEyeFocus	Actor.h:278		0	0		
+node	event:AI_EnableEyeFocus	Enable Eye Focus	Actor	enableEyeFocus	object	eventCall	void	0	idActor	idActor::Event_EnableEyeFocus	Actor.h:279		0	0		
 node	event:AI_EnableGravity	Enable Gravity	AI	enableGravity	object	eventCall	void	0	idAI	idAI::Event_EnableGravity	ai/AI.h:733		0	0		
-node	event:AI_EnablePain	Enable Pain	Actor	enablePain	object	eventCall	void	0	idActor	idActor::Event_EnablePain	Actor.h:301		0	0		
+node	event:AI_EnablePain	Enable Pain	Actor	enablePain	object	eventCall	void	0	idActor	idActor::Event_EnablePain	Actor.h:302		0	0		
 node	event:AI_EndAttack	Attack End	AI	attackEnd	object	eventCall	void	0	idAI	idAI::Event_EndAttack	ai/AI.h:587		0	0		
 node	event:AI_EnemyInCombatCone	Enemy In Combat Cone	AI	enemyInCombatCone	object	eventCall	float	0	idAI	idAI::Event_EnemyInCombatCone	ai/AI.h:651	entity:ent,float:use_current_enemy_location	0	0		
 node	event:AI_EnemyPositionValid	Enemy Position Valid	AI	enemyPositionValid	object	eventCall	float	0	idAI	idAI::Event_EnemyPositionValid	ai/AI.h:685		0	0		
@@ -71,10 +71,10 @@ node	event:AI_FindActorsInBounds	Find Actors In Bounds	AI	findActorsInBounds	obj
 node	event:AI_FindEnemy	Find Enemy	AI	findEnemy	object	eventCall	entity	0	idAI	idAI::Event_FindEnemy	ai/AI.h:553	float:useFOV	0	0		
 node	event:AI_FindEnemyAI	Find Enemy AI	AI	findEnemyAI	object	eventCall	entity	0	idAI	idAI::Event_FindEnemyAI	ai/AI.h:555	float:useFOV	0	0		
 node	event:AI_FindEnemyInCombatNodes	Find Enemy In Combat Nodes	AI	findEnemyInCombatNodes	object	eventCall	entity	0	idAI	idAI::Event_FindEnemyInCombatNodes	ai/AI.h:557		0	0		
-node	event:AI_FinishAction	Finish Action	Actor	finishAction	object	eventCall	void	0	idActor	idActor::Event_FinishAction	Actor.h:329	string:name	0	0		
+node	event:AI_FinishAction	Finish Action	Actor	finishAction	object	eventCall	void	0	idActor	idActor::Event_FinishAction	Actor.h:330	string:name	0	0		
 node	event:AI_FireMissileAtTarget	Fire Missile At Target	AI	fireMissileAtTarget	object	eventCall	entity	0	idAI	idAI::Event_FireMissileAtTarget	ai/AI.h:573	string:jointname,string:targetname	0	0		
-node	event:AI_GetAnimState	Get Anim State	Actor	getAnimState	object	eventCall	string	0	idActor	idActor::Event_GetAnimState	Actor.h:325	enum(animChannel_t):channel	0	0		
-node	event:AI_GetBlendFrames	Get Blend Frames	Actor	getBlendFrames	object	eventCall	float	0	idActor,idWeapon	idActor::Event_GetBlendFrames,idWeapon::Event_GetBlendFrames	Actor.h:321	enum(animChannel_t):channel	0	0		
+node	event:AI_GetAnimState	Get Anim State	Actor	getAnimState	object	eventCall	string	0	idActor	idActor::Event_GetAnimState	Actor.h:326	enum(animChannel_t):channel	0	0		
+node	event:AI_GetBlendFrames	Get Blend Frames	Actor	getBlendFrames	object	eventCall	float	0	idActor,idWeapon	idActor::Event_GetBlendFrames,idWeapon::Event_GetBlendFrames	Actor.h:322	enum(animChannel_t):channel	0	0		
 node	event:AI_GetClosestHiddenTarget	Get Closest Hidden Target	AI	getClosestHiddenTarget	object	eventCall	entity	0	idAI	idAI::Event_GetClosestHiddenTarget	ai/AI.h:747	string:type	0	0		
 node	event:AI_GetCombatNode	Get Combat Node	AI	getCombatNode	object	eventCall	entity	0	idAI	idAI::Event_GetCombatNode	ai/AI.h:649		0	0		
 node	event:AI_GetCurrentYaw	Get Current Yaw	AI	getCurrentYaw	object	eventCall	float	0	idAI	idAI::Event_GetCurrentYaw	ai/AI.h:611		0	0		
@@ -82,24 +82,24 @@ node	event:AI_GetEmitter	Get Emitter	AI	getEmitter	object	eventCall	entity	0	idA
 node	event:AI_GetEnemy	Get Enemy	AI	getEnemy	object	eventCall	entity	0	idAI	idAI::Event_GetEnemy	ai/AI.h:671		0	0		
 node	event:AI_GetEnemyEyePos	Get Enemy Eye Pos	AI	getEnemyEyePos	object	eventCall	vector	0	idAI	idAI::Event_GetEnemyEyePos	ai/AI.h:675		0	0		
 node	event:AI_GetEnemyPos	Get Enemy Pos	AI	getEnemyPos	object	eventCall	vector	0	idAI	idAI::Event_GetEnemyPos	ai/AI.h:673		0	0		
-node	event:AI_GetHead	Get Head	Actor	getHead	object	eventCall	entity	0	idActor	idActor::Event_GetHead	Actor.h:357		0	0		
+node	event:AI_GetHead	Get Head	Actor	getHead	object	eventCall	entity	0	idActor	idActor::Event_GetHead	Actor.h:358		0	0		
 node	event:AI_GetHealth	Get Health	AI	getHealth	object	eventCall	float	0	idAI	idAI::Event_GetHealth	ai/AI.h:605		0	0		
 node	event:AI_GetJumpVelocity	Get Jump Velocity	AI	getJumpVelocity	object	eventCall	vector	0	idAI	idAI::Event_GetJumpVelocity	ai/AI.h:655	vector:pos,float:speed,float:max_height	0	0		
 node	event:AI_GetMoveType	Get Move Type	AI	getMoveType	object	eventCall	float	0	idAI	idAI::Event_GetMoveType	ai/AI.h:717		0	0		
 node	event:AI_GetObstacle	Get Obstacle	AI	getObstacle	object	eventCall	entity	0	idAI	idAI::Event_GetObstacle	ai/AI.h:783		0	0		
-node	event:AI_GetPainAnim	Get Pain Anim	Actor	getPainAnim	object	eventCall	string	0	idActor	idActor::Event_GetPainAnim	Actor.h:303		0	0		
+node	event:AI_GetPainAnim	Get Pain Anim	Actor	getPainAnim	object	eventCall	string	0	idActor	idActor::Event_GetPainAnim	Actor.h:304		0	0		
 node	event:AI_GetRandomTarget	Get Random Target	AI	getRandomTarget	object	eventCall	entity	0	idAI	idAI::Event_GetRandomTarget	ai/AI.h:749	string:type	0	0		
 node	event:AI_GetReachableEntityPosition	Get Reachable Entity Position	AI	getReachableEntityPosition	object	eventCall	vector	0	idAI	idAI::Event_GetReachableEntityPosition	ai/AI.h:805	entity:ent	0	0		
-node	event:AI_GetState	Get State	Actor	getState	object	eventCall	string	0	idActor	idActor::Event_GetState	Actor.h:355		0	0		
+node	event:AI_GetState	Get State	Actor	getState	object	eventCall	string	0	idActor	idActor::Event_GetState	Actor.h:356		0	0		
 node	event:AI_GetTalkTarget	Get Talk Target	AI	getTalkTarget	object	eventCall	entity	0	idAI	idAI::Event_GetTalkTarget	ai/AI.h:663		0	0		
 node	event:AI_GetTurnDelta	Get Turn Delta	AI	getTurnDelta	object	eventCall	float	0	idAI	idAI::Event_GetTurnDelta	ai/AI.h:715		0	0		
 node	event:AI_GetTurnRate	Get Turn Rate	AI	getTurnRate	object	eventCall	float	0	idAI	idAI::Event_GetTurnRate	ai/AI.h:787		0	0		
-node	event:AI_HasAnim	Has Anim	Actor	hasAnim	object	eventCall	float	0	idActor	idActor::Event_HasAnim	Actor.h:333	enum(animChannel_t):channel,string:name	0	0		
-node	event:AI_HasEnemies	Has Enemies	Actor	hasEnemies	object	eventCall	float	0	idActor	idActor::Event_HasEnemies	Actor.h:343		0	0		
+node	event:AI_HasAnim	Has Anim	Actor	hasAnim	object	eventCall	float	0	idActor	idActor::Event_HasAnim	Actor.h:334	enum(animChannel_t):channel,string:name	0	0		
+node	event:AI_HasEnemies	Has Enemies	Actor	hasEnemies	object	eventCall	float	0	idActor	idActor::Event_HasEnemies	Actor.h:344		0	0		
 node	event:AI_HeardSound	Heard Sound	AI	heardSound	object	eventCall	entity	0	idAI	idAI::Event_HeardSound	ai/AI.h:561	float:ignore_team	0	0		
-node	event:AI_IdleAnim	Idle Anim	Actor	idleAnim	object	eventCall	float	0	idActor	idActor::Event_IdleAnim	Actor.h:311	enum(animChannel_t):channel,string:name	0	0		
+node	event:AI_IdleAnim	Idle Anim	Actor	idleAnim	object	eventCall	float	0	idActor	idActor::Event_IdleAnim	Actor.h:312	enum(animChannel_t):channel,string:name	0	0		
 node	event:AI_IgnoreDamage	Ignore Damage	AI	ignoreDamage	object	eventCall	void	0	idAI	idAI::Event_IgnoreDamage	ai/AI.h:609		0	0		
-node	event:AI_InAnimState	In Anim State	Actor	inAnimState	object	eventCall	float	0	idActor	idActor::Event_InAnimState	Actor.h:327	enum(animChannel_t):channel,string:name	0	0		
+node	event:AI_InAnimState	In Anim State	Actor	inAnimState	object	eventCall	float	0	idActor	idActor::Event_InAnimState	Actor.h:328	enum(animChannel_t):channel,string:name	0	0		
 node	event:AI_KickObstacles	Kick Obstacles	AI	kickObstacles	object	eventCall	void	0	idAI	idAI::Event_KickObstacles	ai/AI.h:781	entity:kickEnt,float:force	0	0		
 node	event:AI_Kill	Kill	AI	kill	object	eventCall	void	0	idAI	idAI::Event_Kill	ai/AI.h:775		0	0		
 node	event:AI_LaunchMissile	Launch Missile	AI	launchMissile	object	eventCall	entity	0	idAI	idAI::Event_LaunchMissile	ai/AI.h:575	vector:muzzle,vector:ang	0	0		
@@ -118,38 +118,38 @@ node	event:AI_MoveToEntity	Move To Entity	AI	moveToEntity	object	eventCall	void	
 node	event:AI_MoveToPosition	Move To Position	AI	moveToPosition	object	eventCall	void	0	idAI	idAI::Event_MoveToPosition	ai/AI.h:635	vector:pos	0	0		
 node	event:AI_MoveToPositionDirect	Move To Position Direct	AI	moveToPositionDirect	object	eventCall	void	0	idAI	idAI::Event_MoveToPositionDirect	ai/AI.h:807	vector:pos	0	0		
 node	event:AI_MuzzleFlash	Muzzle Flash	AI	muzzleFlash	object	eventCall	void	0	idAI	idAI::Event_MuzzleFlash	ai/AI.h:567	string:jointname	0	0		
-node	event:AI_NextEnemy	Next Enemy	Actor	nextEnemy	object	eventCall	entity	0	idActor	idActor::Event_NextEnemy	Actor.h:345	entity:ent	0	0		
+node	event:AI_NextEnemy	Next Enemy	Actor	nextEnemy	object	eventCall	entity	0	idActor	idActor::Event_NextEnemy	Actor.h:346	entity:ent	0	0		
 node	event:AI_NumSmokeEmitters	Num Smoke Emitters	AI	numSmokeEmitters	object	eventCall	float	0	idAI	idAI::Event_NumSmokeEmitters	ai/AI.h:711		0	0		
-node	event:AI_OverrideAnim	Override Anim	Actor	overrideAnim	object	eventCall	void	0	idActor	idActor::Event_OverrideAnim	Actor.h:315	enum(animChannel_t):channel	0	0		
-node	event:AI_PlayAnim	Play Anim	Actor	playAnim	object	eventCall	float	0	idActor,idWeapon	idActor::Event_PlayAnim,idWeapon::Event_PlayAnim	Actor.h:307	enum(animChannel_t):channel,string:name	0	0		
-node	event:AI_PlayCycle	Play Cycle	Actor	playCycle	object	eventCall	float	0	idActor,idWeapon	idActor::Event_PlayCycle,idWeapon::Event_PlayCycle	Actor.h:309	enum(animChannel_t):channel,string:name	0	0		
+node	event:AI_OverrideAnim	Override Anim	Actor	overrideAnim	object	eventCall	void	0	idActor	idActor::Event_OverrideAnim	Actor.h:316	enum(animChannel_t):channel	0	0		
+node	event:AI_PlayAnim	Play Anim	Actor	playAnim	object	eventCall	float	0	idActor,idWeapon	idActor::Event_PlayAnim,idWeapon::Event_PlayAnim	Actor.h:308	enum(animChannel_t):channel,string:name	0	0		
+node	event:AI_PlayCycle	Play Cycle	Actor	playCycle	object	eventCall	float	0	idActor,idWeapon	idActor::Event_PlayCycle,idWeapon::Event_PlayCycle	Actor.h:310	enum(animChannel_t):channel,string:name	0	0		
 node	event:AI_PreBurn	Pre Burn	AI	preBurn	object	eventCall	void	0	idAI	idAI::Event_PreBurn	ai/AI.h:705		0	0		
 node	event:AI_PredictEnemyPos	Predict Enemy Pos	AI	predictEnemyPos	object	eventCall	vector	0	idAI	idAI::Event_PredictEnemyPos	ai/AI.h:677	float:time	0	0		
-node	event:AI_PreventPain	Prevent Pain	Actor	preventPain	object	eventCall	void	0	idActor	idActor::Event_PreventPain	Actor.h:297	float:duration	0	0		
+node	event:AI_PreventPain	Prevent Pain	Actor	preventPain	object	eventCall	void	0	idActor	idActor::Event_PreventPain	Actor.h:298	float:duration	0	0		
 node	event:AI_PushPointIntoAAS	Push Point Into AAS	AI	pushPointIntoAAS	object	eventCall	vector	0	idAI	idAI::Event_PushPointIntoAAS	ai/AI.h:785	vector:pos	0	0		
 node	event:AI_RadiusDamageFromJoint	Radius Damage From Joint	AI	radiusDamageFromJoint	object	eventCall	void	0	idAI	idAI::Event_RadiusDamageFromJoint	ai/AI.h:583	string:jointname,string:damageDefName	0	0		
 node	event:AI_RandomPath	Random Path	AI	randomPath	object	eventCall	entity	0	idAI,idPathCorner	idAI::Event_RandomPath,idPathCorner::Event_RandomPath	ai/AI.h:591		0	0		
 node	event:AI_RestoreMove	Restore Move	AI	restoreMove	object	eventCall	void	0	idAI	idAI::Event_RestoreMove	ai/AI.h:723		0	0		
 node	event:AI_SaveMove	Save Move	AI	saveMove	object	eventCall	void	0	idAI	idAI::Event_SaveMove	ai/AI.h:721		0	0		
-node	event:AI_SetAnimPrefix	Set Anim Prefix	Actor	setAnimPrefix	object	eventCall	void	0	idActor	idActor::Event_SetAnimPrefix	Actor.h:294	string:name	0	0		
-node	event:AI_SetBlendFrames	Set Blend Frames	Actor	setBlendFrames	object	eventCall	void	0	idActor,idWeapon	idActor::Event_SetBlendFrames,idWeapon::Event_SetBlendFrames	Actor.h:319	enum(animChannel_t):channel,float:blendFrames	0	0		
+node	event:AI_SetAnimPrefix	Set Anim Prefix	Actor	setAnimPrefix	object	eventCall	void	0	idActor	idActor::Event_SetAnimPrefix	Actor.h:295	string:name	0	0		
+node	event:AI_SetBlendFrames	Set Blend Frames	Actor	setBlendFrames	object	eventCall	void	0	idActor,idWeapon	idActor::Event_SetBlendFrames,idWeapon::Event_SetBlendFrames	Actor.h:320	enum(animChannel_t):channel,float:blendFrames	0	0		
 node	event:AI_SetEnemy	Set Enemy	AI	setEnemy	object	eventCall	void	0	idAI	idAI::Event_SetEnemy	ai/AI.h:563	entity:ent	0	0		
 node	event:AI_SetFlyOffset	Set Fly Offset	AI	setFlyOffset	object	eventCall	void	0	idAI	idAI::Event_SetFlyOffset	ai/AI.h:743	float:offset	0	0		
 node	event:AI_SetFlySpeed	Set Fly Speed	AI	setFlySpeed	object	eventCall	void	0	idAI	idAI::Event_SetFlySpeed	ai/AI.h:741	float:speed	0	0		
 node	event:AI_SetHealth	Set Health	AI	setHealth	object	eventCall	void	0	idAI	idAI::Event_SetHealth	ai/AI.h:603	float:newHealth	0	0		
 node	event:AI_SetJointMod	Set Bone Mod	AI	setBoneMod	object	eventCall	void	0	idAI	idAI::Event_SetJointMod	ai/AI.h:763	float:allowJointMod	0	0		
 node	event:AI_SetMoveType	Set Move Type	AI	setMoveType	object	eventCall	void	0	idAI	idAI::Event_SetMoveType	ai/AI.h:719	float:moveType	0	0		
-node	event:AI_SetNextState	Set Next State	Actor	setNextState	object	eventCall	void	0	idActor	idActor::Event_SetNextState	Actor.h:351	string:name	0	0		
+node	event:AI_SetNextState	Set Next State	Actor	setNextState	object	eventCall	void	0	idActor	idActor::Event_SetNextState	Actor.h:352	string:name	0	0		
 node	event:AI_SetSmokeVisibility	Set Smoke Visibility	AI	setSmokeVisibility	object	eventCall	void	0	idAI	idAI::Event_SetSmokeVisibility	ai/AI.h:709	float:num,float:on	0	0		
-node	event:AI_SetState	Set State	Actor	setState	object	eventCall	void	0	idActor	idActor::Event_SetState	Actor.h:353	string:name	0	0		
-node	event:AI_SetSyncedAnimWeight	Set Synced Anim Weight	Actor	setSyncedAnimWeight	object	eventCall	void	0	idActor	idActor::Event_SetSyncedAnimWeight	Actor.h:313	enum(animChannel_t):channel,float:anim,float:weight	0	0		
+node	event:AI_SetState	Set State	Actor	setState	object	eventCall	void	0	idActor	idActor::Event_SetState	Actor.h:354	string:name	0	0		
+node	event:AI_SetSyncedAnimWeight	Set Synced Anim Weight	Actor	setSyncedAnimWeight	object	eventCall	void	0	idActor	idActor::Event_SetSyncedAnimWeight	Actor.h:314	enum(animChannel_t):channel,float:anim,float:weight	0	0		
 node	event:AI_SetTalkState	Set Talk State	AI	setTalkState	object	eventCall	void	0	idAI	idAI::Event_SetTalkState	ai/AI.h:665	float:state	0	0		
 node	event:AI_SetTalkTarget	Set Talk Target	AI	setTalkTarget	object	eventCall	void	0	idAI	idAI::Event_SetTalkTarget	ai/AI.h:661	entity:target	0	0		
 node	event:AI_SetTurnRate	Set Turn Rate	AI	setTurnRate	object	eventCall	void	0	idAI	idAI::Event_SetTurnRate	ai/AI.h:789	float:rate	0	0		
 node	event:AI_Shrivel	Shrivel	AI	shrivel	object	eventCall	void	0	idAI	idAI::Event_Shrivel	ai/AI.h:701	float:shirvel_time	0	0		
 node	event:AI_SlideTo	Slide To	AI	slideTo	object	eventCall	void	0	idAI	idAI::Event_SlideTo	ai/AI.h:637	vector:pos,float:time	0	0		
 node	event:AI_StartEmitter	Start Emitter	AI	startEmitter	object	eventCall	entity	0	idAI	idAI::Event_StartEmitter	ai/AI.h:814	string:name,string:joint,string:particle	0	0		
-node	event:AI_StopAnim	Stop Anim	Actor	stopAnim	object	eventCall	void	0	idActor	idActor::Event_StopAnim	Actor.h:305	enum(animChannel_t):channel,float:frames	0	0		
+node	event:AI_StopAnim	Stop Anim	Actor	stopAnim	object	eventCall	void	0	idActor	idActor::Event_StopAnim	Actor.h:306	enum(animChannel_t):channel,float:frames	0	0		
 node	event:AI_StopEmitter	Stop Emitter	AI	stopEmitter	object	eventCall	void	0	idAI	idAI::Event_StopEmitter	ai/AI.h:818	string:name	0	0		
 node	event:AI_StopMove	Stop Move	AI	stopMove	object	eventCall	void	0	idAI	idAI::Event_StopMove	ai/AI.h:621		0	0		
 node	event:AI_StopRagdoll	Stop Ragdoll	AI	stopRagdoll	object	eventCall	void	0	idAI	idAI::Event_StopRagdoll	ai/AI.h:601		0	0		
@@ -198,9 +198,9 @@ node	event:EV_CreateProjectile	Projectile Create Projectile	Projectile	projectil
 node	event:EV_DecelSound	Decel Sound	Mover	decelSound	object	eventCall	void	0	idMover	idMover::Event_SetDecelSound	Mover.h:204	string:sound	0	0		
 node	event:EV_DecelTime	Decel Time	Mover	decelTime	object	eventCall	void	0	idMover	idMover::Event_SetDecelerationTime	Mover.h:174	float:time	0	0		
 node	event:EV_Disable	Disable	Trigger	disable	object	eventCall	void	0	idTrigger	idTrigger::Event_Disable	Trigger.h:60		0	0		
-node	event:EV_DisableLegIK	Disable Leg IK	Actor	DisableLegIK	object	eventCall	void	0	idActor	idActor::Event_DisableLegIK	Actor.h:292	float:num	0	0		
+node	event:EV_DisableLegIK	Disable Leg IK	Actor	DisableLegIK	object	eventCall	void	0	idActor	idActor::Event_DisableLegIK	Actor.h:293	float:num	0	0		
 node	event:EV_DisableSplineAngles	Disable Spline Angles	Mover	disableSplineAngles	object	eventCall	void	0	idMover	idMover::Event_DisableSplineAngles	Mover.h:214		0	0		
-node	event:EV_DisableWalkIK	Disable Walk IK	Actor	DisableWalkIK	object	eventCall	void	0	idActor	idActor::Event_DisableWalkIK	Actor.h:288		0	0		
+node	event:EV_DisableWalkIK	Disable Walk IK	Actor	DisableWalkIK	object	eventCall	void	0	idActor	idActor::Event_DisableWalkIK	Actor.h:289		0	0		
 node	event:EV_DistanceTo	Distance To	Entity	distanceTo	object	eventCall	float	0	idEntity	idEntity::Event_DistanceTo	Entity.h:527	entity:ent	0	0		
 node	event:EV_DistanceToPoint	Distance To Point	Entity	distanceToPoint	object	eventCall	float	0	idEntity	idEntity::Event_DistanceToPoint	Entity.h:529	vector:point	0	0		
 node	event:EV_Door_Close	Close	Door	close	object	eventCall	void	0	idDoor	idDoor::Event_Close	Mover.h:496		0	0		
@@ -211,20 +211,20 @@ node	event:EV_Door_Open	Open	Door	open	object	eventCall	void	0	idDoor	idDoor::Ev
 node	event:EV_DropFlag	Dropflag	ItemTeam	dropflag	object	eventCall	void	0	idItemTeam	idItemTeam::Event_DropFlag	Item.h:263	float:death	0	0		
 node	event:EV_Enable	Enable	Trigger	enable	object	eventCall	void	0	idTrigger	idTrigger::Event_Enable	Trigger.h:58		0	0		
 node	event:EV_EnableDamage	Enable Damage	Moveable	enableDamage	object	eventCall	void	0	idMoveable	idMoveable::Event_EnableDamage	Moveable.h:96	float:enable	0	0		
-node	event:EV_EnableLegIK	Enable Leg IK	Actor	EnableLegIK	object	eventCall	void	0	idActor	idActor::Event_EnableLegIK	Actor.h:290	float:num	0	0		
+node	event:EV_EnableLegIK	Enable Leg IK	Actor	EnableLegIK	object	eventCall	void	0	idActor	idActor::Event_EnableLegIK	Actor.h:291	float:num	0	0		
 node	event:EV_EnableSplineAngles	Enable Spline Angles	Mover	enableSplineAngles	object	eventCall	void	0	idMover	idMover::Event_EnableSplineAngles	Mover.h:212		0	0		
-node	event:EV_EnableWalkIK	Enable Walk IK	Actor	EnableWalkIK	object	eventCall	void	0	idActor	idActor::Event_EnableWalkIK	Actor.h:286		0	0		
+node	event:EV_EnableWalkIK	Enable Walk IK	Actor	EnableWalkIK	object	eventCall	void	0	idActor	idActor::Event_EnableWalkIK	Actor.h:287		0	0		
 node	event:EV_FadeSound	Fade Sound	Entity	fadeSound	object	eventCall	void	0	idEntity	idEntity::Event_FadeSound	Entity.h:473	enum(gameSoundChannel_t):channel,float:to,float:over	0	0		
 node	event:EV_FlagCapture	Flagcapture	ItemTeam	flagcapture	object	eventCall	void	0	idItemTeam	idItemTeam::Event_FlagCapture	Item.h:267		0	0		
 node	event:EV_FlagReturn	Flagreturn	ItemTeam	flagreturn	object	eventCall	void	0	idItemTeam	idItemTeam::Event_FlagReturn	Item.h:265	entity:player	0	0		
-node	event:EV_Footstep	Footstep	Actor	footstep	object	eventCall	void	0	idActor,idAnimated	idActor::Event_Footstep,idAnimated::Event_Footstep	Actor.h:282		0	0		
-node	event:EV_FootstepLeft	Left Foot	Actor	leftFoot	object	eventCall	void	0	idActor,idAnimated,idTestModel	idActor::Event_Footstep,idAnimated::Event_Footstep,idTestModel::Event_Footstep	Actor.h:283		0	0		
-node	event:EV_FootstepRight	Right Foot	Actor	rightFoot	object	eventCall	void	0	idActor,idAnimated,idTestModel	idActor::Event_Footstep,idAnimated::Event_Footstep,idTestModel::Event_Footstep	Actor.h:284		0	0		
+node	event:EV_Footstep	Footstep	Actor	footstep	object	eventCall	void	0	idActor,idAnimated	idActor::Event_Footstep,idAnimated::Event_Footstep	Actor.h:283		0	0		
+node	event:EV_FootstepLeft	Left Foot	Actor	leftFoot	object	eventCall	void	0	idActor,idAnimated,idTestModel	idActor::Event_Footstep,idAnimated::Event_Footstep,idTestModel::Event_Footstep	Actor.h:284		0	0		
+node	event:EV_FootstepRight	Right Foot	Actor	rightFoot	object	eventCall	void	0	idActor,idAnimated,idTestModel	idActor::Event_Footstep,idAnimated::Event_Footstep,idTestModel::Event_Footstep	Actor.h:285		0	0		
 node	event:EV_GetAngles	Get Angles	AI	getAngles	object	eventCall	vector	0	idAI,idEntity	idAI::Event_GetAngles,idEntity::Event_GetAngles	ai/AI.h:771		0	0		
 node	event:EV_GetAngularVelocity	Get Angular Velocity	Entity	getAngularVelocity	object	eventCall	vector	0	idEntity	idEntity::Event_GetAngularVelocity	Entity.h:493		0	0		
 node	event:EV_GetAnimationLength	Get Animation Length	Animated	getAnimationLength	object	eventCall	float	0	idAnimated	idAnimated::Event_GetAnimationLength	Misc.h:321		0	0		
 node	event:EV_GetColor	Get Color	Entity	getColor	object	eventCall	vector	0	idEntity	idEntity::Event_GetColor	Entity.h:457		0	0		
-node	event:EV_GetDamageGroupScale	Get Damage Group Scale	Actor	getDamageGroupScale	object	eventCall	float	0	idActor	idActor::Event_GetDamageGroupScale	Actor.h:363	string:groupName	0	0		
+node	event:EV_GetDamageGroupScale	Get Damage Group Scale	Actor	getDamageGroupScale	object	eventCall	float	0	idActor	idActor::Event_GetDamageGroupScale	Actor.h:364	string:groupName	0	0		
 node	event:EV_GetEntityKey	Get Entity Key	Entity	getEntityKey	object	eventCall	entity	0	idEntity	idEntity::Event_GetEntityKey	Entity.h:521	string:key	0	0		
 node	event:EV_GetFloatKey	Get Float Key	Entity	getFloatKey	object	eventCall	float	0	idEntity	idEntity::Event_GetFloatKey	Entity.h:517	string:key	0	0		
 node	event:EV_GetGuiParm	Get Gui Parm	Entity	getGuiParm	object	eventCall	string	0	idEntity	idEntity::Event_GetGuiParm	Entity.h:547	float:guiNum,string:key	0	0		
@@ -245,7 +245,7 @@ node	event:EV_GetShaderParm	Get Shader Parm	Entity	getShaderParm	object	eventCal
 node	event:EV_GetSize	Get Size	Entity	getSize	object	eventCall	vector	0	idEntity	idEntity::Event_GetSize	Entity.h:497		0	0		
 node	event:EV_GetTarget	Get Target	Entity	getTarget	object	eventCall	entity	0	idEntity	idEntity::Event_GetTarget	Entity.h:427	float:index	0	0		
 node	event:EV_GetVectorKey	Get Vector Key	Entity	getVectorKey	object	eventCall	vector	0	idEntity	idEntity::Event_GetVectorKey	Entity.h:519	string:key	0	0		
-node	event:EV_GetWaitState	Get Wait State	Actor	getWaitState	object	eventCall	string	0	idActor	idActor::Event_GetWaitState	Actor.h:369		0	0		
+node	event:EV_GetWaitState	Get Wait State	Actor	getWaitState	object	eventCall	string	0	idActor	idActor::Event_GetWaitState	Actor.h:370		0	0		
 node	event:EV_GetWorldOrigin	Get World Origin	Entity	getWorldOrigin	object	eventCall	vector	0	idEntity	idEntity::Event_GetWorldOrigin	Entity.h:475		0	0		
 node	event:EV_Gib	Gib	AFEntity_Gibbable	gib	object	eventCall	void	0	idAFEntity_Gibbable,idAFEntity_WithAttachedHead,idMoveableItem	idAFEntity_Gibbable::Event_Gib,idAFEntity_WithAttachedHead::Event_Gib,idMoveableItem::Event_Gib	AFEntity.h:245	string:damageDefName	0	0		
 node	event:EV_GotoFloor	Goto Floor	Elevator	gotoFloor	object	eventCall	void	0	idElevator	idElevator::Event_GotoFloor	Mover.h:263	float:floor	0	0		
@@ -281,32 +281,32 @@ node	event:EV_Mover_Disable	Disable	Mover_Binary	disable	object	eventCall	void	0
 node	event:EV_Mover_Enable	Enable	Mover_Binary	enable	object	eventCall	void	0	idMover_Binary	idMover_Binary::Event_Enable	Mover.h:413		0	0		
 node	event:EV_Mover_OpenPortal	Open Portal	Mover	openPortal	object	eventCall	void	0	idDoor,idMover,idMover_Binary	idDoor::Event_OpenPortal,idMover::Event_OpenPortal,idMover_Binary::Event_OpenPortal	Mover.h:112		0	0		
 node	event:EV_NumTargets	Num Targets	Entity	numTargets	object	eventCall	float	0	idEntity	idEntity::Event_NumTargets	Entity.h:425		0	0		
-node	event:EV_Player_DisableWeapon	Disable Weapon	Player	disableWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_DisableWeapon	Player.h:748		0	0		
-node	event:EV_Player_EnableWeapon	Enable Weapon	Player	enableWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_EnableWeapon	Player.h:746		0	0		
-node	event:EV_Player_ExitTeleporter	Exit Teleporter	Player	exitTeleporter	object	eventCall	void	0	idPlayer	idPlayer::Event_ExitTeleporter	Player.h:763		0	0		
-node	event:EV_Player_GetButtons	Get Buttons	Player	getButtons	object	eventCall	float	0	idPlayer	idPlayer::Event_GetButtons	Player.h:738		0	0		
-node	event:EV_Player_GetCurrentWeapon	Get Current Weapon	Player	getCurrentWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetCurrentWeapon	Player.h:750		0	0		
-node	event:EV_Player_GetIdealWeapon	Get Ideal Weapon	Player	getIdealWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetIdealWeapon	Player.h:777		0	0		
-node	event:EV_Player_GetMove	Get Move	Player	getMove	object	eventCall	vector	0	idPlayer	idPlayer::Event_GetMove	Player.h:740		0	0		
-node	event:EV_Player_GetPreviousWeapon	Get Previous Weapon	Player	getPreviousWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetPreviousWeapon	Player.h:752		0	0		
-node	event:EV_Player_GetViewAngles	Get View Angles	Player	getViewAngles	object	eventCall	vector	0	idPlayer	idPlayer::Event_GetViewAngles	Player.h:742		0	0		
-node	event:EV_Player_GetWeaponEntity	Get Weapon Entity	Player	getWeaponEntity	object	eventCall	entity	0	idPlayer	idPlayer::Event_GetWeaponEntity	Player.h:756		0	0		
-node	event:EV_Player_GiveInventoryItem	Give Inventory Item	Player	giveInventoryItem	object	eventCall	void	0	idPlayer	idPlayer::Event_GiveInventoryItem	Player.h:772	string:name	0	0		
-node	event:EV_Player_HideTip	Hide Tip	Player	hideTip	object	eventCall	void	0	idPlayer	idPlayer::Event_HideTip	Player.h:765		0	0		
-node	event:EV_Player_InPDA	In PDA	Player	inPDA	object	eventCall	float	0	idPlayer	idPlayer::Event_InPDA	Player.h:761		0	0		
-node	event:EV_Player_IsPowerupActive	Is Powerup Active	Player	isPowerupActive	object	eventCall	float	0	idPlayer	idPlayer::Event_IsPowerupActive	Player.h:783	float:powerup	0	0		
-node	event:EV_Player_LevelTrigger	Level Trigger	Player	levelTrigger	object	eventCall	void	0	idPlayer	idPlayer::Event_LevelTrigger	Player.h:767		0	0		
-node	event:EV_Player_OpenPDA	Open PDA	Player	openPDA	object	eventCall	void	0	idPlayer	idPlayer::Event_OpenPDA	Player.h:758		0	0		
-node	event:EV_Player_RemoveInventoryItem	Remove Inventory Item	Player	removeInventoryItem	object	eventCall	void	0	idPlayer	idPlayer::Event_RemoveInventoryItem	Player.h:774	string:name	0	0		
-node	event:EV_Player_SelectWeapon	Select Weapon	Player	selectWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_SelectWeapon	Player.h:754	string:weaponName	0	0		
-node	event:EV_Player_SetBloomParms	Set Bloom Parms	Player	setBloomParms	object	eventCall	void	0	idPlayer	idPlayer::Event_SetBloomParms	Player.h:791	float:speed,float:intensity	0	0		
-node	event:EV_Player_SetPowerupTime	Set Powerup Time	Player	setPowerupTime	object	eventCall	void	0	idPlayer	idPlayer::Event_SetPowerupTime	Player.h:781	float:powerup,float:time	0	0		
-node	event:EV_Player_StartWarp	Start Warp	Player	startWarp	object	eventCall	void	0	idPlayer	idPlayer::Event_StartWarp	Player.h:785		0	0		
-node	event:EV_Player_StopAudioLog	Stop Audio Log	Player	stopAudioLog	object	eventCall	void	0	idPlayer	idPlayer::Event_StopAudioLog	Player.h:511		0	0		
-node	event:EV_Player_StopFxFov	Stop Fx Fov	Player	stopFxFov	object	eventCall	void	0	idPlayer	idPlayer::Event_StopFxFov	Player.h:744		0	0		
-node	event:EV_Player_StopHelltime	Stop Helltime	Player	stopHelltime	object	eventCall	void	0	idPlayer	idPlayer::Event_StopHelltime	Player.h:787	float:mode	0	0		
-node	event:EV_Player_ToggleBloom	Toggle Bloom	Player	toggleBloom	object	eventCall	void	0	idPlayer	idPlayer::Event_ToggleBloom	Player.h:789	float:on	0	0		
-node	event:EV_Player_WeaponAvailable	Weapon Available	Player	weaponAvailable	object	eventCall	float	0	idPlayer	idPlayer::Event_WeaponAvailable	Player.h:779	string:name	0	0		
+node	event:EV_Player_DisableWeapon	Disable Weapon	Player	disableWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_DisableWeapon	Player.h:752		0	0		
+node	event:EV_Player_EnableWeapon	Enable Weapon	Player	enableWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_EnableWeapon	Player.h:750		0	0		
+node	event:EV_Player_ExitTeleporter	Exit Teleporter	Player	exitTeleporter	object	eventCall	void	0	idPlayer	idPlayer::Event_ExitTeleporter	Player.h:767		0	0		
+node	event:EV_Player_GetButtons	Get Buttons	Player	getButtons	object	eventCall	float	0	idPlayer	idPlayer::Event_GetButtons	Player.h:742		0	0		
+node	event:EV_Player_GetCurrentWeapon	Get Current Weapon	Player	getCurrentWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetCurrentWeapon	Player.h:754		0	0		
+node	event:EV_Player_GetIdealWeapon	Get Ideal Weapon	Player	getIdealWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetIdealWeapon	Player.h:781		0	0		
+node	event:EV_Player_GetMove	Get Move	Player	getMove	object	eventCall	vector	0	idPlayer	idPlayer::Event_GetMove	Player.h:744		0	0		
+node	event:EV_Player_GetPreviousWeapon	Get Previous Weapon	Player	getPreviousWeapon	object	eventCall	string	0	idPlayer	idPlayer::Event_GetPreviousWeapon	Player.h:756		0	0		
+node	event:EV_Player_GetViewAngles	Get View Angles	Player	getViewAngles	object	eventCall	vector	0	idPlayer	idPlayer::Event_GetViewAngles	Player.h:746		0	0		
+node	event:EV_Player_GetWeaponEntity	Get Weapon Entity	Player	getWeaponEntity	object	eventCall	entity	0	idPlayer	idPlayer::Event_GetWeaponEntity	Player.h:760		0	0		
+node	event:EV_Player_GiveInventoryItem	Give Inventory Item	Player	giveInventoryItem	object	eventCall	void	0	idPlayer	idPlayer::Event_GiveInventoryItem	Player.h:776	string:name	0	0		
+node	event:EV_Player_HideTip	Hide Tip	Player	hideTip	object	eventCall	void	0	idPlayer	idPlayer::Event_HideTip	Player.h:769		0	0		
+node	event:EV_Player_InPDA	In PDA	Player	inPDA	object	eventCall	float	0	idPlayer	idPlayer::Event_InPDA	Player.h:765		0	0		
+node	event:EV_Player_IsPowerupActive	Is Powerup Active	Player	isPowerupActive	object	eventCall	float	0	idPlayer	idPlayer::Event_IsPowerupActive	Player.h:787	float:powerup	0	0		
+node	event:EV_Player_LevelTrigger	Level Trigger	Player	levelTrigger	object	eventCall	void	0	idPlayer	idPlayer::Event_LevelTrigger	Player.h:771		0	0		
+node	event:EV_Player_OpenPDA	Open PDA	Player	openPDA	object	eventCall	void	0	idPlayer	idPlayer::Event_OpenPDA	Player.h:762		0	0		
+node	event:EV_Player_RemoveInventoryItem	Remove Inventory Item	Player	removeInventoryItem	object	eventCall	void	0	idPlayer	idPlayer::Event_RemoveInventoryItem	Player.h:778	string:name	0	0		
+node	event:EV_Player_SelectWeapon	Select Weapon	Player	selectWeapon	object	eventCall	void	0	idPlayer	idPlayer::Event_SelectWeapon	Player.h:758	string:weaponName	0	0		
+node	event:EV_Player_SetBloomParms	Set Bloom Parms	Player	setBloomParms	object	eventCall	void	0	idPlayer	idPlayer::Event_SetBloomParms	Player.h:795	float:speed,float:intensity	0	0		
+node	event:EV_Player_SetPowerupTime	Set Powerup Time	Player	setPowerupTime	object	eventCall	void	0	idPlayer	idPlayer::Event_SetPowerupTime	Player.h:785	float:powerup,float:time	0	0		
+node	event:EV_Player_StartWarp	Start Warp	Player	startWarp	object	eventCall	void	0	idPlayer	idPlayer::Event_StartWarp	Player.h:789		0	0		
+node	event:EV_Player_StopAudioLog	Stop Audio Log	Player	stopAudioLog	object	eventCall	void	0	idPlayer	idPlayer::Event_StopAudioLog	Player.h:512		0	0		
+node	event:EV_Player_StopFxFov	Stop Fx Fov	Player	stopFxFov	object	eventCall	void	0	idPlayer	idPlayer::Event_StopFxFov	Player.h:748		0	0		
+node	event:EV_Player_StopHelltime	Stop Helltime	Player	stopHelltime	object	eventCall	void	0	idPlayer	idPlayer::Event_StopHelltime	Player.h:791	float:mode	0	0		
+node	event:EV_Player_ToggleBloom	Toggle Bloom	Player	toggleBloom	object	eventCall	void	0	idPlayer	idPlayer::Event_ToggleBloom	Player.h:793	float:on	0	0		
+node	event:EV_Player_WeaponAvailable	Weapon Available	Player	weaponAvailable	object	eventCall	float	0	idPlayer	idPlayer::Event_WeaponAvailable	Player.h:783	string:name	0	0		
 node	event:EV_PostArrival	Post Arrival	Elevator	postArrival	object	eventCall	void	0	idElevator	idElevator::Event_PostFloorArrival	Mover.h:304		0	0		
 node	event:EV_PrecacheGui	Precache Gui	Entity	precacheGui	object	eventCall	void	0	idEntity	idEntity::Event_PrecacheGui	Entity.h:545	string:guiName	0	0		
 node	event:EV_RandomTarget	Random Target	Entity	randomTarget	object	eventCall	entity	0	idEntity	idEntity::Event_RandomTarget	Entity.h:429	string:ignore	0	0		
@@ -325,9 +325,9 @@ node	event:EV_SetAngularVelocity	Set Angular Velocity	Entity	setAngularVelocity	
 node	event:EV_SetAnimation	Set Animation	Animated	setAnimation	object	eventCall	void	0	idAnimated	idAnimated::Event_SetAnimation	Misc.h:319	string:animName	0	0		
 node	event:EV_SetColor	Set Color	Entity	setColor	object	eventCall	void	0	idEntity	idEntity::Event_SetColor	Entity.h:455	float:red,float:green,float:blue	0	0		
 node	event:EV_SetConstraintPosition	Set Constraint Position	AFEntity_Base	SetConstraintPosition	object	eventCall	void	0	idAFEntity_Base	idAFEntity_Base::Event_SetConstraintPosition	AFEntity.h:197	string:name,vector:pos	0	0		
-node	event:EV_SetDamageCap	Set Damage Cap	Actor	setDamageCap	object	eventCall	void	0	idActor	idActor::Event_SetDamageCap	Actor.h:365	float:_damageCap	0	0		
-node	event:EV_SetDamageGroupScale	Set Damage Group Scale	Actor	setDamageGroupScale	object	eventCall	void	0	idActor	idActor::Event_SetDamageGroupScale	Actor.h:359	string:groupName,float:scale	0	0		
-node	event:EV_SetDamageGroupScaleAll	Set Damage Group Scale All	Actor	setDamageGroupScaleAll	object	eventCall	void	0	idActor	idActor::Event_SetDamageGroupScaleAll	Actor.h:361	float:scale	0	0		
+node	event:EV_SetDamageCap	Set Damage Cap	Actor	setDamageCap	object	eventCall	void	0	idActor	idActor::Event_SetDamageCap	Actor.h:366	float:_damageCap	0	0		
+node	event:EV_SetDamageGroupScale	Set Damage Group Scale	Actor	setDamageGroupScale	object	eventCall	void	0	idActor	idActor::Event_SetDamageGroupScale	Actor.h:360	string:groupName,float:scale	0	0		
+node	event:EV_SetDamageGroupScaleAll	Set Damage Group Scale All	Actor	setDamageGroupScaleAll	object	eventCall	void	0	idActor	idActor::Event_SetDamageGroupScaleAll	Actor.h:362	float:scale	0	0		
 node	event:EV_SetEnemy	Set Enemy	GuidedProjectile	setEnemy	object	eventCall	void	0	idGuidedProjectile	idGuidedProjectile::Event_SetEnemy	Projectile.h:156	entity:ent	0	0		
 node	event:EV_SetFingerAngle	Set Finger Angle	AFEntity_ClawFourFingers	setFingerAngle	object	eventCall	void	0	idAFEntity_ClawFourFingers	idAFEntity_ClawFourFingers::Event_SetFingerAngle	AFEntity.h:530	float:angle	0	0		
 node	event:EV_SetGravity	Set Gravity	Projectile	setGravity	object	eventCall	void	0	idProjectile	idProjectile::Event_SetGravity	Projectile.h:60	float:gravity	0	0		
@@ -348,7 +348,7 @@ node	event:EV_SetShaderParm	Set Shader Parm	System	setShaderParm	sys	eventCall	v
 node	event:EV_SetShaderParms	Set Shader Parms	Entity	setShaderParms	object	eventCall	void	0	idEntity	idEntity::Event_SetShaderParms	Entity.h:453	float:parm0,float:parm1,float:parm2,float:parm3	0	0		
 node	event:EV_SetSize	Set Size	Entity	setSize	object	eventCall	void	0	idEntity	idEntity::Event_SetSize	Entity.h:495	vector:mins,vector:maxs	0	0		
 node	event:EV_SetSkin	Set Skin	Entity	setSkin	object	eventCall	void	0	idEntity,idWeapon	idEntity::Event_SetSkin,idWeapon::Event_SetSkin	Entity.h:447	string:skinname	0	0		
-node	event:EV_SetWaitState	Set Wait State	Actor	setWaitState	object	eventCall	void	0	idActor	idActor::Event_SetWaitState	Actor.h:367	string:waitState	0	0		
+node	event:EV_SetWaitState	Set Wait State	Actor	setWaitState	object	eventCall	void	0	idActor	idActor::Event_SetWaitState	Actor.h:368	string:waitState	0	0		
 node	event:EV_SetWorldOrigin	Set World Origin	Entity	setWorldOrigin	object	eventCall	void	0	idEntity	idEntity::Event_SetWorldOrigin	Entity.h:477	vector:org	0	0		
 node	event:EV_Show	Show	Entity	show	object	eventCall	void	0	idEntity,idLight	idEntity::Event_Show,idLight::Event_Show	Entity.h:463		0	0		
 node	event:EV_Speaker_Off	Off	Sound	Off	object	eventCall	void	0	idSound	idSound::Event_Off	Sound.h:70		0	0		
@@ -362,7 +362,7 @@ node	event:EV_StartSpline	Start Spline	Mover	startSpline	object	eventCall	void	0
 node	event:EV_StopFingers	Stop Fingers	AFEntity_ClawFourFingers	stopFingers	object	eventCall	void	0	idAFEntity_ClawFourFingers	idAFEntity_ClawFourFingers::Event_StopFingers	AFEntity.h:532		0	0		
 node	event:EV_StopMoving	Stop Moving	Mover	stopMoving	object	eventCall	void	0	idMover	idMover::Event_StopMoving	Mover.h:162		0	0		
 node	event:EV_StopRotating	Stop Rotating	Mover	stopRotating	object	eventCall	void	0	idMover	idMover::Event_StopRotating	Mover.h:164		0	0		
-node	event:EV_StopSound	Stop Sound	Actor	stopSound	object	eventCall	void	0	idActor,idEntity	idActor::Event_StopSound,idEntity::Event_StopSound	Actor.h:349	enum(gameSoundChannel_t):channel,float:netsync	0	0		
+node	event:EV_StopSound	Stop Sound	Actor	stopSound	object	eventCall	void	0	idActor,idEntity	idActor::Event_StopSound,idEntity::Event_StopSound	Actor.h:350	enum(gameSoundChannel_t):channel,float:netsync	0	0		
 node	event:EV_StopSpline	Stop Spline	Mover	stopSpline	object	eventCall	void	0	idMover	idMover::Event_StopSpline	Mover.h:220		0	0		
 node	event:EV_Sway	Sway	Mover	sway	object	eventCall	void	0	idMover	idMover::Event_Sway	Mover.h:200	float:speed,float:phase,vector:depth	0	0		
 node	event:EV_TakeFlag	Takeflag	ItemTeam	takeflag	object	eventCall	void	0	idItemTeam	idItemTeam::Event_TakeFlag	Item.h:261	entity:player	0	0		
@@ -454,40 +454,40 @@ node	event:EV_Vehicle_setSteeringSpeed	Set Steering Speed	AFEntity_VehicleAutoma
 node	event:EV_Vehicle_setTorque	Set Torque	AFEntity_VehicleAutomated	setTorque	object	eventCall	void	0	idAFEntity_VehicleAutomated	idAFEntity_VehicleAutomated::Event_SetTorque	AFEntity.h:467	float:_torque	0	0		
 node	event:EV_Vehicle_setVelocity	Set Velocity	AFEntity_VehicleAutomated	setVelocity	object	eventCall	void	0	idAFEntity_VehicleAutomated	idAFEntity_VehicleAutomated::Event_SetVelocity	AFEntity.h:465	float:_velocity	0	0		
 node	event:EV_Vehicle_setWaypoint	Set Waypoint	AFEntity_VehicleAutomated	setWaypoint	object	eventCall	void	0	idAFEntity_VehicleAutomated	idAFEntity_VehicleAutomated::Event_SetWayPoint	AFEntity.h:471	entity:_waypoint	0	0		
-node	event:EV_Weapon_AddToClip	Add To Clip	Weapon	addToClip	object	eventCall	void	0	idWeapon	idWeapon::Event_AddToClip	Weapon.h:357	float:amount	0	0		
-node	event:EV_Weapon_AllowDrop	Allow Drop	Weapon	allowDrop	object	eventCall	void	0	idWeapon	idWeapon::Event_AllowDrop	Weapon.h:399	float:allow	0	0		
-node	event:EV_Weapon_AmmoAvailable	Ammo Available	Weapon	ammoAvailable	object	eventCall	float	0	idWeapon	idWeapon::Event_AmmoAvailable	Weapon.h:361		0	0		
-node	event:EV_Weapon_AmmoInClip	Ammo In Clip	Weapon	ammoInClip	object	eventCall	float	0	idWeapon	idWeapon::Event_AmmoInClip	Weapon.h:359		0	0		
-node	event:EV_Weapon_AutoReload	Auto Reload	Weapon	autoReload	object	eventCall	float	0	idWeapon	idWeapon::Event_AutoReload	Weapon.h:401		0	0		
-node	event:EV_Weapon_ClipSize	Clip Size	Weapon	clipSize	object	eventCall	float	0	idWeapon	idWeapon::Event_ClipSize	Weapon.h:365		0	0		
-node	event:EV_Weapon_CreateProjectile	Create Projectile	Weapon	createProjectile	object	eventCall	entity	0	idWeapon	idWeapon::Event_CreateProjectile	Weapon.h:391		0	0		
-node	event:EV_Weapon_EjectBrass	Eject Brass	Weapon	ejectBrass	object	eventCall	void	0	idWeapon	idWeapon::Event_EjectBrass	Weapon.h:393		0	0		
-node	event:EV_Weapon_Flashlight	Flashlight	Weapon	flashlight	object	eventCall	void	0	idWeapon	idWeapon::Event_Flashlight	Weapon.h:381	float:enable	0	0		
-node	event:EV_Weapon_GetOwner	Get Owner	Weapon	getOwner	object	eventCall	entity	0	idWeapon	idWeapon::Event_GetOwner	Weapon.h:338		0	0		
-node	event:EV_Weapon_GetWorldModel	Get World Model	Weapon	getWorldModel	object	eventCall	entity	0	idWeapon	idWeapon::Event_GetWorldModel	Weapon.h:397		0	0		
-node	event:EV_Weapon_Grabber	Grabber	Weapon	grabber	object	eventCall	void	0	idWeapon	idWeapon::Event_Grabber	Weapon.h:413	float:enable	0	0		
-node	event:EV_Weapon_GrabberHasTarget	Grabber Has Target	Weapon	grabberHasTarget	object	eventCall	float	0	idWeapon	idWeapon::Event_GrabberHasTarget	Weapon.h:415		0	0		
-node	event:EV_Weapon_Grabber_SetGrabDistance	Grabber Grab Distance	Weapon	grabberGrabDistance	object	eventCall	void	0	idWeapon	idWeapon::Event_GrabberSetGrabDistance	Weapon.h:417	float:dist	0	0		
-node	event:EV_Weapon_IsInvisible	Is Invisible	Weapon	isInvisible	object	eventCall	float	0	idWeapon	idWeapon::Event_IsInvisible	Weapon.h:405		0	0		
-node	event:EV_Weapon_LaunchPowerup	Launch Powerup	Weapon	launchPowerup	object	eventCall	void	0	idWeapon	idWeapon::Event_LaunchPowerup	Weapon.h:421	string:powerup,float:duration,float:useAmmo	0	0		
-node	event:EV_Weapon_LaunchProjectiles	Launch Projectiles	Weapon	launchProjectiles	object	eventCall	void	0	idWeapon	idWeapon::Event_LaunchProjectiles	Weapon.h:389	float:num_projectiles,float:spread,float:fuseOffset,float:launchPower,float:dmgPower	0	0		
-node	event:EV_Weapon_LaunchProjectilesEllipse	Launch Projectiles Ellipse	Weapon	launchProjectilesEllipse	object	eventCall	void	0	idWeapon	idWeapon::Event_LaunchProjectilesEllipse	Weapon.h:419	float:num_projectiles,float:spreada,float:spreadb,float:fuseOffset,float:power	0	0		
-node	event:EV_Weapon_Melee	Melee	Weapon	melee	object	eventCall	float	0	idWeapon	idWeapon::Event_Melee	Weapon.h:395		0	0		
-node	event:EV_Weapon_NetEndReload	Net End Reload	Weapon	netEndReload	object	eventCall	void	0	idWeapon	idWeapon::Event_NetEndReload	Weapon.h:407		0	0		
-node	event:EV_Weapon_NetReload	Net Reload	Weapon	netReload	object	eventCall	void	0	idWeapon	idWeapon::Event_NetReload	Weapon.h:403		0	0		
-node	event:EV_Weapon_Next	Next Weapon	Weapon	nextWeapon	object	eventCall	void	0	idWeapon	idWeapon::Event_Next	Weapon.h:377		0	0		
-node	event:EV_Weapon_StartWeaponLight	Start Weapon Light	Weapon	startWeaponLight	object	eventCall	void	0	idWeapon	idWeapon::Event_StartWeaponLight	Weapon.h:434	string:name	0	0		
-node	event:EV_Weapon_StartWeaponParticle	Start Weapon Particle	Weapon	startWeaponParticle	object	eventCall	void	0	idWeapon	idWeapon::Event_StartWeaponParticle	Weapon.h:429	string:name	0	0		
-node	event:EV_Weapon_StartWeaponSmoke	Start Weapon Smoke	Weapon	startWeaponSmoke	object	eventCall	void	0	idWeapon	idWeapon::Event_StartWeaponSmoke	Weapon.h:424		0	0		
-node	event:EV_Weapon_State	Weapon State	Weapon	weaponState	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponState	Weapon.h:340	string:statename,float:blendFrames	0	0		
-node	event:EV_Weapon_StopWeaponLight	Stop Weapon Light	Weapon	stopWeaponLight	object	eventCall	void	0	idWeapon	idWeapon::Event_StopWeaponLight	Weapon.h:436	string:name	0	0		
-node	event:EV_Weapon_StopWeaponParticle	Stop Weapon Particle	Weapon	stopWeaponParticle	object	eventCall	void	0	idWeapon	idWeapon::Event_StopWeaponParticle	Weapon.h:431	string:name	0	0		
-node	event:EV_Weapon_StopWeaponSmoke	Stop Weapon Smoke	Weapon	stopWeaponSmoke	object	eventCall	void	0	idWeapon	idWeapon::Event_StopWeaponSmoke	Weapon.h:426		0	0		
-node	event:EV_Weapon_TotalAmmoCount	Total Ammo Count	Weapon	totalAmmoCount	object	eventCall	float	0	idWeapon	idWeapon::Event_TotalAmmoCount	Weapon.h:363		0	0		
-node	event:EV_Weapon_UseAmmo	Use Ammo	Weapon	useAmmo	object	eventCall	void	0	idWeapon	idWeapon::Event_UseAmmo	Weapon.h:355	float:amount	0	0		
-node	event:EV_Weapon_WeaponHolstered	Weapon Holstered	Weapon	weaponHolstered	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponHolstered	Weapon.h:349		0	0		
-node	event:EV_Weapon_WeaponLowering	Weapon Lowering	Weapon	weaponLowering	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponLowering	Weapon.h:353		0	0		
-node	event:EV_Weapon_WeaponOutOfAmmo	Weapon Out Of Ammo	Weapon	weaponOutOfAmmo	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponOutOfAmmo	Weapon.h:345		0	0		
-node	event:EV_Weapon_WeaponReady	Weapon Ready	Weapon	weaponReady	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponReady	Weapon.h:343		0	0		
-node	event:EV_Weapon_WeaponReloading	Weapon Reloading	Weapon	weaponReloading	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponReloading	Weapon.h:347		0	0		
-node	event:EV_Weapon_WeaponRising	Weapon Rising	Weapon	weaponRising	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponRising	Weapon.h:351		0	0		
+node	event:EV_Weapon_AddToClip	Add To Clip	Weapon	addToClip	object	eventCall	void	0	idWeapon	idWeapon::Event_AddToClip	Weapon.h:360	float:amount	0	0		
+node	event:EV_Weapon_AllowDrop	Allow Drop	Weapon	allowDrop	object	eventCall	void	0	idWeapon	idWeapon::Event_AllowDrop	Weapon.h:402	float:allow	0	0		
+node	event:EV_Weapon_AmmoAvailable	Ammo Available	Weapon	ammoAvailable	object	eventCall	float	0	idWeapon	idWeapon::Event_AmmoAvailable	Weapon.h:364		0	0		
+node	event:EV_Weapon_AmmoInClip	Ammo In Clip	Weapon	ammoInClip	object	eventCall	float	0	idWeapon	idWeapon::Event_AmmoInClip	Weapon.h:362		0	0		
+node	event:EV_Weapon_AutoReload	Auto Reload	Weapon	autoReload	object	eventCall	float	0	idWeapon	idWeapon::Event_AutoReload	Weapon.h:404		0	0		
+node	event:EV_Weapon_ClipSize	Clip Size	Weapon	clipSize	object	eventCall	float	0	idWeapon	idWeapon::Event_ClipSize	Weapon.h:368		0	0		
+node	event:EV_Weapon_CreateProjectile	Create Projectile	Weapon	createProjectile	object	eventCall	entity	0	idWeapon	idWeapon::Event_CreateProjectile	Weapon.h:394		0	0		
+node	event:EV_Weapon_EjectBrass	Eject Brass	Weapon	ejectBrass	object	eventCall	void	0	idWeapon	idWeapon::Event_EjectBrass	Weapon.h:396		0	0		
+node	event:EV_Weapon_Flashlight	Flashlight	Weapon	flashlight	object	eventCall	void	0	idWeapon	idWeapon::Event_Flashlight	Weapon.h:384	float:enable	0	0		
+node	event:EV_Weapon_GetOwner	Get Owner	Weapon	getOwner	object	eventCall	entity	0	idWeapon	idWeapon::Event_GetOwner	Weapon.h:341		0	0		
+node	event:EV_Weapon_GetWorldModel	Get World Model	Weapon	getWorldModel	object	eventCall	entity	0	idWeapon	idWeapon::Event_GetWorldModel	Weapon.h:400		0	0		
+node	event:EV_Weapon_Grabber	Grabber	Weapon	grabber	object	eventCall	void	0	idWeapon	idWeapon::Event_Grabber	Weapon.h:416	float:enable	0	0		
+node	event:EV_Weapon_GrabberHasTarget	Grabber Has Target	Weapon	grabberHasTarget	object	eventCall	float	0	idWeapon	idWeapon::Event_GrabberHasTarget	Weapon.h:418		0	0		
+node	event:EV_Weapon_Grabber_SetGrabDistance	Grabber Grab Distance	Weapon	grabberGrabDistance	object	eventCall	void	0	idWeapon	idWeapon::Event_GrabberSetGrabDistance	Weapon.h:420	float:dist	0	0		
+node	event:EV_Weapon_IsInvisible	Is Invisible	Weapon	isInvisible	object	eventCall	float	0	idWeapon	idWeapon::Event_IsInvisible	Weapon.h:408		0	0		
+node	event:EV_Weapon_LaunchPowerup	Launch Powerup	Weapon	launchPowerup	object	eventCall	void	0	idWeapon	idWeapon::Event_LaunchPowerup	Weapon.h:424	string:powerup,float:duration,float:useAmmo	0	0		
+node	event:EV_Weapon_LaunchProjectiles	Launch Projectiles	Weapon	launchProjectiles	object	eventCall	void	0	idWeapon	idWeapon::Event_LaunchProjectiles	Weapon.h:392	float:num_projectiles,float:spread,float:fuseOffset,float:launchPower,float:dmgPower	0	0		
+node	event:EV_Weapon_LaunchProjectilesEllipse	Launch Projectiles Ellipse	Weapon	launchProjectilesEllipse	object	eventCall	void	0	idWeapon	idWeapon::Event_LaunchProjectilesEllipse	Weapon.h:422	float:num_projectiles,float:spreada,float:spreadb,float:fuseOffset,float:power	0	0		
+node	event:EV_Weapon_Melee	Melee	Weapon	melee	object	eventCall	float	0	idWeapon	idWeapon::Event_Melee	Weapon.h:398		0	0		
+node	event:EV_Weapon_NetEndReload	Net End Reload	Weapon	netEndReload	object	eventCall	void	0	idWeapon	idWeapon::Event_NetEndReload	Weapon.h:410		0	0		
+node	event:EV_Weapon_NetReload	Net Reload	Weapon	netReload	object	eventCall	void	0	idWeapon	idWeapon::Event_NetReload	Weapon.h:406		0	0		
+node	event:EV_Weapon_Next	Next Weapon	Weapon	nextWeapon	object	eventCall	void	0	idWeapon	idWeapon::Event_Next	Weapon.h:380		0	0		
+node	event:EV_Weapon_StartWeaponLight	Start Weapon Light	Weapon	startWeaponLight	object	eventCall	void	0	idWeapon	idWeapon::Event_StartWeaponLight	Weapon.h:437	string:name	0	0		
+node	event:EV_Weapon_StartWeaponParticle	Start Weapon Particle	Weapon	startWeaponParticle	object	eventCall	void	0	idWeapon	idWeapon::Event_StartWeaponParticle	Weapon.h:432	string:name	0	0		
+node	event:EV_Weapon_StartWeaponSmoke	Start Weapon Smoke	Weapon	startWeaponSmoke	object	eventCall	void	0	idWeapon	idWeapon::Event_StartWeaponSmoke	Weapon.h:427		0	0		
+node	event:EV_Weapon_State	Weapon State	Weapon	weaponState	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponState	Weapon.h:343	string:statename,float:blendFrames	0	0		
+node	event:EV_Weapon_StopWeaponLight	Stop Weapon Light	Weapon	stopWeaponLight	object	eventCall	void	0	idWeapon	idWeapon::Event_StopWeaponLight	Weapon.h:439	string:name	0	0		
+node	event:EV_Weapon_StopWeaponParticle	Stop Weapon Particle	Weapon	stopWeaponParticle	object	eventCall	void	0	idWeapon	idWeapon::Event_StopWeaponParticle	Weapon.h:434	string:name	0	0		
+node	event:EV_Weapon_StopWeaponSmoke	Stop Weapon Smoke	Weapon	stopWeaponSmoke	object	eventCall	void	0	idWeapon	idWeapon::Event_StopWeaponSmoke	Weapon.h:429		0	0		
+node	event:EV_Weapon_TotalAmmoCount	Total Ammo Count	Weapon	totalAmmoCount	object	eventCall	float	0	idWeapon	idWeapon::Event_TotalAmmoCount	Weapon.h:366		0	0		
+node	event:EV_Weapon_UseAmmo	Use Ammo	Weapon	useAmmo	object	eventCall	void	0	idWeapon	idWeapon::Event_UseAmmo	Weapon.h:358	float:amount	0	0		
+node	event:EV_Weapon_WeaponHolstered	Weapon Holstered	Weapon	weaponHolstered	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponHolstered	Weapon.h:352		0	0		
+node	event:EV_Weapon_WeaponLowering	Weapon Lowering	Weapon	weaponLowering	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponLowering	Weapon.h:356		0	0		
+node	event:EV_Weapon_WeaponOutOfAmmo	Weapon Out Of Ammo	Weapon	weaponOutOfAmmo	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponOutOfAmmo	Weapon.h:348		0	0		
+node	event:EV_Weapon_WeaponReady	Weapon Ready	Weapon	weaponReady	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponReady	Weapon.h:346		0	0		
+node	event:EV_Weapon_WeaponReloading	Weapon Reloading	Weapon	weaponReloading	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponReloading	Weapon.h:350		0	0		
+node	event:EV_Weapon_WeaponRising	Weapon Rising	Weapon	weaponRising	object	eventCall	void	0	idWeapon	idWeapon::Event_WeaponRising	Weapon.h:354		0	0		

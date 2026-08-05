@@ -1,0 +1,320 @@
+{
+  "source": {
+    "definition": "weapons/shotgun/shotgun.def",
+    "definition_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun.def",
+    "mesh": "weapons/shotgun/shotgun.msh",
+    "mesh_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun.msh",
+    "skeleton": "weapons/shotgun/shotgun.skl",
+    "skeleton_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun.skl",
+    "animation_directories": [
+      "weapons/shotgun"
+    ]
+  },
+  "config": "dnf-retail-model-conversion-v2",
+  "type": "skeletal",
+  "format": "md5",
+  "output_directory": "models/weapons/shotgun",
+  "files": [
+    "models/weapons/shotgun/shotgun.md5mesh",
+    "models/weapons/shotgun/anims/shotgun_activate.md5anim",
+    "models/weapons/shotgun/anims/shotgun_deactivate.md5anim",
+    "models/weapons/shotgun/anims/shotgun_fire.md5anim",
+    "models/weapons/shotgun/anims/shotgun_idle.md5anim",
+    "models/weapons/shotgun/anims/shotgun_melee.md5anim",
+    "models/weapons/shotgun/anims/shotgun_reload.md5anim",
+    "models/weapons/shotgun/anims/shotgun_reload_start.md5anim",
+    "models/weapons/shotgun/anims/shotgun_reload_stop.md5anim"
+  ],
+  "geometry": {
+    "joints": 9,
+    "surfaces": 2,
+    "source_vertices": 1401,
+    "output_vertices": 1401,
+    "triangles": 1407,
+    "weights": 1401,
+    "max_bind_reconstruction_error": 1.020439314654103e-14,
+    "resolved_shaders": 2,
+    "unresolved_shaders": 0,
+    "warnings": []
+  },
+  "skeleton": {
+    "bones": 9,
+    "roots": [
+      "Root"
+    ],
+    "bone_sets": {}
+  },
+  "materials": {
+    "resolved": true,
+    "slots": [
+      "models/weapons/shotgun/mt_skins2.Shotgun.shotgun1bc_dif.png",
+      "models/weapons/shotgun/mt_skins2.Shotgun.shotgun2bc_dif.png"
+    ],
+    "source_objects": [
+      "mt_skins2.Shotgun.shotgun1bc_bs",
+      "mt_skins2.Shotgun.shotgun2bc_fb"
+    ],
+    "albedo_resolved": true,
+    "slot_bindings": [
+      {
+        "slot": 0,
+        "material": "mt_skins2.Shotgun.shotgun1bc_bs",
+        "albedo_textures": [
+          "mt_skins2.Shotgun.shotgun1bc_dif"
+        ],
+        "primary_albedo": "mt_skins2.Shotgun.shotgun1bc_dif",
+        "shader": "models/weapons/shotgun/mt_skins2.Shotgun.shotgun1bc_dif.png",
+        "resolved": true,
+        "composite_color_layers": false
+      },
+      {
+        "slot": 1,
+        "material": "mt_skins2.Shotgun.shotgun2bc_fb",
+        "albedo_textures": [
+          "mt_skins2.Shotgun.shotgun2bc_dif"
+        ],
+        "primary_albedo": "mt_skins2.Shotgun.shotgun2bc_dif",
+        "shader": "models/weapons/shotgun/mt_skins2.Shotgun.shotgun2bc_dif.png",
+        "resolved": true,
+        "composite_color_layers": false
+      }
+    ],
+    "source_asset": "c_dnweapon.Shotgun"
+  },
+  "animations": [
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun_activate.anm",
+      "kind": "binary_with_events",
+      "size": 616,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 244,
+      "uncompressed_size": 472,
+      "duration": 0.6666666865348816,
+      "output": "anims/shotgun_activate.md5anim",
+      "conversion": {
+        "frames": 21,
+        "frame_rate": 30,
+        "duration": 0.6666666865348816,
+        "active_bones": 9,
+        "animated_components": 54,
+        "scale_tracks": 9,
+        "discarded_non_bind_scale_tracks": 9,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 26.987613246478748,
+        "bounds_extent": 53.942309603177854,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun_deactivate.anm",
+      "kind": "binary_with_events",
+      "size": 515,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 244,
+      "uncompressed_size": 472,
+      "duration": 0.6666666865348816,
+      "output": "anims/shotgun_deactivate.md5anim",
+      "conversion": {
+        "frames": 21,
+        "frame_rate": 30,
+        "duration": 0.6666666865348816,
+        "active_bones": 9,
+        "animated_components": 54,
+        "scale_tracks": 9,
+        "discarded_non_bind_scale_tracks": 9,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 26.987613246478748,
+        "bounds_extent": 53.942309603177854,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun_fire.anm",
+      "kind": "binary_with_events",
+      "size": 975,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 509,
+      "uncompressed_size": 805,
+      "duration": 1.0,
+      "output": "anims/shotgun_fire.md5anim",
+      "conversion": {
+        "frames": 31,
+        "frame_rate": 30,
+        "duration": 1.0,
+        "active_bones": 8,
+        "animated_components": 48,
+        "scale_tracks": 8,
+        "discarded_non_bind_scale_tracks": 4,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 26.987613246478748,
+        "bounds_extent": 53.942309603177854,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun_idle.anm",
+      "kind": "binary",
+      "size": 261,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 244,
+      "uncompressed_size": 472,
+      "duration": 1.600000023841858,
+      "output": "anims/shotgun_idle.md5anim",
+      "conversion": {
+        "frames": 49,
+        "frame_rate": 30,
+        "duration": 1.600000023841858,
+        "active_bones": 9,
+        "animated_components": 54,
+        "scale_tracks": 9,
+        "discarded_non_bind_scale_tracks": 9,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 26.987613246478748,
+        "bounds_extent": 53.942309603177854,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun_melee.anm",
+      "kind": "binary",
+      "size": 413,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 396,
+      "uncompressed_size": 613,
+      "duration": 0.800000011920929,
+      "output": "anims/shotgun_melee.md5anim",
+      "conversion": {
+        "frames": 25,
+        "frame_rate": 30,
+        "duration": 0.800000011920929,
+        "active_bones": 8,
+        "animated_components": 48,
+        "scale_tracks": 8,
+        "discarded_non_bind_scale_tracks": 0,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 26.987613246478748,
+        "bounds_extent": 53.942309603177854,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun_reload.anm",
+      "kind": "binary_with_events",
+      "size": 1084,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 603,
+      "uncompressed_size": 861,
+      "duration": 0.5,
+      "output": "anims/shotgun_reload.md5anim",
+      "conversion": {
+        "frames": 16,
+        "frame_rate": 30,
+        "duration": 0.5,
+        "active_bones": 8,
+        "animated_components": 48,
+        "scale_tracks": 8,
+        "discarded_non_bind_scale_tracks": 0,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 26.987613246478748,
+        "bounds_extent": 69.32287682156155,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun_reload_start.anm",
+      "kind": "binary",
+      "size": 261,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 244,
+      "uncompressed_size": 472,
+      "duration": 0.6666666865348816,
+      "output": "anims/shotgun_reload_start.md5anim",
+      "conversion": {
+        "frames": 21,
+        "frame_rate": 30,
+        "duration": 0.6666666865348816,
+        "active_bones": 9,
+        "animated_components": 54,
+        "scale_tracks": 9,
+        "discarded_non_bind_scale_tracks": 9,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 26.987613246478748,
+        "bounds_extent": 53.942309603177854,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    },
+    {
+      "source": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun_reload_stop.anm",
+      "kind": "binary_with_events",
+      "size": 554,
+      "version": 8,
+      "codec": 1,
+      "compressed_size": 392,
+      "uncompressed_size": 661,
+      "duration": 1.0,
+      "output": "anims/shotgun_reload_stop.md5anim",
+      "conversion": {
+        "frames": 31,
+        "frame_rate": 30,
+        "duration": 1.0,
+        "active_bones": 8,
+        "animated_components": 48,
+        "scale_tracks": 8,
+        "discarded_non_bind_scale_tracks": 0,
+        "discarded_out_of_range_tracks": 0,
+        "bounds_radius": 26.987613246478748,
+        "bounds_extent": 53.942309603177854,
+        "bounds": "constant conservative hierarchy extent plus bind-mesh radius",
+        "hardlinked": false
+      }
+    }
+  ],
+  "animation_summary": {
+    "inventoried": 8,
+    "converted": 8,
+    "failed": 0,
+    "hardlinked": 0,
+    "derived_or_procedural": 0,
+    "discarded_non_bind_scale_tracks": 40,
+    "discarded_out_of_range_tracks": 0
+  },
+  "mac_transform": {
+    "position": "(source_x, -source_y, source_z)",
+    "uv": "(u, 1-v)",
+    "winding": "reversed"
+  },
+  "mounts": [],
+  "warnings": [
+    "40 animated scale tracks were omitted because MD5Anim has no joint-scale channels."
+  ],
+  "texture_directory": "models/weapons/shotgun",
+  "texture_index": "_reports/model_textures.json",
+  "texture_files": [
+    "models/weapons/shotgun/mt_skins2.Shotgun.shotgun1bc_dif.png",
+    "models/weapons/shotgun/mt_skins2.Shotgun.shotgun2bc_dif.png"
+  ],
+  "texture_bindings": [
+    {
+      "object": "mt_skins2.Shotgun.shotgun1bc_dif",
+      "file": "models/weapons/shotgun/mt_skins2.Shotgun.shotgun1bc_dif.png"
+    },
+    {
+      "object": "mt_skins2.Shotgun.shotgun2bc_dif",
+      "file": "models/weapons/shotgun/mt_skins2.Shotgun.shotgun2bc_dif.png"
+    }
+  ]
+}

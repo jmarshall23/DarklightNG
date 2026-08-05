@@ -1069,8 +1069,25 @@ void idActor::SetupBody( void ) {
 
 	waitState = "";
 
-	torsoAnim.Init( this, &animator, ANIMCHANNEL_TORSO );
-	legsAnim.Init( this, &animator, ANIMCHANNEL_LEGS );
+	// A full-body player uses the two script states only as gameplay controllers.
+	// Both states write to ANIMCHANNEL_ALL, so the renderer evaluates one MD5
+	// animation at a time instead of composing torso and leg layers.
+	if ( UseSingleBodyAnimChannel() ) {
+		torsoAnim.Init( this, &animator, ANIMCHANNEL_ALL );
+		legsAnim.Init( this, &animator, ANIMCHANNEL_ALL );
+	} else {
+		torsoAnim.Init( this, &animator, ANIMCHANNEL_TORSO );
+		legsAnim.Init( this, &animator, ANIMCHANNEL_LEGS );
+	}
+}
+
+/*
+=====================
+idActor::UseSingleBodyAnimChannel
+=====================
+*/
+bool idActor::UseSingleBodyAnimChannel( void ) const {
+	return spawnArgs.GetBool( "anim_singleChannel", "0" );
 }
 
 /*
@@ -1827,6 +1844,40 @@ void idActor::SetAnimState( int channel, const char *statename, int blendFrames 
 		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, scriptObject.GetTypeName() );
 	}
 
+	if ( UseSingleBodyAnimChannel() ) {
+		switch( channel ) {
+		case ANIMCHANNEL_HEAD :
+			headAnim.SetState( statename, blendFrames );
+			allowEyeFocus = true;
+			return;
+
+		case ANIMCHANNEL_TORSO :
+			// Weapon/pain/teleport states temporarily own the sole rendered
+			// channel.  Returning to Torso_Idle releases it and reevaluates the
+			// current locomotion state from Legs_Idle.
+			if ( idStr::Icmp( statename, "Torso_Idle" ) ) {
+				legsAnim.Disable();
+				torsoAnim.SetState( statename, blendFrames );
+			} else {
+				torsoAnim.SetState( statename, blendFrames );
+				legsAnim.SetState( "Legs_Idle", blendFrames );
+			}
+			allowPain = true;
+			allowEyeFocus = true;
+			return;
+
+		case ANIMCHANNEL_LEGS :
+			legsAnim.SetState( statename, blendFrames );
+			allowPain = true;
+			allowEyeFocus = true;
+			return;
+
+		default:
+			gameLocal.Error( "idActor::SetAnimState: Unknown anim group" );
+			return;
+		}
+	}
+
 	switch( channel ) {
 	case ANIMCHANNEL_HEAD :
 		headAnim.SetState( statename, blendFrames );
@@ -2529,6 +2580,15 @@ void idActor::Event_PlayAnim( animChannel_t channel, const char *animname ) {
 		return;
 	}
 
+	if ( UseSingleBodyAnimChannel() &&
+		( channel == ANIMCHANNEL_TORSO || channel == ANIMCHANNEL_LEGS ) ) {
+		idAnimState &bodyState = ( channel == ANIMCHANNEL_TORSO ) ? torsoAnim : legsAnim;
+		bodyState.idleAnim = false;
+		bodyState.PlayAnim( anim );
+		idThread::ReturnInt( 1 );
+		return;
+	}
+
 	switch( channel ) {
 	case ANIMCHANNEL_HEAD :
 		headEnt = head.GetEntity();
@@ -2605,6 +2665,21 @@ void idActor::Event_PlayCycle( animChannel_t channel, const char *animname ) {
 			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, name.c_str(), GetEntityDefName() );
 		}
 		idThread::ReturnInt( false );
+		return;
+	}
+
+	if ( UseSingleBodyAnimChannel() &&
+		( channel == ANIMCHANNEL_TORSO || channel == ANIMCHANNEL_LEGS ) ) {
+		idAnimState &bodyState = ( channel == ANIMCHANNEL_TORSO ) ? torsoAnim : legsAnim;
+		if ( channel == ANIMCHANNEL_TORSO && !idStr::Icmp( animname, "idle" ) ) {
+			// The torso state remains alive to watch weapon input, but locomotion
+			// owns the one rendered body animation while no action is active.
+			bodyState.BecomeIdle();
+		} else {
+			bodyState.idleAnim = false;
+			bodyState.CycleAnim( anim );
+		}
+		idThread::ReturnInt( true );
 		return;
 	}
 
@@ -2696,6 +2771,15 @@ void idActor::Event_IdleAnim( animChannel_t channel, const char *animname ) {
 		}
 
 		idThread::ReturnInt( false );
+		return;
+	}
+
+	if ( UseSingleBodyAnimChannel() &&
+		( channel == ANIMCHANNEL_TORSO || channel == ANIMCHANNEL_LEGS ) ) {
+		idAnimState &bodyState = ( channel == ANIMCHANNEL_TORSO ) ? torsoAnim : legsAnim;
+		bodyState.BecomeIdle();
+		bodyState.CycleAnim( anim );
+		idThread::ReturnInt( true );
 		return;
 	}
 
@@ -2824,6 +2908,16 @@ idActor::Event_OverrideAnim
 ===============
 */
 void idActor::Event_OverrideAnim( animChannel_t channel ) {
+	if ( UseSingleBodyAnimChannel() &&
+		( channel == ANIMCHANNEL_TORSO || channel == ANIMCHANNEL_LEGS ) ) {
+		if ( channel == ANIMCHANNEL_TORSO ) {
+			torsoAnim.Disable();
+		} else {
+			legsAnim.Disable();
+		}
+		return;
+	}
+
 	switch( channel ) {
 	case ANIMCHANNEL_HEAD :
 		headAnim.Disable();
@@ -2859,6 +2953,16 @@ idActor::Event_EnableAnim
 ===============
 */
 void idActor::Event_EnableAnim( animChannel_t channel, int blendFrames ) {
+	if ( UseSingleBodyAnimChannel() &&
+		( channel == ANIMCHANNEL_TORSO || channel == ANIMCHANNEL_LEGS ) ) {
+		if ( channel == ANIMCHANNEL_TORSO ) {
+			torsoAnim.Enable( blendFrames );
+		} else {
+			legsAnim.Enable( blendFrames );
+		}
+		return;
+	}
+
 	switch( channel ) {
 	case ANIMCHANNEL_HEAD :
 		headAnim.Enable( blendFrames );

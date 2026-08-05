@@ -1,0 +1,104 @@
+{
+  "source": {
+    "mesh": "weapons/shotgun/shotgun_lod3.msh",
+    "mesh_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun_lod3.msh",
+    "skeleton": "weapons/shotgun/shotgun.skl",
+    "skeleton_file": "D:\\projects\\DukeForeverRetail\\SkinMeshes\\weapons\\shotgun\\shotgun.skl"
+  },
+  "config": "dnf-retail-supplemental-mesh-v1",
+  "type": "skeletal",
+  "role": "lod",
+  "format": "md5",
+  "output_directory": "models/weapons/shotgun",
+  "files": [
+    "models/weapons/shotgun/shotgun_lod3.md5mesh"
+  ],
+  "geometry": {
+    "joints": 9,
+    "surfaces": 2,
+    "source_vertices": 301,
+    "output_vertices": 301,
+    "triangles": 176,
+    "weights": 309,
+    "max_bind_reconstruction_error": 6.153480596427404e-15,
+    "resolved_shaders": 2,
+    "unresolved_shaders": 0,
+    "warnings": []
+  },
+  "skeleton": {
+    "bones": 9,
+    "synthetic": false,
+    "augmented_identity_bones": 0
+  },
+  "materials": {
+    "resolved": true,
+    "slots": [
+      "models/weapons/shotgun/mt_skins2.Shotgun.shotgun1bc_dif.png",
+      "models/weapons/shotgun/mt_skins2.Shotgun.shotgun2bc_dif.png"
+    ],
+    "source_objects": [
+      "mt_skins2.Shotgun.shotgun1bc_bs",
+      "mt_skins2.Shotgun.shotgun2bc_fb"
+    ],
+    "albedo_resolved": true,
+    "inherited_from": "weapons/shotgun",
+    "slot_bindings": [
+      {
+        "slot": 0,
+        "material": "mt_skins2.Shotgun.shotgun1bc_bs",
+        "albedo_textures": [
+          "mt_skins2.Shotgun.shotgun1bc_dif"
+        ],
+        "primary_albedo": "mt_skins2.Shotgun.shotgun1bc_dif",
+        "shader": "models/weapons/shotgun/mt_skins2.Shotgun.shotgun1bc_dif.png",
+        "resolved": true,
+        "composite_color_layers": false
+      },
+      {
+        "slot": 1,
+        "material": "mt_skins2.Shotgun.shotgun2bc_fb",
+        "albedo_textures": [
+          "mt_skins2.Shotgun.shotgun2bc_dif"
+        ],
+        "primary_albedo": "mt_skins2.Shotgun.shotgun2bc_dif",
+        "shader": "models/weapons/shotgun/mt_skins2.Shotgun.shotgun2bc_dif.png",
+        "resolved": true,
+        "composite_color_layers": false
+      }
+    ],
+    "source_asset": "c_dnweapon.Shotgun"
+  },
+  "animations": [],
+  "animation_summary": {
+    "inventoried": 0,
+    "converted": 0,
+    "failed": 0,
+    "hardlinked": 0,
+    "derived_or_procedural": 0,
+    "discarded_non_bind_scale_tracks": 0,
+    "discarded_out_of_range_tracks": 0
+  },
+  "mac_transform": {
+    "position": "(source_x, -source_y, source_z)",
+    "uv": "(u, 1-v)",
+    "winding": "reversed"
+  },
+  "mounts": [],
+  "warnings": [],
+  "texture_directory": "models/weapons/shotgun",
+  "texture_index": "_reports/model_textures.json",
+  "texture_files": [
+    "models/weapons/shotgun/mt_skins2.Shotgun.shotgun1bc_dif.png",
+    "models/weapons/shotgun/mt_skins2.Shotgun.shotgun2bc_dif.png"
+  ],
+  "texture_bindings": [
+    {
+      "object": "mt_skins2.Shotgun.shotgun1bc_dif",
+      "file": "models/weapons/shotgun/mt_skins2.Shotgun.shotgun1bc_dif.png"
+    },
+    {
+      "object": "mt_skins2.Shotgun.shotgun2bc_dif",
+      "file": "models/weapons/shotgun/mt_skins2.Shotgun.shotgun2bc_dif.png"
+    }
+  ]
+}

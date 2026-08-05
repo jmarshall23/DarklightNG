@@ -270,6 +270,7 @@ protected:
 	void					CopyJointsFromBodyToHead( void );
 
 private:
+	bool					UseSingleBodyAnimChannel( void ) const;
 	void					SyncAnimChannels( int channel, int syncToChannel, int blendFrames );
 	void					FinishSetup( void );
 	void					SetupHead( void );

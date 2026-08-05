@@ -424,6 +424,7 @@ public:
 	renderView_t *			GetRenderView( void );
 	void					CalculateRenderView( void );	// called every tic by player code
 	void					CalculateFirstPersonView( void );
+	bool					IsFullBodyFirstPersonActive( void ) const;
 
 	void					DrawHUD( idUserInterface *hud );
 
@@ -575,9 +576,12 @@ public:
 	void					SetSelfSmooth( bool b );
 
 private:
+	void					UpdateFirstPersonBodyVisibility( void );
+
 	jointHandle_t			hipJoint;
 	jointHandle_t			chestJoint;
 	jointHandle_t			headJoint;
+	jointHandle_t			fullBodyAimJoint;
 
 	idPhysics_Player		physicsObj;			// player physics
 
