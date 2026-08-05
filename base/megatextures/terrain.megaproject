@@ -1,0 +1,21 @@
+megaTextureProject 1
+{
+	name terrain
+	resolution 2048
+	sourceDirectory megatextures/terrain_source
+	material megatextures/terrain
+	map -
+	heightMap megatextures/terrain.height
+	weightMap megatextures/terrain.weights
+	terrainModel models/terrain/terrain.terrain
+	layer0 megatiles/white.tga 32
+	layer1 megatiles/arctic/dirt_dry_d.tga 32
+	layer2 megatiles/desert/grass_01_d.tga 32
+	layer3 - 32
+	terrainSamples 129
+	terrainSize 8192
+	terrainOrigin 0 0 0
+	fill 128 128 128 136
+	quality 75 75 90
+	bakeLightmap 1
+}

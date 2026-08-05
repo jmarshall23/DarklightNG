@@ -1,0 +1,17 @@
+megaTextureRoads 1
+{
+	road
+	{
+		name "Road 1"
+		texture megatiles/temperate/road_01_d.tga
+		width 512
+		feather 64
+		repeatLength 512
+		enabled 1
+		point -1585.29736 -3880.51074
+		point -1670.95898 -1467.00488
+		point -2208.96606 -621.005859
+		point -2560.83203 700.911377
+		point -2542.15137 3939.41479
+	}
+}
