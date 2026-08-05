@@ -65,8 +65,8 @@ entityDef weapon_machinegun {
 	"def_projectile"			"projectile_bullet_machinegun"
 	"ammoType"					"ammo_clip"
 	"ammoRequired"				"1"
-	"clipSize"					"60"
-	"lowAmmo"					"10"
+	"clipSize"					"50"
+	"lowAmmo"					"3"
 	"mtr_flashShader"			"muzzleflash"
 	"flashColor"				"1 0.8 0.4"
 	"flashRadius"				"120"
@@ -76,19 +76,19 @@ entityDef weapon_machinegun {
 	"mtr_guiLightShader"		"lights/viewWeaponGuiLight"
 	
 	"icon"						"guis/assets/hud/wpn_3"
-	"muzzle_kick_time"			"0.2"
-	"muzzle_kick_maxtime"		"0.6"
+	"muzzle_kick_time"			"0.12"
+	"muzzle_kick_maxtime"		"3.0"
 	"muzzle_kick_angles"		"0 0 0"
 	"muzzle_kick_offset"		"1 1 2"
-	"recoilTime"				"145"
-	"recoilAngles"				"-1 0 0"
+	"recoilTime"				"25"
+	"recoilAngles"				"-0.2 0 0"
 
 	"hide_time"					"0.3"								// time to hide weapon when talking to npcs or looking at guis
 	"hide_distance"				"-15"								// distance to offset weapon when talking to npcs or looking at guis
 
 	"smoke_muzzle"				"mgmuzzlesmoke.prt"
 	"def_ejectBrass"			"debris_brass"
-	"ejectBrassDelay"			"10"
+	"ejectBrassDelay"			"33"
 
 	"snd_acquire"				"sound_weapon_acquire"
 	"snd_respawn"				"sound_weapon_respawn"
@@ -96,7 +96,8 @@ entityDef weapon_machinegun {
 	"snd_glass"					"bullet_impact_glass"
 	"skin_invisible"			"skins/machinegun_invis"
 	
-	"spread"					"1"
+	"spread"					"4.0"
+	"spread_vertical"			"2.3"
 }
 
 entityDef moveable_item_machinegun {
@@ -122,7 +123,7 @@ model worldmodel_machinegun {
 model viewmodel_machinegun {
 	mesh 					models/md5/weapons/machinegun_view/viewmachinegun.md5mesh
 	anim raise				models/md5/weapons/machinegun_view/pullup.md5anim {
-		frame 1				sound_body player_machinegun_raise
+		frame 2				sound_body player_machinegun_raise
 	}
 	anim idle 				models/md5/weapons/machinegun_view/idle.md5anim
 	anim fire1				models/md5/weapons/machinegun_view/fire4.md5anim {

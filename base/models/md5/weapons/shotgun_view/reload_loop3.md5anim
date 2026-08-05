@@ -3,7 +3,7 @@ commandline "anim models/weapons/shotgun/cycles/reload_loop3.mb -dest models/md5
 
 numFrames 17
 numJoints 47
-frameRate 24
+frameRate 32
 numAnimatedComponents 49
 
 hierarchy {

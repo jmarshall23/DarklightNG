@@ -3,7 +3,7 @@ commandline "dnf_retail_models.py machinegun_deactivate.anm"
 
 numFrames 21
 numJoints 12
-frameRate 30
+frameRate 36
 numAnimatedComponents 72
 
 hierarchy {

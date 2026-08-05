@@ -19,4 +19,4 @@ GNU General Public License for more details.
 
 ===========================================================================
 */
-const int BUILD_NUMBER = 1304;
+const int BUILD_NUMBER = 69;

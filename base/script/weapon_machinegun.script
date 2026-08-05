@@ -4,8 +4,9 @@ weapon_machinegun.script
 
 ***********************************************************************/
 
-#define MACHINEGUN_FIRERATE			0.1		// ~10 per second
-#define MACHINEGUN_LOWAMMO			10
+#define MACHINEGUN_FIRERATE			0.06	// DNF lockout: ~16.7 rounds per second
+#define MACHINEGUN_RELOAD_AMMO_TIME	1.267
+#define MACHINEGUN_LOWAMMO			3
 #define MACHINEGUN_NUMPROJECTILES	1
 
 // blend times
@@ -19,6 +20,7 @@ weapon_machinegun.script
 object weapon_machinegun : weapon_base {
 	float		next_attack;
 	float		spread;
+	float		spread_vertical;
 	
 	void		init();
 	
@@ -33,6 +35,7 @@ object weapon_machinegun : weapon_base {
 void weapon_machinegun::init() {
 	next_attack = 0;
 	spread		= getFloatKey( "spread" );
+	spread_vertical = getFloatKey( "spread_vertical" );
 	weaponState( "Raise", 0 );
 }
 
@@ -106,8 +109,9 @@ void weapon_machinegun::Fire() {
 		startSound( "snd_lowammo", SND_CHANNEL_ITEM, true );
 	}
 	
-	launchProjectiles( MACHINEGUN_NUMPROJECTILES, spread, 0, 1.0, 1.0 );
 	playAnim( ANIMCHANNEL_ALL, "fire" );
+	// DNF uses separate 0.07 horizontal and 0.04 vertical shot error.
+	launchProjectilesEllipse( MACHINEGUN_NUMPROJECTILES, spread, spread_vertical, 0, 1.0 );
 	while( !animDone( ANIMCHANNEL_ALL, MACHINEGUN_FIRE_TO_IDLE ) ) {
 		currentTime = sys.getTime();
 		ammoClip = ammoInClip();
@@ -123,8 +127,11 @@ void weapon_machinegun::Fire() {
 void weapon_machinegun::Reload() {
 	weaponReloading();
 	playAnim( ANIMCHANNEL_ALL, "reload" );
-	waitUntil( animDone( ANIMCHANNEL_ALL, MACHINEGUN_RELOAD_TO_IDLE ) );
+	// The replacement magazine is live at the original ammo_inserted event;
+	// the remaining animation is the bolt/hand recovery.
+	sys.wait( MACHINEGUN_RELOAD_AMMO_TIME );
 	addToClip( clipSize() );
+	waitUntil( animDone( ANIMCHANNEL_ALL, MACHINEGUN_RELOAD_TO_IDLE ) );
 	weaponState( "Idle", MACHINEGUN_RELOAD_TO_IDLE );
 }
 

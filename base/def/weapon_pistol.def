@@ -68,20 +68,20 @@ entityDef weapon_pistol {
 	"inv_name"					"Pistol"
 	"inv_weapon"				"weapon_pistol"
 	"inv_item"					"5"
-	"inv_ammo_bullets"			"12"
+	"inv_ammo_bullets"			"15"
 	"icon"						"guis/assets/hud/wpn_1"
 
 	"weapon_scriptobject"		"weapon_pistol"
 	"def_projectile"			"projectile_bullet_pistol"
 	"ammoType"					"ammo_bullets"
 	"ammoRequired"				"1"
-	"clipSize"					"12"
-	"lowAmmo"					"4"
+	"clipSize"					"15"
+	"lowAmmo"					"2"
 	"mtr_flashShader"			"muzzleflash"
 	"flashColor"				"1 0.8 0.4"
 	"flashRadius"				"120"
 	"silent_fire"				"0"
-	"recoilTime"				"125"
+	"recoilTime"				"60"
 	"recoilAngles"				"-1 0 0"
 
 	"weaponAngleOffsetAverages" "10"
@@ -95,14 +95,14 @@ entityDef weapon_pistol {
 
 	"smoke_muzzle"				"muzzlesmoke.prt"
 	"def_ejectBrass"			"debris_brass"
-	"ejectBrassDelay"			"10"
+	"ejectBrassDelay"			"34"
 	
 	"snd_acquire"				"sound_weapon_acquire"
 	"snd_respawn"				"sound_weapon_respawn"
 	
 	"skin_invisible"			"skins/pistol_invis"
 	
-	"spread"					"0"
+	"spread"					"0.57"
 }
 
 entityDef moveable_item_pistol {
@@ -130,13 +130,13 @@ model viewmodel_pistol {
 	mesh						models/md5/weapons/pistol_view/viewpistol.md5mesh
 	
 	anim raise 					models/md5/weapons/pistol_view/raise.md5anim {
-		frame 7					sound_body player_pistol_raise_01
+		frame 2					sound_body player_pistol_raise_01
 	}
 	anim idle					models/md5/weapons/pistol_view/idle.md5anim
 	anim idle_empty				models/md5/weapons/pistol_view/idle_empty.md5anim
 	
 	anim fire1					models/md5/weapons/pistol_view/fire1.md5anim {
-		frame 1					sound_weapon player_pistol_fire
+		frame 2					sound_weapon player_pistol_fire
 	}
 	
 	
@@ -153,7 +153,7 @@ model viewmodel_pistol {
 }
 
 entityDef	damage_bullet_pistol {
-	"damage"			"14"
+	"damage"			"20"
 	"kickDir"			"1 0 0"
 
 	"mtr_blob"			"genericDamage"

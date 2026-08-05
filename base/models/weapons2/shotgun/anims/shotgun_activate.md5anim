@@ -3,7 +3,7 @@ commandline "dnf_retail_models.py shotgun_activate.anm"
 
 numFrames 21
 numJoints 9
-frameRate 30
+frameRate 36
 numAnimatedComponents 54
 
 hierarchy {

@@ -65,14 +65,14 @@ entityDef weapon_shotgun {
 	"def_projectile"			"projectile_bullet_shotgun"
 	"ammoType"					"ammo_shells"
 	"ammoRequired"				"1"
-	"clipSize"					"8"
+	"clipSize"					"7"
 	"lowAmmo"					"2"
 	"mtr_flashShader"			"muzzleflash"
 	"flashColor"				"1 0.8 0.4"
 	"flashRadius"				"120"
 	"silent_fire"				"0"
-	"recoilTime"				"325"
-	"recoilAngles"				"-1 0 0"
+	"recoilTime"				"80"
+	"recoilAngles"				"-2.5 0 0"
 
 	"weaponAngleOffsetAverages" "15"
 	"weaponAngleOffsetScale" 	".40"
@@ -85,13 +85,13 @@ entityDef weapon_shotgun {
 
 	"smoke_muzzle"				"shotgunmuzzlesmoke.prt"
 	"def_ejectBrass"			"debris_shotgunbrass"
-	"ejectBrassDelay"			"650"
+	"ejectBrassDelay"			"781"
 
 	"snd_acquire"				"sound_weapon_acquire"
 	"snd_respawn"				"sound_weapon_respawn"
 	"skin_invisible"			"skins/shotgun_invis"
 	
-	"spread"					"22"
+	"spread"					"6.3"
 }
 
 entityDef moveable_item_shotgun {
@@ -123,20 +123,20 @@ model viewmodel_shotgun {
 	mesh						models/md5/weapons/shotgun_view/viewshotgun.md5mesh
 	
 	anim raise					models/md5/weapons/shotgun_view/raise.md5anim {
-		frame 1					sound_body player_shotgun_raise
+		frame 2					sound_body player_shotgun_raise
 	}
 	anim idle 					models/md5/weapons/shotgun_view/idle.md5anim
 	anim fire1 					models/md5/weapons/shotgun_view/fire1.md5anim {
 		frame 1					sound_weapon player_shotgun_fire
-		frame 17				sound_voice player_shotgun_pump
+		frame 21.46				sound_voice player_shotgun_pump
 	}
 	anim fire2 					models/md5/weapons/shotgun_view/fire2.md5anim {
 		frame 1					sound_weapon player_shotgun_fire
-		frame 17				sound_voice player_shotgun_pump
+		frame 21.46				sound_voice player_shotgun_pump
 	}
 	anim fire3 					models/md5/weapons/shotgun_view/fire3.md5anim {
 		frame 1					sound_weapon player_shotgun_fire
-		frame 17				sound_voice player_shotgun_pump
+		frame 21.46				sound_voice player_shotgun_pump
 	}
 	anim reload_start 			models/md5/weapons/shotgun_view/reload_start.md5anim {
 		frame 1					sound player_shotgun_reload_start	
@@ -152,7 +152,7 @@ model viewmodel_shotgun {
 	}
 	anim reload_end 			models/md5/weapons/shotgun_view/reload_end.md5anim {
 		//frame 1					sound player_shotgun_reload_end
-		frame 14				sound_voice player_shotgun_pump
+		frame 9					sound_voice player_shotgun_pump
 	}
 	anim noammo					models/md5/weapons/shotgun_view/empty.md5anim {
 		frame 1					sound_voice player_shotgun_empty

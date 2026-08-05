@@ -3,7 +3,7 @@ commandline "dnf_retail_models.py pistol_deactivate.anm"
 
 numFrames 21
 numJoints 13
-frameRate 30
+frameRate 36
 numAnimatedComponents 78
 
 hierarchy {

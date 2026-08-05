@@ -28,9 +28,9 @@ GNU General Public License for more details.
 ===============================================================================
 */
 
-#define GAME_NAME						"DOOM 3"		// appears on window titles and errors
+#define GAME_NAME						"Duke Nukem Forever"		// appears on window titles and errors
 
-#define ENGINE_VERSION					"DOOM 1.3.1"	// printed in console
+#define ENGINE_VERSION					"Duke Nukem Forever 0.0.1"	// printed in console
 
 // paths
 #define	CD_BASEDIR						"Doom"
@@ -82,8 +82,8 @@ GNU General Public License for more details.
 #define RENDERDEMO_VERSION				2
 
 // editor info
-#define EDITOR_REGISTRY_KEY				"DOOMRadiant"
-#define EDITOR_WINDOWTEXT				"DOOMEdit"
+#define EDITOR_REGISTRY_KEY				"IceEdit"
+#define EDITOR_WINDOWTEXT				"IceEdit"
 
 // win32 info
 #define WIN32_CONSOLE_CLASS				"DOOM 3 WinConsole"
