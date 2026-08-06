@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #pragma hdrstop
 
 #include "tr_local.h"
+#include "../bse/BSEInterface.h"
 #include "../decllib/declAmbientCubeMap.h"
 #include "megatexture/MegaTextureTileLoader.h"
 #include "megatexture/MegaTextureTileDecompressor.h"
@@ -2150,6 +2151,9 @@ void idRenderSystemLocal::Init( void ) {
 	R_InitMaterials();
 
 	renderModelManager->Init();
+	if ( bse != NULL ) {
+		bse->Init();
+	}
 
 	// set the identity space
 	identitySpace.modelMatrix[0*4+0] = 1.0f;
@@ -2185,6 +2189,9 @@ void idRenderSystemLocal::Shutdown( void ) {
 		globalImages->PurgeAllImages();
 	}
 
+	if ( bse != NULL ) {
+		bse->Shutdown();
+	}
 	renderModelManager->Shutdown();
 
 	idCinematic::ShutdownCinematic( );

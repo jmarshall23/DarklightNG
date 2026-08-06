@@ -45,7 +45,7 @@ Create it if needed
 ==================
 */
 bool R_CreateAmbientCache( srfTriangles_t *tri, bool needsLighting ) {
-	if ( tri->isParticle ) {
+	if ( tri->isBSE ) {
 		return true;
 	}
 	const bool skinningReady = !tri->gpuSkinned || ( tri->skinningBuffer && tri->jointBuffer );
@@ -1164,7 +1164,6 @@ static srfTriangles_t *R_CreateTransientLightTris( const idRenderEntityLocal *en
 		lightTris->gpuSkinned = tri->gpuSkinned;
 		lightTris->skinningBuffer = tri->skinningBuffer;
 		lightTris->jointBuffer = tri->jointBuffer;
-		lightTris->isParticle = tri->isParticle;
 		tr.pc.c_createLightTris++;
 		return lightTris;
 	}
@@ -1218,7 +1217,6 @@ static srfTriangles_t *R_CreateTransientLightTris( const idRenderEntityLocal *en
 	lightTris->gpuSkinned = tri->gpuSkinned;
 	lightTris->skinningBuffer = tri->skinningBuffer;
 	lightTris->jointBuffer = tri->jointBuffer;
-	lightTris->isParticle = tri->isParticle;
 	SIMDProcessor->MinMax( lightTris->bounds[0], lightTris->bounds[1], tri->verts, indexes, numIndexes );
 	tr.pc.c_createLightTris++;
 	return lightTris;
@@ -1261,7 +1259,9 @@ static void R_AddTransientLightSurfaces( viewEntity_t *vEntity, const idRenderMo
 		for ( int i = 0; i < numSurfaces; i++ ) {
 			const modelSurface_t *surface = model->Surface( i );
 			const srfTriangles_t *tri = surface->geometry;
-			if ( !tri || !tri->numIndexes || tri->ambientViewCount != tr.viewCount ) {
+			// BSE geometry is intentionally unlit in the scene interaction lists;
+			// its materials are evaluated once in the late screen-space VFX pass.
+			if ( !tri || tri->isBSE || !tri->numIndexes || tri->ambientViewCount != tr.viewCount ) {
 				continue;
 			}
 

@@ -156,7 +156,7 @@ typedef struct srfTriangles_s {
 	idJointMat *				jointMatrices;			// retained relative matrices for buffer recreation
 	int							numJoints;
 	bool						gpuSkinned;
-	bool						isParticle;
+	bool						isBSE;					// submitted only by the dedicated BSE screen-space pass
 
 	// Shared VFX stream placement.  Generation changes whenever the shared
 	// store is orphaned or resized.

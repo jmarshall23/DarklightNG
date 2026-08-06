@@ -25,6 +25,9 @@ GNU General Public License for more details.
 
 #include "../decllib/declAtmosphere.h"
 #include "../decllib/declAmbientCubeMap.h"
+#include "../bse/BSE.h"
+
+static void ValidateEffects_f( const idCmdArgs &args );
 
 /*
 
@@ -816,6 +819,7 @@ void idDeclManagerLocal::Init( void ) {
 	RegisterDeclType( "audio",				DECL_AUDIO,			idDeclAllocator<idDeclAudio> );
 	RegisterDeclType( "atmosphere",			DECL_ATMOSPHERE,		idDeclAllocator<sdDeclAtmosphere> );
 	RegisterDeclType( "ambientCubemap",		DECL_AMBIENTCUBEMAP,	idDeclAllocator<sdDeclAmbientCubeMap> );
+	RegisterDeclType( "effect",				DECL_EFFECT,			idDeclAllocator<rvDeclEffect> );
 
 	RegisterDeclFolder( "materials",		".mtr",				DECL_MATERIAL );
 	RegisterDeclFolder( "skins",			".skin",			DECL_SKIN );
@@ -835,7 +839,8 @@ void idDeclManagerLocal::Init( void ) {
 
 	cmdSystem->AddCommand( "listEntityDefs", idListDecls_f<DECL_ENTITYDEF>, CMD_FL_SYSTEM, "lists entity defs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
 	cmdSystem->AddCommand( "listFX", idListDecls_f<DECL_FX>, CMD_FL_SYSTEM, "lists FX systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	cmdSystem->AddCommand( "listParticles", idListDecls_f<DECL_PARTICLE>, CMD_FL_SYSTEM, "lists particle systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	cmdSystem->AddCommand( "listEffects", idListDecls_f<DECL_EFFECT>, CMD_FL_SYSTEM, "lists BSE effect systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	cmdSystem->AddCommand( "validateEffects", ValidateEffects_f, CMD_FL_SYSTEM, "parses and validates all BSE effect systems" );
 	cmdSystem->AddCommand( "listAF", idListDecls_f<DECL_AF>, CMD_FL_SYSTEM, "lists articulated figures", idCmdSystem::ArgCompletion_String<listDeclStrings>);
 
 	cmdSystem->AddCommand( "listPDAs", idListDecls_f<DECL_PDA>, CMD_FL_SYSTEM, "lists PDAs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
@@ -852,7 +857,7 @@ void idDeclManagerLocal::Init( void ) {
 
 	cmdSystem->AddCommand( "printEntityDef", idPrintDecls_f<DECL_ENTITYDEF>, CMD_FL_SYSTEM, "prints an entity def", idCmdSystem::ArgCompletion_Decl<DECL_ENTITYDEF> );
 	cmdSystem->AddCommand( "printFX", idPrintDecls_f<DECL_FX>, CMD_FL_SYSTEM, "prints an FX system", idCmdSystem::ArgCompletion_Decl<DECL_FX> );
-	cmdSystem->AddCommand( "printParticle", idPrintDecls_f<DECL_PARTICLE>, CMD_FL_SYSTEM, "prints a particle system", idCmdSystem::ArgCompletion_Decl<DECL_PARTICLE> );
+	cmdSystem->AddCommand( "printEffect", idPrintDecls_f<DECL_EFFECT>, CMD_FL_SYSTEM, "prints a BSE effect system", idCmdSystem::ArgCompletion_Decl<DECL_EFFECT> );
 	cmdSystem->AddCommand( "printAF", idPrintDecls_f<DECL_AF>, CMD_FL_SYSTEM, "prints an articulated figure", idCmdSystem::ArgCompletion_Decl<DECL_AF> );
 
 	cmdSystem->AddCommand( "printPDA", idPrintDecls_f<DECL_PDA>, CMD_FL_SYSTEM, "prints an PDA", idCmdSystem::ArgCompletion_Decl<DECL_PDA> );
@@ -1000,12 +1005,16 @@ void idDeclManagerLocal::RegisterDeclFolder( const char *folder, const char *ext
 		declFolders.Append( declFolder );
 	}
 
-	// scan for decl files
-	fileList = fileSystem->ListFiles( declFolder->folder, declFolder->extension, true );
+	// ETQW BSE declarations are organized in a deep effects tree.  Doom 3's
+	// original declaration folders are flat, so keep their existing behavior
+	// and recurse only for the BSE declaration type.
+	const bool recursive = defaultType == DECL_EFFECT;
+	fileList = recursive ? fileSystem->ListFilesTree( declFolder->folder, declFolder->extension, true ) :
+		fileSystem->ListFiles( declFolder->folder, declFolder->extension, true );
 
 	// load and parse decl files
 	for ( i = 0; i < fileList->GetNumFiles(); i++ ) {
-		fileName = declFolder->folder + "/" + fileList->GetFile( i );
+		fileName = recursive ? fileList->GetFile( i ) : declFolder->folder + "/" + fileList->GetFile( i );
 
 		// check whether this file has already been loaded
 		for ( j = 0; j < loadedFiles.Num(); j++ ) {
@@ -1620,6 +1629,31 @@ void idDeclManagerLocal::ListDecls_f( const idCmdArgs &args ) {
 
 	common->Printf( "%i total decls is %i decl files\n", totalDecls, declManagerLocal.loadedFiles.Num() );
 	common->Printf( "%iKB in text, %iKB in structures\n", totalText >> 10, totalStructs >> 10 );
+}
+
+/*
+===================
+ValidateEffects_f
+
+Forces every indexed BSE declaration through its type parser.  This is kept as
+a normal console command so SDK effect drops can be checked without loading a
+map that happens to reference every declaration.
+===================
+*/
+static void ValidateEffects_f( const idCmdArgs &args ) {
+	const int count = declManager->GetNumDecls( DECL_EFFECT );
+	int defaulted = 0;
+	for ( int i = 0; i < count; i++ ) {
+		const idDecl *decl = declManager->DeclByIndex( DECL_EFFECT, i, true );
+		if ( decl == NULL || decl->GetState() == DS_DEFAULTED ) {
+			defaulted++;
+			if ( decl != NULL ) {
+				common->Warning( "BSE declaration defaulted: %s", decl->GetName() );
+			}
+		}
+	}
+	common->Printf( "Validated %d BSE effect declarations: %d parsed, %d defaulted\n",
+		count, count - defaulted, defaulted );
 }
 
 /*

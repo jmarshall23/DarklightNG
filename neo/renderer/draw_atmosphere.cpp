@@ -17,7 +17,7 @@
 static void RB_GLSL_DrawAtmosphereSurface( const drawSurf_t *surf ) {
 	const srfTriangles_t *tri = surf->geo;
 	const idMaterial *material = surf->material;
-	if ( !tri || !tri->numIndexes || !material ) {
+	if ( !tri || tri->isBSE || !tri->numIndexes || !material ) {
 		return;
 	}
 

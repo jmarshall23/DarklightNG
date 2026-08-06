@@ -813,15 +813,22 @@ void idProjectile::Explode( const trace_t &collision, idEntity *ignore ) {
 	Hide();
 	FreeLightDef();
 
-	if ( spawnArgs.GetVector( "detonation_axis", "", normal ) ) {
-		GetPhysics()->SetAxis( normal.ToMat3() );
+	// Quake Wars impact effects author their local +X axis away from the hit
+	// surface.  Use the collision normal unless the projectile explicitly
+	// supplies a different detonation axis.
+	if ( !spawnArgs.GetVector( "detonation_axis", "", normal ) ) {
+		normal = collision.c.normal;
 	}
+	if ( normal.Normalize() == 0.0f ) {
+		normal.Set( 1.0f, 0.0f, 0.0f );
+	}
+	GetPhysics()->SetAxis( normal.ToMat3() );
 	GetPhysics()->SetOrigin( collision.endpos + 2.0f * collision.c.normal );
 
 	// default remove time
 	removeTime = spawnArgs.GetInt( "remove_time", "1500" );
 
-	// change the model, usually to a PRT
+	// change the model, usually to a BSE effect
 	fxname = NULL;
 	if ( g_testParticle.GetInteger() == TEST_PARTICLE_IMPACT ) {
 		fxname = g_testParticleName.GetString();
@@ -847,7 +854,7 @@ void idProjectile::Explode( const trace_t &collision, idEntity *ignore ) {
 		idFuncEmitter *splashEnt;
 		idDict splashArgs;
 
-		splashArgs.Set( "model", "sludgebulletimpact.prt" );
+		splashArgs.Set( "model", "effects/base/bullets/impact_liquid.effect" );
 		splashArgs.Set( "start_off", "1" );
 		splashEnt = static_cast<idFuncEmitter *>( gameLocal.SpawnEntityType( idFuncEmitter::Type, &splashArgs ) );
 

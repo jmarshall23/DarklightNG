@@ -1,0 +1,147 @@
+/*
+===========================================================================
+
+Material aliases for the ETQW BSE effects used by DarklightNG weapons.
+The SDK effect declarations are kept unmodified; these aliases bind their
+material names to artwork already shipped in the Darklight base data.
+
+===========================================================================
+*/
+
+textures/effects/weapons/muzzle_flash
+{
+	translucent
+	noShadows
+	nonsolid
+	{
+		blend add
+		map textures/particles/boomboom.tga
+		vertexColor
+	}
+}
+
+textures/effects/weapons/muzzle_flash2
+{
+	translucent
+	noShadows
+	nonsolid
+	{
+		blend add
+		map textures/particles/boomboom.tga
+		vertexColor
+	}
+}
+
+textures/effects/weapons/muzzle_flash3
+{
+	translucent
+	noShadows
+	nonsolid
+	{
+		blend add
+		map textures/particles/boomboom.tga
+		vertexColor
+	}
+}
+
+textures/effects/weapons/muzzle_flash_side2
+{
+	translucent
+	noShadows
+	twoSided
+	nonsolid
+	{
+		blend add
+		map textures/particles/spark3.tga
+		vertexColor
+	}
+}
+
+particles/explosion/explode07
+{
+	translucent
+	noShadows
+	nonsolid
+	{
+		blend add
+		map textures/particles/boomboom.tga
+		vertexColor
+	}
+}
+
+particles/penta/simple_smoke
+{
+	translucent
+	noShadows
+	twoSided
+	nonsolid
+	{
+		blend blend
+		map textures/particles/barrelpoof.tga
+		vertexColor
+	}
+}
+
+particles/dustcloud_02_litsmoke
+{
+	translucent
+	noShadows
+	twoSided
+	nonsolid
+	{
+		blend blend
+		map textures/particles/barrelpoof.tga
+		vertexColor
+	}
+}
+
+lights/round
+{
+	translucent
+	noShadows
+	nonsolid
+	{
+		blend add
+		map textures/particles/boomboom.tga
+		vertexColor
+	}
+}
+
+particles/debris/dustcloud_4
+{
+	translucent
+	noShadows
+	twoSided
+	nonsolid
+	{
+		blend blend
+		map textures/particles/dustcloud.tga
+		vertexColor
+	}
+}
+
+particles/dustcloud_02
+{
+	translucent
+	noShadows
+	twoSided
+	nonsolid
+	{
+		blend blend
+		map textures/particles/barrelpoof.tga
+		vertexColor
+	}
+}
+
+particles/debris/debris_smallblast2
+{
+	translucent
+	noShadows
+	twoSided
+	nonsolid
+	{
+		blend add
+		map textures/particles/spark3.tga
+		vertexColor
+	}
+}

@@ -306,6 +306,13 @@ void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	tri = surf->geo;
 	shader = surf->material;
 
+	// BSE surfaces are composited by RB_VFX_DrawScreenSpacePass after the
+	// opaque scene and atmosphere have been resolved.  They must not write
+	// scene depth even when a model-particle material is opaque.
+	if ( tri == NULL || tri->isBSE ) {
+		return;
+	}
+
 	// update the clip plane if needed
 	if ( backEnd.viewDef->numClipPlanes && surf->space != backEnd.currentSpace ) {
 		GL_SelectTexture( 1 );
@@ -333,7 +340,7 @@ void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 		return;
 	}
 
-	if ( !tri->vertexBuffer && !tri->isParticle && !tri->verts &&
+	if ( !tri->vertexBuffer && !tri->isBSE && !tri->verts &&
 		( !tri->ambientSurface || !tri->ambientSurface->vertexBuffer ) ) {
 		common->Printf( "RB_T_FillDepthBuffer: surface has no vertex data\n" );
 		return;
@@ -712,7 +719,7 @@ void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf ) {
 		return;
 	}
 
-	if ( !tri->vertexBuffer && !tri->isParticle && !tri->verts &&
+	if ( !tri->vertexBuffer && !tri->isBSE && !tri->verts &&
 		( !tri->ambientSurface || !tri->ambientSurface->vertexBuffer ) ) {
 		common->Printf( "RB_T_RenderShaderPasses: surface has no vertex data\n" );
 		return;
@@ -744,6 +751,14 @@ void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf ) {
 
 	for ( stage = 0; stage < shader->GetNumStages() ; stage++ ) {		
 		pStage = shader->GetStage(stage);
+		int stageDrawStateBits = pStage->drawStateBits;
+		if ( tri->isBSE ) {
+			// BSE deliberately bypasses the scene depth prepass. ETQW particle
+			// surfaces use LEQUAL testing without depth writes, including model
+			// particles whose source material otherwise requests DEPTHFUNC_EQUAL.
+			stageDrawStateBits &= ~( GLS_DEPTHFUNC_EQUAL | GLS_DEPTHFUNC_ALWAYS );
+			stageDrawStateBits |= GLS_DEPTHMASK;
+		}
 
 		// check the enable condition
 		if ( regs[ pStage->conditionRegister ] == 0 ) {
@@ -782,7 +797,7 @@ void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf ) {
 			qglEnableVertexAttribArray( 10 );
 			qglEnableClientState( GL_NORMAL_ARRAY );
 
-			GL_State( pStage->drawStateBits );
+			GL_State( stageDrawStateBits );
 			
 			if ( !R_BindGLSLProgram( newStage->vertexProgram, newStage->fragmentProgram ) ) {
 				qglDisableClientState( GL_COLOR_ARRAY );
@@ -956,7 +971,7 @@ void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf ) {
 		RB_BindVariableStageImage( &pStage->texture, regs );
 
 		// set the state
-		GL_State( pStage->drawStateBits );
+		GL_State( stageDrawStateBits );
 		
 		RB_PrepareStageTexturing( pStage, surf, ac );
 
@@ -1034,6 +1049,11 @@ int RB_STD_DrawShaderPasses( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 	// surfaces won't draw any ambient passes
 	backEnd.currentSpace = NULL;
 	for (i = 0  ; i < numDrawSurfs ; i++ ) {
+		// BSE is evaluated and tessellated like Quake Wars, then composited by
+		// the dedicated late-view VFX pass instead of the generic surface loop.
+		if ( drawSurfs[i]->geo != NULL && drawSurfs[i]->geo->isBSE ) {
+			continue;
+		}
 		if ( drawSurfs[i]->material->SuppressInSubview() ) {
 			continue;
 		}
@@ -1098,7 +1118,7 @@ static void RB_T_BlendLight( const drawSurf_t *surf ) {
 	}
 
 	// this gets used for both blend lights and shadow draws
-	if ( tri->vertexBuffer || tri->verts || tri->isParticle ||
+	if ( tri->vertexBuffer || tri->verts || tri->isBSE ||
 		( tri->ambientSurface && tri->ambientSurface->vertexBuffer ) ) {
 		const idDrawVert *ac = RB_BindDrawVertBuffer( tri );
 		qglVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
@@ -1562,6 +1582,14 @@ void	RB_STD_DrawView( void ) {
 	{
 		idScopedGpuMarker marker( "Atmosphere", profile3DView );
 		RB_GLSL_DrawAtmosphere( drawSurfs, numDrawSurfs );
+	}
+	{
+		idScopedGpuMarker marker( "BSE Screen Space", profile3DView );
+		// BSE surfaces have their own sort/order inside the effect runtime and
+		// are excluded from both generic shader-pass slices.  Scan the complete
+		// view list so a material sort at the post-process boundary cannot hide
+		// an otherwise valid effect surface.
+		RB_VFX_DrawScreenSpacePass( drawSurfs, numDrawSurfs );
 	}
 
 	// now draw any post-processing effects using _currentRender

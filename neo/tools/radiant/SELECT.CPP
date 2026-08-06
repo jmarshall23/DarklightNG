@@ -30,7 +30,7 @@ If you have questions concerning this license or the applicable additional terms
 #pragma hdrstop
 
 #include "qe3.h"
-#include "../../renderer/model_local.h"	// for idRenderModelPrt
+#include "../../renderer/model_local.h"
 
 // externs
 CPtrArray	g_SelectedFaces;
@@ -800,7 +800,7 @@ void Select_ApplyMatrix(bool bSnap, bool rotateOrigins) {
 				if (b->modelHandle) {
 					idBounds bo, bo2;
 					bo2.Zero();
-					if ( dynamic_cast<idRenderModelPrt*>( b->modelHandle ) || dynamic_cast<idRenderModelLiquid*>( b->modelHandle ) ) {
+					if ( b->modelHandle->IsDynamicModel() != DM_STATIC ) {
 						bo2.ExpandSelf( 12.0f );
 					} else {
 						bo2 = b->modelHandle->Bounds();

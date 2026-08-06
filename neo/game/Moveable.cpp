@@ -952,7 +952,7 @@ idExplodingBarrel::StartBurning
 */
 void idExplodingBarrel::StartBurning( void ) {
 	state = BURNING;
-	AddParticles( "barrelfire.prt", true );
+	AddParticles( "effects/fire/crater_fire.effect", true );
 }
 
 /*
@@ -984,22 +984,23 @@ void idExplodingBarrel::AddParticles( const char *name, bool burn ) {
 			particleRenderEntity->FreeRenderEntity();
 			particleRenderEntity = NULL;
 		}
-		const idDeclModelDef *modelDef = static_cast<const idDeclModelDef *>( declManager->FindType( DECL_MODELDEF, name ) );
-		if ( modelDef ) {
+		const idDeclModelDef *modelDef = static_cast<const idDeclModelDef *>(
+			declManager->FindType( DECL_MODELDEF, name, false ) );
+		idRenderModel *effectModel = modelDef != NULL ? modelDef->ModelHandle() :
+			renderModelManager->FindModel( name );
+		if ( effectModel != NULL && !effectModel->IsDefaultModel() ) {
 			particleRenderEntity = gameRenderWorld->AllocRenderEntity();
 			particleRenderEntity->SetOrigin( physicsObj.GetAbsBounds().GetCenter() );
 			particleRenderEntity->SetAxis( mat3_identity );
-			particleRenderEntity->SetModel( modelDef->ModelHandle() );
-			float rgb = ( burn ) ? 0.0f : 1.0f;
+			particleRenderEntity->SetModel( effectModel );
+			const float rgb = 1.0f;
 			for ( int parm = 0; parm < 4; parm++ ) {
 				particleRenderEntity->SetShaderParm( parm, rgb );
 			}
 			particleRenderEntity->SetShaderParm( SHADERPARM_TIMEOFFSET, -MS2SEC( gameLocal.realClientTime ) );
-			particleRenderEntity->SetShaderParm( SHADERPARM_DIVERSITY, ( burn ) ? 1.0f : gameLocal.random.RandomInt( 90 ) );
+			particleRenderEntity->SetShaderParm( SHADERPARM_DIVERSITY, burn ? 1.0f : gameLocal.random.RandomFloat() );
+			particleRenderEntity->SetShaderParm( SHADERPARM_BRIGHTNESS, 1.0f );
 			particleRenderEntity->SetTimeGroup( explicitTimeGroup );
-			if ( !particleRenderEntity->GetModel() ) {
-				particleRenderEntity->SetModel( renderModelManager->FindModel( name ) );
-			}
 			particleRenderEntity->UpdateRenderEntity();
 			if ( burn ) {
 				BecomeActive( TH_THINK );

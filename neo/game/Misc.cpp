@@ -1537,9 +1537,9 @@ void idStaticEntity::Spawn( void ) {
 	active = false;
 
 	idStr model = spawnArgs.GetString( "model" );
-	if ( model.Find( ".prt" ) >= 0 ) {
+	if ( model.Find( ".effect" ) >= 0 ) {
 		// we want the parametric particles out of sync with each other
-		renderEntity->SetShaderParm( SHADERPARM_TIMEOFFSET, gameLocal.random.RandomInt( 32767 ) );
+		renderEntity->SetShaderParm( SHADERPARM_TIMEOFFSET, gameLocal.random.RandomFloat() * 16.0f );
 	}
 
 	fadeFrom.Set( 1, 1, 1, 1 );

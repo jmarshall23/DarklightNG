@@ -31,6 +31,38 @@ GNU General Public License for more details.
 	
 ***********************************************************************/
 
+static idFuncEmitter *SpawnTransientBSEEffect( const char *effectName, const idVec3 &origin,
+		const idMat3 &axis, idEntity *activator, int lifetime, int allowViewID, int suppressViewID ) {
+	if ( effectName == NULL || effectName[0] == '\0' ) {
+		return NULL;
+	}
+
+	idDict args;
+	args.Set( "model", effectName );
+	args.SetBool( "start_off", true );
+
+	idFuncEmitter *emitter = static_cast<idFuncEmitter *>(
+		gameLocal.SpawnEntityType( idFuncEmitter::Type, &args, gameLocal.isClient ) );
+	if ( emitter == NULL ) {
+		return NULL;
+	}
+
+	// Weapon effects are predicted locally.  Synchronizing these temporary
+	// entities would duplicate them when the authoritative shot arrives.
+	emitter->fl.networkSync = false;
+	emitter->SetOrigin( origin );
+	emitter->SetAxis( axis );
+	idRenderEntity *effectRenderEntity = emitter->GetRenderEntity();
+	effectRenderEntity->SetAllowSurfaceInViewID( allowViewID );
+	effectRenderEntity->SetSuppressSurfaceInViewID( suppressViewID );
+	effectRenderEntity->SetShaderParm( SHADERPARM_DIVERSITY, gameLocal.random.CRandomFloat() );
+	effectRenderEntity->SetShaderParm( SHADERPARM_BRIGHTNESS, 1.0f );
+	emitter->UpdateVisuals();
+	emitter->PostEventMS( &EV_Activate, 0, activator );
+	emitter->PostEventMS( &EV_Remove, idMath::ClampInt( 100, 10000, lifetime ) );
+	return emitter;
+}
+
 //
 // event defs
 //
@@ -1302,6 +1334,52 @@ void idWeapon::MuzzleFlashLight( void ) {
 
 	muzzleFlash->UpdateRenderLight();
 	worldMuzzleFlash->UpdateRenderLight();
+}
+
+/*
+================
+idWeapon::MuzzleFlashEffect
+
+Starts Quake Wars BSE muzzle effects at both weapon representations.  The
+view effect is restricted to the owning player's view; the world effect is
+hidden there unless full-body first person is using the world weapon.
+================
+*/
+void idWeapon::MuzzleFlashEffect( void ) {
+	if ( weaponDef == NULL || owner == NULL ) {
+		return;
+	}
+
+	const char *viewEffect = weaponDef->dict.GetString( "model_muzzle_effect" );
+	const char *worldEffect = weaponDef->dict.GetString( "model_muzzle_effect_world", viewEffect );
+	if ( viewEffect[0] == '\0' && worldEffect[0] == '\0' ) {
+		return;
+	}
+
+	const int playerViewID = owner->entityNumber + 1;
+	const int lifetime = weaponDef->dict.GetInt( "muzzle_effect_time", "4500" );
+	const bool useWorldInFirstPerson = UseWorldModelForFirstPerson();
+
+	idVec3 effectOrigin = muzzleOrigin;
+	idMat3 effectAxis = muzzleAxis;
+	const jointHandle_t viewJoint = flashJointView != INVALID_JOINT ? flashJointView : barrelJointView;
+	if ( viewJoint != INVALID_JOINT ) {
+		GetGlobalJointTransform( true, viewJoint, effectOrigin, effectAxis );
+	}
+	if ( !useWorldInFirstPerson && viewEffect[0] != '\0' ) {
+		SpawnTransientBSEEffect( viewEffect, effectOrigin, effectAxis, this, lifetime, playerViewID, 0 );
+	}
+
+	if ( worldModel.GetEntity() != NULL && worldEffect[0] != '\0' ) {
+		effectOrigin = muzzleOrigin;
+		effectAxis = muzzleAxis;
+		const jointHandle_t worldJoint = flashJointWorld != INVALID_JOINT ? flashJointWorld : barrelJointWorld;
+		if ( worldJoint != INVALID_JOINT ) {
+			GetGlobalJointTransform( false, worldJoint, effectOrigin, effectAxis );
+		}
+		SpawnTransientBSEEffect( worldEffect, effectOrigin, effectAxis, this, lifetime, 0,
+			useWorldInFirstPerson ? 0 : playerViewID );
+	}
 }
 
 /*
@@ -3275,6 +3353,7 @@ void idWeapon::Event_LaunchProjectiles( int num_projectiles, float spread, float
 		muzzleOrigin = playerViewOrigin;
 		muzzleAxis = playerViewAxis;
 	}
+	MuzzleFlashEffect();
 
 	// add some to the kick time, incrementally moving repeat firing weapons back
 	if ( kick_endtime < gameLocal.realClientTime ) {
@@ -3441,6 +3520,7 @@ void idWeapon::Event_LaunchProjectilesEllipse( int num_projectiles, float spread
 		muzzleOrigin = playerViewOrigin;
 		muzzleAxis = playerViewAxis;
 	}
+	MuzzleFlashEffect();
 
 	// add some to the kick time, incrementally moving repeat firing weapons back
 	if ( kick_endtime < gameLocal.time ) {

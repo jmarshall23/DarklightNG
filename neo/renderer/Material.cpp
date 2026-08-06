@@ -1631,23 +1631,21 @@ void idMaterial::ParseDeform( idLexer &src ) {
 		return;
 	}
 	if ( !token.Icmp( "particle" ) ) {
-		deform = DFRM_PARTICLE;
 		if ( !src.ExpectAnyToken( &token ) ) {
 			src.Warning( "deform particle missing particle name" );
 			SetMaterialFlag( MF_DEFAULTED );
 			return;
 		}
-		deformDecl = declManager->FindType( DECL_PARTICLE, token.c_str(), true );
+		src.Warning( "legacy particle deform '%s' ignored; use a BSE .effect model", token.c_str() );
 		return;
 	}
 	if ( !token.Icmp( "particle2" ) ) {
-		deform = DFRM_PARTICLE2;
 		if ( !src.ExpectAnyToken( &token ) ) {
 			src.Warning( "deform particle missing particle name" );
 			SetMaterialFlag( MF_DEFAULTED );
 			return;
 		}
-		deformDecl = declManager->FindType( DECL_PARTICLE, token.c_str(), true );
+		src.Warning( "legacy particle2 deform '%s' ignored; use a BSE .effect model", token.c_str() );
 		return;
 	}
 	src.Warning( "Bad deform type '%s'", token.c_str() );

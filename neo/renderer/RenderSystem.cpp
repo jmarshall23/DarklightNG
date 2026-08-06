@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #pragma hdrstop
 
 #include "tr_local.h"
+#include "../bse/BSEInterface.h"
 
 idRenderSystemLocal	tr;
 idRenderSystem	*renderSystem = &tr;
@@ -570,6 +571,10 @@ void idRenderSystemLocal::BeginFrame( int windowWidth, int windowHeight ) {
 
 	if ( !glConfig.isInitialized ) {
 		return;
+	}
+
+	if ( bse != NULL ) {
+		bse->BeginFrame();
 	}
 
 	// determine which back end we will use

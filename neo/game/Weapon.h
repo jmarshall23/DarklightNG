@@ -438,6 +438,8 @@ private:
 	void					Event_StartWeaponLight( const char* name);
 	D3_EVENT( EV_Weapon_StopWeaponLight, "stopWeaponLight", void )
 	void					Event_StopWeaponLight( const char* name);
+
+	void					MuzzleFlashEffect( void );
 };
 
 ID_INLINE bool idWeapon::IsLinked( void ) {

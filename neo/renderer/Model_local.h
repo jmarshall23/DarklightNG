@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #ifndef __MODEL_LOCAL_H__
 #define __MODEL_LOCAL_H__
 
+class rvDeclEffect;
+
 /*
 ===============================================================================
 
@@ -282,9 +284,12 @@ private:
 ===============================================================================
 */
 
-class idRenderModelPrt : public idRenderModelStatic {
+// ETQW BSE declarations are exposed as virtual .effect models.  Each cached
+// dynamic snapshot owns its simulation state; this shared model owns only the
+// immutable declaration reference.
+class idRenderModelBSE : public idRenderModelStatic {
 public:
-								idRenderModelPrt();
+								idRenderModelBSE();
 
 	virtual void				InitFromFile( const char *fileName );
 	virtual void				TouchData();
@@ -295,7 +300,7 @@ public:
 	virtual int					Memory() const;
 
 private:
-	const idDeclParticle *		particleSystem;
+	const rvDeclEffect *			effectSystem;
 };
 
 /*

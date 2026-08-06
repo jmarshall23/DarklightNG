@@ -336,7 +336,7 @@ static void RB_GLSL_DrawBakedSurface( const drawSurf_t *surf ) {
 	idImage *bumpImage = globalImages->flatNormalMap;
 	idVec4 bumpMatrix[2];
 
-	if ( !tri || !tri->vertexBuffer || !tri->lightmapBuffer || !tri->bakedLightmap || !tri->bakedDeluxemap ) {
+	if ( !tri || tri->isBSE || !tri->vertexBuffer || !tri->lightmapBuffer || !tri->bakedLightmap || !tri->bakedDeluxemap ) {
 		return;
 	}
 	if ( shader->Coverage() != MC_OPAQUE || !shader->ReceivesLighting() || !tri->numIndexes ) {
@@ -523,7 +523,7 @@ static void RB_GLSL_DrawAmbientCubeSurface( const drawSurf_t *surf ) {
 	if ( !cube && renderWorld ) {
 		cube = renderWorld->defaultAmbientCubeMap;
 	}
-	if ( !tri || !tri->numIndexes || !tri->verts && !tri->vertexBuffer &&
+	if ( !tri || tri->isBSE || !tri->numIndexes || !tri->verts && !tri->vertexBuffer &&
 		( !tri->ambientSurface || !tri->ambientSurface->vertexBuffer ) ) {
 		return;
 	}

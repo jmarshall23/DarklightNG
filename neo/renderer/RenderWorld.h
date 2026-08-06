@@ -48,6 +48,7 @@ const int SHADERPARM_ALPHA			= 3;
 const int SHADERPARM_TIMESCALE		= 3;
 const int SHADERPARM_TIMEOFFSET		= 4;
 const int SHADERPARM_DIVERSITY		= 5;	// random between 0.0 and 1.0 for some effects (muzzle flashes, etc)
+const int SHADERPARM_BRIGHTNESS		= 6;	// BSE particle brightness multiplier
 const int SHADERPARM_MODE			= 7;	// for selecting which shader passes to enable
 const int SHADERPARM_TIME_OF_DEATH	= 7;	// for the monster skin-burn-away effect enable and time offset
 
@@ -62,6 +63,14 @@ const int SHADERPARM_BEAM_END_X		= 8;	// for _beam models
 const int SHADERPARM_BEAM_END_Y		= 9;
 const int SHADERPARM_BEAM_END_Z		= 10;
 const int SHADERPARM_BEAM_WIDTH		= 11;
+
+// .effect models can opt into an explicit end point without extending the
+// renderEntity ABI.  Set parm 11 non-zero, then store the world-space end in
+// parms 8..10.  The aliases overlap beam-only parms by design.
+const int SHADERPARM_BSE_END_X		= 8;
+const int SHADERPARM_BSE_END_Y		= 9;
+const int SHADERPARM_BSE_END_Z		= 10;
+const int SHADERPARM_BSE_HAS_ENDORIGIN = 11;
 
 const int SHADERPARM_SPRITE_WIDTH		= 8;
 const int SHADERPARM_SPRITE_HEIGHT		= 9;

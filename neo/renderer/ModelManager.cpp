@@ -64,6 +64,7 @@ private:
 	static void				ListModels_f( const idCmdArgs &args );
 	static void				ReloadModels_f( const idCmdArgs &args );
 	static void				TouchModel_f( const idCmdArgs &args );
+	static void				TestBSEModels_f( const idCmdArgs &args );
 };
 
 
@@ -172,6 +173,87 @@ void idRenderModelManagerLocal::TouchModel_f( const idCmdArgs &args ) {
 }
 
 /*
+==============
+idRenderModelManagerLocal::TestBSEModels_f
+
+Exercises declaration lookup, per-entity simulation, and renderer-model
+tessellation for representative SDK visual primitives.
+==============
+*/
+void idRenderModelManagerLocal::TestBSEModels_f( const idCmdArgs &args ) {
+	struct bseTestCase_t {
+		const char *modelName;
+		int timeMsec;
+	};
+	const bseTestCase_t tests[] = {
+		{ "effects/base/muzzleflash_small.effect", 50 },
+		{ "effects/tools/welder/blue_flame_simple.effect", 500 },
+		{ "effects/ambient/falling_dust_512.effect", 2000 },
+		{ "effects/projectile_lightning_crawl.effect", 500 },
+		{ "effects/weapons/assaultrifle_muzzleflash_view.effect", 50 },
+		{ "effects/weapons/assaultrifle_muzzleflash_world.effect", 100 },
+		{ "effects/impacts/bullets_small/impact_default.effect", 500 },
+		{ "effects/impacts/bullets_large/impact_default.effect", 500 },
+		{ "effects/weapons/flare_extra.effect", 100 },
+		{ "effects/weapons/grenades/emp/explosion.effect", 1 },
+		{ "effects/deployables/gdf_anti_armour_turret.effect", 100 },
+		{ "effects/tools/teleporter/start.effect", 250 },
+		{ "effects/objectives/jamming_tower_idle.effect", 250 }
+	};
+
+	int failures = 0;
+	for ( int testIndex = 0; testIndex < sizeof( tests ) / sizeof( tests[0] ); testIndex++ ) {
+		idRenderModel *model = renderModelManager->FindModel( tests[testIndex].modelName );
+		if ( model == NULL || model->IsDynamicModel() != DM_CONTINUOUS ) {
+			common->Warning( "BSE model test could not load %s", tests[testIndex].modelName );
+			failures++;
+			continue;
+		}
+
+		idRenderEntityLocal entity;
+		entity.SetOrigin( vec3_origin );
+		entity.SetAxis( mat3_identity );
+		entity.SetModel( model );
+		entity.SetShaderParm( SHADERPARM_RED, 1.0f );
+		entity.SetShaderParm( SHADERPARM_GREEN, 1.0f );
+		entity.SetShaderParm( SHADERPARM_BLUE, 1.0f );
+		entity.SetShaderParm( SHADERPARM_ALPHA, 1.0f );
+		entity.SetShaderParm( SHADERPARM_BRIGHTNESS, 1.0f );
+
+		viewDef_t viewDef;
+		viewDef.renderView.time = tests[testIndex].timeMsec;
+		viewDef.renderView.vieworg.Set( -64.0f, 0.0f, 0.0f );
+		viewDef.renderView.viewaxis.Identity();
+
+		idRenderModel *snapshot = model->InstantiateDynamicModel( &entity, &viewDef, NULL );
+		viewDef.renderView.time += 10;
+		snapshot = model->InstantiateDynamicModel( &entity, &viewDef, snapshot );
+		int surfaces = snapshot != NULL ? snapshot->NumSurfaces() : 0;
+		int verts = 0;
+		int indexes = 0;
+		bool exclusivelyTagged = surfaces > 0;
+		for ( int surfaceIndex = 0; snapshot != NULL && surfaceIndex < snapshot->NumSurfaces(); surfaceIndex++ ) {
+			const modelSurface_t *surface = snapshot->Surface( surfaceIndex );
+			if ( surface != NULL && surface->geometry != NULL ) {
+				verts += surface->geometry->numVerts;
+				indexes += surface->geometry->numIndexes;
+				exclusivelyTagged &= surface->geometry->isBSE;
+			} else {
+				exclusivelyTagged = false;
+			}
+		}
+		common->Printf( "BSE model test %s: %d surfaces, %d verts, %d indexes, pass-tagged %s\n",
+			tests[testIndex].modelName, surfaces, verts, indexes, exclusivelyTagged ? "yes" : "no" );
+		if ( surfaces == 0 || verts == 0 || indexes == 0 || !exclusivelyTagged ) {
+			failures++;
+		}
+		delete snapshot;
+	}
+
+	common->Printf( "BSE model tests: %d passed, %d failed\n", static_cast<int>( sizeof( tests ) / sizeof( tests[0] ) ) - failures, failures );
+}
+
+/*
 =================
 idRenderModelManagerLocal::WritePrecacheCommands
 =================
@@ -204,6 +286,7 @@ void idRenderModelManagerLocal::Init() {
 	cmdSystem->AddCommand( "printModel", PrintModel_f, CMD_FL_RENDERER, "prints model info", idCmdSystem::ArgCompletion_ModelName );
 	cmdSystem->AddCommand( "reloadModels", ReloadModels_f, CMD_FL_RENDERER|CMD_FL_CHEAT, "reloads models" );
 	cmdSystem->AddCommand( "touchModel", TouchModel_f, CMD_FL_RENDERER, "touches a model", idCmdSystem::ArgCompletion_ModelName );
+	cmdSystem->AddCommand( "testBSEModels", TestBSEModels_f, CMD_FL_RENDERER, "tests representative BSE effect models" );
 
 	insideLevelLoad = false;
 
@@ -296,8 +379,8 @@ idRenderModel *idRenderModelManagerLocal::GetModel( const char *modelName, bool 
 	} else if ( extension.Icmp( "md3" ) == 0 ) {
 		model = new idRenderModelMD3;
 		model->InitFromFile( modelName );
-	} else if ( extension.Icmp( "prt" ) == 0  ) {
-		model = new idRenderModelPrt;
+	} else if ( extension.Icmp( "effect" ) == 0 ) {
+		model = new idRenderModelBSE;
 		model->InitFromFile( modelName );
 	} else if ( extension.Icmp( "liquid" ) == 0  ) {
 		model = new idRenderModelLiquid;

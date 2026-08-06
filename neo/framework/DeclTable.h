@@ -40,10 +40,16 @@ public:
 	virtual void			FreeData( void );
 
 	float					TableLookup( float index ) const;
+	float					GetMinValue() const { return minValue; }
+	float					GetMaxValue() const { return maxValue; }
+	int						NumValues() const { return values.Num() > 0 ? values.Num() - 1 : 0; }
+	float					GetValue( int index ) const { return values.Num() > 1 ? values[idMath::ClampInt( 0, values.Num() - 2, index )] : 0.0f; }
 
 private:
 	bool					clamp;
 	bool					snap;
+	float					minValue;
+	float					maxValue;
 	idList<float>			values;
 };
 

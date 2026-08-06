@@ -69,8 +69,6 @@ typedef enum {
 	DFRM_EXPAND,
 	DFRM_MOVE,
 	DFRM_EYEBALL,
-	DFRM_PARTICLE,
-	DFRM_PARTICLE2,
 	DFRM_TURB
 } deform_t;
 

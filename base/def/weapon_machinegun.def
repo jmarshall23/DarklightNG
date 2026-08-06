@@ -86,7 +86,10 @@ entityDef weapon_machinegun {
 	"hide_time"					"0.3"								// time to hide weapon when talking to npcs or looking at guis
 	"hide_distance"				"-15"								// distance to offset weapon when talking to npcs or looking at guis
 
-	"smoke_muzzle"				"mgmuzzlesmoke.prt"
+	"smoke_muzzle"				""
+	"model_muzzle_effect"		"effects/weapons/assaultrifle_muzzleflash_view.effect"
+	"model_muzzle_effect_world"	"effects/weapons/assaultrifle_muzzleflash_world.effect"
+	"muzzle_effect_time"			"4500"
 	"def_ejectBrass"			"debris_brass"
 	"ejectBrassDelay"			"33"
 
@@ -207,7 +210,7 @@ entityDef projectile_bullet_machinegun {
 	"mtr_detonate"				"textures/decals/bulleth02"
 	"mtr_detonate_glass"		"textures/decals/testbulletglass1"
 	"decal_size"				"10"
-	"model_smokespark"			"bulletsmokeandspark.prt"
+	"model_smokespark"			"effects/impacts/bullets_small/impact_default.effect"
 	"model_ricochet"			"bulletricochet.prt"
 
 	"smoke_fly"					""

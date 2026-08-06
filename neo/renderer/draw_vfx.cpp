@@ -24,6 +24,9 @@ GNU General Public License for more details.
 
 #include "tr_local.h"
 
+extern void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf );
+extern void RB_SetProgramEnvironment( void );
+
 static const int VFX_INITIAL_VERTEX_BYTES = 4 * 1024 * 1024;
 static const int VFX_INITIAL_INDEX_BYTES = 1024 * 1024;
 
@@ -93,7 +96,7 @@ void RB_VFX_BeginFrame() {
 }
 
 bool RB_VFX_BindSurface( const srfTriangles_t *tri, int &vertexOffset, int &indexOffset ) {
-	if ( tri == NULL || !tri->isParticle || tri->numVerts <= 0 || tri->numIndexes <= 0 ||
+	if ( tri == NULL || !tri->isBSE || tri->numVerts <= 0 || tri->numIndexes <= 0 ||
 		 tri->verts == NULL || tri->indexes == NULL ) {
 		return false;
 	}
@@ -139,4 +142,41 @@ bool RB_VFX_BindSurface( const srfTriangles_t *tri, int &vertexOffset, int &inde
 	vertexOffset = newVertexOffset;
 	indexOffset = newIndexOffset;
 	return true;
+}
+
+void RB_VFX_DrawScreenSpacePass( drawSurf_t **drawSurfs, int numDrawSurfs ) {
+	if ( drawSurfs == NULL || numDrawSurfs <= 0 ) return;
+	RB_LogComment( "---------- RB_VFX_DrawScreenSpacePass ----------\n" );
+
+	GL_SelectTexture( 1 );
+	globalImages->BindNull();
+	GL_SelectTexture( 0 );
+	qglEnableClientState( GL_TEXTURE_COORD_ARRAY );
+	RB_SetProgramEnvironment();
+	backEnd.currentSpace = NULL;
+
+	for ( int i = 0; i < numDrawSurfs; i++ ) {
+		const drawSurf_t *surf = drawSurfs[i];
+		if ( surf == NULL || surf->geo == NULL || !surf->geo->isBSE ) continue;
+		if ( surf->material->SuppressInSubview() ) continue;
+		if ( backEnd.viewDef->isXraySubview && surf->space->entityDef && surf->space->entityDef->GetXrayIndex() != 2 ) continue;
+		if ( surf->material->GetSort() >= SS_POST_PROCESS && !backEnd.currentRenderCopied ) {
+			if ( r_skipPostProcess.GetBool() ) continue;
+			if ( backEnd.viewDef->viewEntitys ) {
+				globalImages->currentRenderImage->CopyFramebuffer( backEnd.viewDef->viewport.x1,
+					backEnd.viewDef->viewport.y1,
+					backEnd.viewDef->viewport.x2 - backEnd.viewDef->viewport.x1 + 1,
+					backEnd.viewDef->viewport.y2 - backEnd.viewDef->viewport.y1 + 1, true );
+				globalImages->currentDepthImage->CopyDepthbuffer( backEnd.viewDef->viewport.x1,
+					backEnd.viewDef->viewport.y1,
+					backEnd.viewDef->viewport.x2 - backEnd.viewDef->viewport.x1 + 1,
+					backEnd.viewDef->viewport.y2 - backEnd.viewDef->viewport.y1 + 1 );
+			}
+			backEnd.currentRenderCopied = true;
+		}
+		RB_STD_T_RenderShaderPasses( surf );
+	}
+
+	GL_Cull( CT_FRONT_SIDED );
+	qglColor3f( 1.0f, 1.0f, 1.0f );
 }

@@ -486,7 +486,8 @@ void idEntityFx::Run( int time ) {
 						useAction->renderEntity->SetShaderParm( parm, 1.0f );
 					}
 					useAction->renderEntity->SetShaderParm( SHADERPARM_TIMEOFFSET, -MS2SEC( time ) );
-					useAction->renderEntity->SetShaderParm( 5, 0.0f );
+					useAction->renderEntity->SetShaderParm( SHADERPARM_DIVERSITY, 0.0f );
+					useAction->renderEntity->SetShaderParm( SHADERPARM_BRIGHTNESS, 1.0f );
 					if ( useAction->renderEntity->GetModel() ) {
 						useAction->renderEntity->SetBounds( useAction->renderEntity->GetModel()->Bounds( useAction->renderEntity ) );
 					}

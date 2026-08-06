@@ -31,7 +31,7 @@ GNU General Public License for more details.
 #include "PreviewDlg.h"
 #include "CurveDlg.h"
 
-#include "../../renderer/model_local.h"		// for idRenderModelPrt
+#include "../../renderer/model_local.h"
 
 void	Select_Ungroup();
 
@@ -665,7 +665,7 @@ void CEntityDlg::ApplyKeyValue( const char *key, const char *value ) {
 			idVec3	mins, maxs;
 
 			selected_brushes.next->modelHandle = renderModelManager->FindModel( Value );
-			if ( dynamic_cast<idRenderModelPrt*>( selected_brushes.next->modelHandle ) || dynamic_cast<idRenderModelLiquid*>( selected_brushes.next->modelHandle ) ) {
+			if ( selected_brushes.next->modelHandle->IsDynamicModel() != DM_STATIC ) {
 				bo.Zero();
 				bo.ExpandSelf( 12.0f );
 			} else {

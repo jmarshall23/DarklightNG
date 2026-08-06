@@ -331,7 +331,7 @@ void idGameLocal::Init( void ) {
 	// register game specific decl folders
 	declManager->RegisterDeclFolder( "def",				".def",				DECL_ENTITYDEF );
 	declManager->RegisterDeclFolder( "fx",				".fx",				DECL_FX );
-	declManager->RegisterDeclFolder( "particles",		".prt",				DECL_PARTICLE );
+	declManager->RegisterDeclFolder( "effects",			".effect",			DECL_EFFECT );
 	declManager->RegisterDeclFolder( "af",				".af",				DECL_AF );
 	declManager->RegisterDeclFolder( "newpdas",			".pda",				DECL_PDA );
 

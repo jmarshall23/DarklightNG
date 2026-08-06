@@ -2003,7 +2003,7 @@ static void Cmd_SaveParticles_f( const idCmdArgs &args ) {
 		}
 
 		strModel = ent->spawnArgs.GetString( "model" );
-		if ( strModel.Length() && strModel.Find( ".prt") > 0 ) {
+		if ( strModel.Length() && strModel.Find( ".effect") > 0 ) {
 			dict.Clear();
 			dict.Set( "model", ent->spawnArgs.GetString( "model" ) );
 			dict.SetVector( "origin", ent->GetPhysics()->GetOrigin() );

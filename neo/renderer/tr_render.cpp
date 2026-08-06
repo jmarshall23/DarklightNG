@@ -37,7 +37,7 @@ static const srfTriangles_t *RB_GetBufferOwner( const srfTriangles_t *tri ) {
 
 const idDrawVert *RB_BindDrawVertBuffer( const srfTriangles_t *tri ) {
 	const srfTriangles_t *owner = RB_GetBufferOwner( tri );
-	if ( owner && owner->isParticle ) {
+	if ( owner && owner->isBSE ) {
 		int vertexOffset = 0;
 		int indexOffset = 0;
 		if ( RB_VFX_BindSurface( tri, vertexOffset, indexOffset ) ) {
@@ -75,7 +75,7 @@ const shadowCache_t *RB_BindShadowBuffer( const srfTriangles_t *tri ) {
 static const void *RB_BindIndexBuffer( const srfTriangles_t *tri, bool &usingIndexBuffer ) {
 	usingIndexBuffer = false;
 	const srfTriangles_t *owner = RB_GetBufferOwner( tri );
-	if ( owner && owner->isParticle ) {
+	if ( owner && owner->isBSE ) {
 		int vertexOffset = 0;
 		int indexOffset = 0;
 		if ( RB_VFX_BindSurface( tri, vertexOffset, indexOffset ) ) {
@@ -220,7 +220,7 @@ Sets texcoord and vertex pointers
 ===============
 */
 void RB_RenderTriangleSurface( const srfTriangles_t *tri ) {
-	if ( !tri->vertexBuffer && !tri->isParticle && !tri->verts &&
+	if ( !tri->vertexBuffer && !tri->isBSE && !tri->verts &&
 		( !tri->ambientSurface || !tri->ambientSurface->vertexBuffer ) ) {
 		RB_DrawElementsImmediate( tri );
 		return;
@@ -785,7 +785,7 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void (*DrawInterac
 	drawInteraction_t	inter;
 
 	if ( r_skipInteractions.GetBool() || !surf->geo ||
-		( !surf->geo->vertexBuffer && !surf->geo->isParticle && !surf->geo->verts &&
+		( !surf->geo->vertexBuffer && !surf->geo->isBSE && !surf->geo->verts &&
 		  ( !surf->geo->ambientSurface || !surf->geo->ambientSurface->vertexBuffer ) ) ) {
 		return;
 	}

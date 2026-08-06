@@ -74,6 +74,7 @@ typedef enum {
 	DECL_MAPDEF,
 	DECL_ATMOSPHERE,
 	DECL_AMBIENTCUBEMAP,
+	DECL_EFFECT,
 
 	// new decl types can be added here
 

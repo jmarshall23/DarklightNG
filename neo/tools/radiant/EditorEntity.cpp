@@ -651,7 +651,7 @@ entity_t *Entity_PostParse(entity_t *ent, brush_t *pList) {
 			// model entity
 			idRenderModel *modelHandle = renderModelManager->FindModel( pModel );
 
-			if ( dynamic_cast<idRenderModelPrt*>( modelHandle ) || dynamic_cast<idRenderModelLiquid*>( modelHandle ) ) {
+			if ( modelHandle->IsDynamicModel() != DM_STATIC ) {
 				bo.Zero();
 				bo.ExpandSelf( 12.0f );
 			} else {
