@@ -1,0 +1,46 @@
+/*
+===========================================================================
+
+Quake Wars BSE debris materials used by the imported bullet impact effects.
+The demo ships this declaration in generated/declb/materials/particles/
+debris/debris.mtrb. Darklight scans .mtr files directly under materials, so
+the source port is flattened here while retaining the original material name.
+The ETQW-only sfx/cheap_litsmoke program and maskAlpha binding are represented
+by the standard alpha-blended stage consumed by Darklight's BSE surface pass.
+
+===========================================================================
+*/
+
+particles/debris/debris_smallblast2
+{
+	noShadows
+	nonsolid
+	{
+		blend blend
+		map textures/particles/debris/debris_smallblast2
+		vertexColor
+	}
+}
+
+particles/debris/dustcloud_4
+{
+	noShadows
+	nonsolid
+	{
+		blend blend
+		map textures/particles/debris/dustcloud_04
+		vertexColor
+	}
+}
+
+particles/dustcloud_02
+{
+	noShadows
+	translucent
+	nonsolid
+	{
+		blend blend
+		map textures/effects/smoke_test1
+		vertexColor
+	}
+}
